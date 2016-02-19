@@ -1,0 +1,64 @@
+{
+  "name": "cerebral-boilerplate",
+  "version": "0.1.0",
+  "description": "A boilerplate for Cerebral",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cerebral/cerebral-boilerplate.git"
+  },
+  "keywords": [
+    "express",
+    "webpack",
+    "node",
+    "cerebral"
+  ],
+  "author": "Christian Alfoni",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cerebral/cerebral-boilerplate/issues"
+  },
+  "homepage": "https://github.com/cerebral/cerebral-boilerplate",
+  "scripts": {
+    "start": "concurrently \"npm run client\" \"npm run server\"",
+    "client": "cross-env kotatsu serve app/main.js --index index.html --config webpack.config.js --devtool eval-source-map --proxy /api http://www.codebox.dev:4000/api",
+    "server": "cross-env kotatsu start start.js",
+    "build": "cross-env kotatsu build client app/main.js --config webpack.config.js --minify -o dist "
+  },
+  "dependencies": {
+    "baobab": "^2.3.3",
+    "body-parser": "^1.15.0",
+    "cerebral": "^0.33.24",
+    "cerebral-addons": "^0.4.10",
+    "cerebral-model-baobab": "^0.4.7",
+    "cerebral-module-devtools": "^0.5.3",
+    "cerebral-module-http": "^0.1.1",
+    "cerebral-module-router": "^0.12.5",
+    "cerebral-view-react": "^0.11.6",
+    "codemirror": "^5.11.0",
+    "cookie-parser": "^1.4.1",
+    "esprima": "^2.7.2",
+    "express": "^4.13.4",
+    "memory-fs": "^0.3.0",
+    "node-libs-browser": "^1.0.0",
+    "process": "^0.11.2",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
+    "recursive-readdir": "^1.3.0"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-react-hmre": "^1.1.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "concurrently": "^2.0.0",
+    "cross-env": "^1.0.7",
+    "css-loader": "^0.23.1",
+    "esprima-fb": "^15001.1001.0-dev-harmony-fb",
+    "kotatsu": "^0.10.0",
+    "process": "^0.11.2",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
+    "style-loader": "^0.13.0"
+  }
+}
