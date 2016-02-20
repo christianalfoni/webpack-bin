@@ -36,6 +36,7 @@
     "cerebral-module-http": "^0.1.1",
     "cerebral-module-router": "^0.12.5",
     "cerebral-view-react": "^0.11.6",
+    "classnames": "^2.2.3",
     "codemirror": "^5.11.0",
     "cookie-parser": "^1.4.1",
     "esprima": "^2.7.2",

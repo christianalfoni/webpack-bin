@@ -7,7 +7,9 @@ import {Container} from 'cerebral-view-react';
 import Devtools from 'cerebral-module-devtools';
 import Http from 'cerebral-module-http';
 import Example from './modules/Example';
-import ColorChanger from './components/ColorChanger';
+import CodeEditor from './components/CodeEditor';
+import Toolbar from './components/Toolbar';
+import Preview from './components/Preview';
 
 const controller = Controller(Model({}));
 
@@ -24,4 +26,12 @@ controller.addModules({
   })
 });
 
-ReactDOM.render(<Container controller={controller}><ColorChanger /></Container>, document.getElementById('root'));
+ReactDOM.render(
+  <Container controller={controller}>
+    <Toolbar/>
+    <div style={{height: 'calc(100vh - 50px)', width: '100%', display: 'flex'}}>
+      <CodeEditor/>
+      <Preview/>
+    </div>
+  </Container>,
+document.getElementById('root'));

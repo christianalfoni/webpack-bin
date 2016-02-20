@@ -1,0 +1,39 @@
+.wrapper {
+  height: 50px;
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 2px solid #232e3c;
+  background-color: #202634;
+  display: flex;
+}
+
+.column {
+  border-right: 2px solid #232e3c;
+  box-sizing: border-box;
+  flex: 1;
+}
+
+.file {
+  display: inline-block;
+  padding: 15px 30px;
+  cursor: pointer;
+}
+
+.active {
+  border-bottom: 2px solid #eb1e64;
+}
+
+.button {
+  float: right;
+  background: transparent;
+  border: 0;
+  font-family: Ubuntu, sans-serif;
+  color: #eb1e64;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 13px 30px;
+}
+
+.button:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,132 @@
+.cm-s-learncode.CodeMirror {
+    background: #202634;
+    color: #fff;
+    font-size: 14px;
+    line-height: 20px;
+    height: 100%;
+    box-sizing: border-box;
+    padding-top: 15px;
+}
+
+.CodeMirror-scrollbar-filler {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.cm-s-learncode.CodeMirror .CodeMirror-lines {
+  padding-top: 0;
+}
+
+.cm-s-learncode.CodeMirror pre {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.cm-s-learncode div.CodeMirror-selected {
+    background: #171c26 !important;
+}
+
+.cm-s-learncode.CodeMirror::selection {
+    background: #171c26;
+}
+
+.cm-s-learncode.CodeMirror::-moz-selection {
+    background: #171c26;
+}
+
+.cm-s-learncode .CodeMirror-gutters {
+    background: #202634;
+    border-right: 0px;
+}
+
+.cm-s-learncode .CodeMirror-guttermarker {
+    color: #db2d20;
+}
+
+.cm-s-learncode .CodeMirror-guttermarker-subtle {
+    color: #646871;
+}
+
+.cm-s-learncode .CodeMirror-linenumber {
+    color: #646871;
+}
+
+.cm-s-learncode .CodeMirror-cursor {
+    border-left: 1px solid #FFF !important;
+}
+
+.cm-s-learncode span.cm-comment {
+    color: #cdab53;
+}
+
+.cm-s-learncode span.cm-atom {
+    color: #2196f3;
+}
+
+.cm-s-learncode span.cm-number {
+    color: #2196f3;
+}
+
+.cm-s-learncode span.cm-property,
+.cm-s-learncode span.cm-attribute {
+    color: #1eaa6e;
+}
+
+.cm-s-learncode span.cm-keyword {
+    color: #597394;
+}
+
+.cm-s-learncode span.cm-qualifier {
+    color: #597394;
+}
+
+
+.cm-s-learncode span.cm-string {
+    color: #f0b937;
+}
+
+.cm-s-learncode span.cm-variable {
+    color: #4caf50;
+}
+
+.cm-s-learncode span.cm-variable-2 {
+    color: #01a0e4;
+}
+
+.cm-s-learncode span.cm-def {
+    color: #4caf50;
+}
+
+.cm-s-learncode span.cm-bracket {
+    color: #3a3432;
+}
+
+.cm-s-learncode span.cm-tag {
+    color: #597394;
+}
+
+.cm-s-learncode span.cm-link {
+    color: #a16a94;
+}
+
+.cm-s-learncode span.cm-meta {
+    color: #405574;
+}
+
+.cm-s-learncode span.cm-error {
+    /* background: rgba(0,0,0,0.1); */
+    background-color: #eb1e64;
+    color: #fff;
+}
+
+.cm-s-learncode .CodeMirror-activeline-background {
+    background: #e8f2ff !important;
+}
+
+.cm-s-learncode .CodeMirror-matchingbracket {
+    text-decoration: underline;
+    color: #a16a94 !important;
+}
+
+.cm-s-learncode .CodeMirror-matchingtag {
+  background-color: #171c26;
+}

@@ -2,6 +2,7 @@ import colorChanged from './signals/colorChanged';
 import redirectRoot from './signals/redirectRoot';
 import randomColorClicked from './signals/randomColorClicked';
 import testClicked from './signals/testClicked';
+import fileClicked from './signals/fileClicked';
 
 export default (options = {}) => {
   return (module, controller) => {
@@ -9,8 +10,13 @@ export default (options = {}) => {
     module.addState({
       title: 'You can change the url too!',
       color: '#333',
-      file: [{
+      selectedFileIndex: 0,
+      files: [{
         name: 'main.js',
+        content: ''
+      },
+      {
+        name: 'test.js',
         content: ''
       }]
     });
@@ -19,7 +25,8 @@ export default (options = {}) => {
       colorChanged,
       redirectRoot,
       randomColorClicked,
-      testClicked
+      testClicked,
+      fileClicked
     });
 
   };
