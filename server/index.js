@@ -8,6 +8,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var sessions = require('./sessions.js');
+var middlewares = {};
 var loadPackages = require('./loadPackages');
 var loadLoaders = require('./loadLoaders');
 
@@ -22,7 +23,7 @@ loadLoaders([
   'babel-loader',
   'style-loader',
   'css-loader'
-])
+]);
 
 // Move to own file
 memoryFs.mkdirpSync(path.join("/", "api", "sandbox"));
@@ -54,8 +55,9 @@ app.get('/api/sandbox/', function (req, res) {
 })
 
 app.get('/api/sandbox/*', function (req, res, next) {
-  setTimeout(function () {
-    middleware(req.session.compiler, {
+  if (!middlewares[req.session.id]) {
+    console.log('creating middleware');
+    middlewares[req.session.id] = middleware(req.session.compiler, {
       publicPath: path.join('/', 'api', 'sandbox', req.session.id, 'dist'),
       stats: {
         colors: true,
@@ -65,8 +67,17 @@ app.get('/api/sandbox/*', function (req, res, next) {
         chunkModules: false,
         modules: false
       }
-    })(req, res, next);
-  }, 500);
+    });
+    middlewares[req.session.id](req, res, next);
+  } else {
+    console.log('Compiling');
+    req.session.compiler.run(function (err) {
+      if (err) {
+        console.log(err);
+      }
+      middlewares[req.session.id](req, res, next);
+    });
+  }
 })
 
 app.post('/api/sandbox', function (req, res) {
@@ -84,8 +95,10 @@ app.post('/api/sandbox', function (req, res) {
   });
 
   if (!req.session.compiler) {
+    console.log('Creating compiler');
     var compiler = webpack({
       context: '/',
+      devtool: 'cheap-eval-source-map',
       entry: path.join('/', 'api', 'sandbox', req.session.id, 'main.js'),
       output: {
         path: path.join('/', 'api', 'sandbox', req.session.id, 'dist'),

@@ -33,7 +33,6 @@ module.exports = function(compiler, options) {
 	var fs = compiler.outputFileSystem = new MemoryFileSystem();
 
 	compiler.plugin("done", function(stats) {
-		console.log('DONE BUNDLING!!!');
 		// We are now on valid state
 		state = true;
 		// Do the stuff in nextTick, because bundle may be invalidated
