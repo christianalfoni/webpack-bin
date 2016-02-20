@@ -20,11 +20,14 @@
   },
   "homepage": "https://github.com/cerebral/cerebral-boilerplate",
   "scripts": {
-    "start": "concurrently \"npm run client\" \"npm run server\"",
+    "start": "node server_build.js",
+    "dev": "concurrently \"npm run client\" \"npm run server\"",
     "client": "cross-env kotatsu serve app/main.js --index index.html --config webpack.config.js --devtool eval-source-map --proxy /api http://www.codebox.dev:4000/api",
     "server": "cross-env kotatsu start start.js --source-maps",
-    "build": "cross-env kotatsu build client app/main.js --config webpack.config.js --minify -o dist ",
-    "postinstall": "npm install webpack-bin-babel-core"
+    "build": "cross-env concurrently \"npm run build:client\" \"npm run build:server\"",
+    "build:client": "cross-env kotatsu build client app/main.js --config webpack.config.js --minify -o public/client_build.js",
+    "build:server": "cross-env kotatsu build server start.js --minify -o server_build.js",
+    "postinstall": "npm run build",
   },
   "dependencies": {
     "baobab": "^2.3.3",

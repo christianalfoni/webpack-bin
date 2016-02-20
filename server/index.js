@@ -11,6 +11,7 @@ var sessions = require('./sessions.js');
 var middlewares = {};
 var loadPackages = require('./loadPackages');
 var loadLoaders = require('./loadLoaders');
+var isProduction = process.env.NODE_ENV === 'production';
 
 loadPackages([
   'process',
@@ -45,8 +46,13 @@ app.use(function (req, res, next) {
   next();
 });
 
+if (isProduction) {
+  console.log('Setting static to ', path.resolve('public'));
+  app.use(express.static(path.resolve('public')));
+}
+
 app.get('/', function(req, res) {
-  res.send(fs.readFileSync(path.resolve('..', 'index.html')));
+  res.send(fs.readFileSync(path.resolve('index.html')).toString().replace('/build/bundle.js', '/client_build.js'));
 });
 
 app.get('/api/sandbox/', function (req, res) {

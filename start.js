@@ -3,7 +3,7 @@ var app = require('./server'),
 
 var server = http.createServer(app);
 
-server.listen(4000);
+server.listen(process.env.NODE_ENV === 'production' ? process.env.PORT : 4000);
 
 if (module.hot) {
 
