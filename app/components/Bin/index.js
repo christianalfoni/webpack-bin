@@ -9,6 +9,12 @@ import Preview from '../Preview';
 class Bin extends React.Component {
   componentDidMount() {
     this.props.signals.bin.mounted();
+    window.addEventListener('keydown', (event) => {
+      if ((event.metaKey || event.ctrlKey) && event.keyCode === 83) {
+        event.preventDefault();
+        this.props.signals.bin.saveShortcutPressed();
+      }
+    });
   }
   render() {
     return (

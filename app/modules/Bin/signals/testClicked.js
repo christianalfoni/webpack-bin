@@ -4,7 +4,10 @@ import httpGet from 'cerebral-module-http/get';
 
 export default [
   set('state:/bin.isLoading', true),
-  postCode,
+  postCode, {
+    success: [],
+    error: []
+  },
   function action({state}) {
     state.set('bin.url', String(Date.now()));
   },

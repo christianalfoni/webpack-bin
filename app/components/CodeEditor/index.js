@@ -1,11 +1,15 @@
+import eslint from './eslint';
+window.eslint = eslint;
+import '!style!css!./lint.css';
 import '!style!css!./../../../node_modules/codemirror/lib/codemirror.css';
 import '!style!css!./CodeEditorStyle.css';
-import 'codemirror/mode/javascript/javascript.js';
+import 'codemirror/mode/jsx/jsx.js';
+import 'codemirror/addon/lint/lint.js';
+import codemirrorEsLint from './codemirror-eslint.js';
 import React, { PropTypes } from 'react';
 import { Decorator as Cerebral, Link } from 'cerebral-view-react';
 import CodeMirror from 'codemirror';
 import styles from './styles.css';
-
 
 @Cerebral({
   selectedFileIndex: 'bin.selectedFileIndex',
@@ -15,6 +19,7 @@ class CodeEditor extends React.Component {
   constructor(props) {
     super(props);
     this.onCodeChange = this.onCodeChange.bind(this);
+    this.onUpdateLinting = this.onUpdateLinting.bind(this);
   }
   componentDidUpdate(prevProps) {
     if (this.props.selectedFileIndex !== prevProps.selectedFileIndex) {
@@ -24,11 +29,16 @@ class CodeEditor extends React.Component {
   componentDidMount() {
     this.codemirror = CodeMirror(this.refs.code, {
       value: this.props.files[this.props.selectedFileIndex].content,
-      mode: 'javascript',
+      mode: 'jsx',
       theme: 'learncode',
       matchTags: {bothTags: true},
       autoCloseTags: true,
       gutters: ['CodeMirror-lint-markers'],
+      lint: true,
+      lint: {
+        getAnnotations: codemirrorEsLint(CodeMirror),
+        onUpdateLinting: this.onUpdateLinting
+      },
       lineNumbers: true,
       indentUnit: 2,
       extraKeys: {
@@ -39,6 +49,11 @@ class CodeEditor extends React.Component {
       }
     });
     this.codemirror.on('change', this.onCodeChange);
+  }
+  onUpdateLinting(errors) {
+    this.props.signals.bin.linted({
+      isValid: !Boolean(errors.length)
+    });
   }
   onCodeChange() {
     this.props.signals.bin.codeChanged({

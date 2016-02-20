@@ -6,7 +6,8 @@ import classNames from 'classnames';
 @Cerebral({
   files: 'bin.files',
   selectedFileIndex: 'bin.selectedFileIndex',
-  isLoading: 'bin.isLoading'
+  isLoading: 'bin.isLoading',
+  isValid: 'bin.isValid'
 })
 class Toolbar extends React.Component {
   static propTypes = {
@@ -38,7 +39,7 @@ class Toolbar extends React.Component {
         </div>
         <div className={styles.column}>
           <button
-            disabled={this.props.isLoading}
+            disabled={this.props.isLoading || !this.props.isValid}
             onClick={() => signals.testClicked()}
             className={styles.button}>Run code</button>
         </div>
