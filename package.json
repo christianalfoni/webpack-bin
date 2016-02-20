@@ -27,7 +27,7 @@
     "build": "cross-env concurrently \"npm run build:client\" \"npm run build:server\"",
     "build:client": "cross-env kotatsu build client app/main.js --config webpack.config.js --minify -o public/client_build.js",
     "build:server": "cross-env kotatsu build server start.js --minify -o server_build.js",
-    "postinstall": "npm run build",
+    "postinstall": "npm run build"
   },
   "dependencies": {
     "baobab": "^2.3.3",
