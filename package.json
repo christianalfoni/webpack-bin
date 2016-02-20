@@ -27,7 +27,7 @@
     "build": "concurrently \"npm run build:client\" \"npm run build:server\"",
     "build:client": "kotatsu build client app/main.js --config webpack.config.js --minify -o public/client_build.js",
     "build:server": "kotatsu build server start.js --minify -o server_build.js",
-    "postinstall": "npm install webpack-bin-babel-core && npm run build"
+    "postinstall": "'npm run build"
   },
   "dependencies": {
     "baobab": "^2.3.3",
@@ -52,7 +52,6 @@
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "recursive-readdir": "^1.3.0",
-    "webpack-bin-babel-core": "https://github.com/christianalfoni/webpack-bin-babel-core.git",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-preset-react": "^6.5.0",
     "babel-preset-react-hmre": "^1.1.0",
@@ -62,6 +61,7 @@
     "esprima-fb": "^15001.1001.0-dev-harmony-fb",
     "kotatsu": "^0.10.0",
     "react": "^0.14.7",
-    "style-loader": "^0.13.0"
+    "style-loader": "^0.13.0",
+    "webpack-bin-babel-core": "https://github.com/christianalfoni/webpack-bin-babel-core.git"
   }
 }
