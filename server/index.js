@@ -39,7 +39,7 @@ app.use(function (req, res, next) {
     req.session = sessions.set(id);
     res.cookie('codebox', String(id), {
       expires: 0,
-      domain: '.codebox.dev',
+      domain: isProduction ? 'webpackbin.herokuapp.com' : '.codebox.dev',
       httpOnly: true
     });
   }
