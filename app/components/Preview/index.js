@@ -11,7 +11,7 @@ class Preview extends React.Component {
   };
   componentDidUpdate(prevProps) {
     if (prevProps.url !== this.props.url) {
-      this.refs.iframe.src = "http://www.codebox.dev:3000/api/sandbox";
+      this.refs.iframe.src =  location.origin + '/api/sandbox';
     }
   }
   render() {
