@@ -85,13 +85,10 @@ app.post('/api/sandbox', function (req, res) {
   if (!req.session.compiler) {
     memoryFs.mkdirpSync(path.join("/", "api", "sandbox", req.session.id));
     memoryFs.mkdirpSync(path.join("/", "api", "sandbox", req.session.id, "dist"));
-    // memoryFs.writeFileSync(path.join("/", "api", "sandbox", req.session.id, 'package.json'), '{babel: {"presets": ["react", "es2015", "stage-0"]}}');
-    memoryFs.writeFileSync(path.join("/", "api", "sandbox", req.session.id, 'styles.css'), '.test {color: red;}');
-    memoryFs.writeFileSync(path.join("/", "api", "sandbox", req.session.id, 'test.js'), 'console.log("hbhaha")');
   }
 
   req.body.files.forEach(function (file) {
-    memoryFs.writeFileSync(path.join("/", "api", "sandbox", req.session.id, file.name), file.content);
+    memoryFs.writeFileSync(path.join("/", "api", "sandbox", req.session.id, file.name), file.content || ' ');
   });
 
   if (!req.session.compiler) {

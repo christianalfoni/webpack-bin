@@ -7,11 +7,23 @@ import CodeMirror from 'codemirror';
 import styles from './styles.css';
 
 
-@Cerebral()
+@Cerebral({
+  selectedFileIndex: 'bin.selectedFileIndex',
+  files: 'bin.files'
+})
 class CodeEditor extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onCodeChange = this.onCodeChange.bind(this);
+  }
+  componentDidUpdate(prevProps) {
+    if (this.props.selectedFileIndex !== prevProps.selectedFileIndex) {
+      this.codemirror.getDoc().setValue(this.props.files[this.props.selectedFileIndex].content);
+    }
+  }
   componentDidMount() {
     this.codemirror = CodeMirror(this.refs.code, {
-      value: 'var react = require(\'react\');\nvar react = require(\'./test.js\');',
+      value: this.props.files[this.props.selectedFileIndex].content,
       mode: 'javascript',
       theme: 'learncode',
       matchTags: {bothTags: true},
@@ -25,9 +37,14 @@ class CodeEditor extends React.Component {
           cm.replaceSelection(spaces);
         }
       }
-    })
+    });
+    this.codemirror.on('change', this.onCodeChange);
   }
-
+  onCodeChange() {
+    this.props.signals.bin.codeChanged({
+      code: this.codemirror.getDoc().getValue()
+    });
+  }
   render() {
     return (
       <div className={styles.wrapper}>

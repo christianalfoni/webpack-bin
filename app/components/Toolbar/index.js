@@ -4,18 +4,19 @@ import styles from './styles.css';
 import classNames from 'classnames';
 
 @Cerebral({
-  files: 'example.files',
-  selectedFileIndex: 'example.selectedFileIndex'
+  files: 'bin.files',
+  selectedFileIndex: 'bin.selectedFileIndex',
+  isLoading: 'bin.isLoading'
 })
 class Toolbar extends React.Component {
   static propTypes = {
     files: PropTypes.array
   };
 
-  renderFiles() {
+  renderFiles() {
     return this.props.files.map((file, index) => {
       const active = index === this.props.selectedFileIndex;
-      const signals = this.props.signals.example;
+      const signals = this.props.signals.bin;
 
       return (
         <div
@@ -28,7 +29,7 @@ class Toolbar extends React.Component {
     })
   }
   render() {
-    const signals = this.props.signals.example;
+    const signals = this.props.signals.bin;
 
     return (
       <div className={styles.wrapper}>
@@ -36,7 +37,10 @@ class Toolbar extends React.Component {
           {this.renderFiles()}
         </div>
         <div className={styles.column}>
-          <button onClick={() => signals.testClicked({code: this.codemirror.getDoc().getValue()})} className={styles.button}>Run code</button>
+          <button
+            disabled={this.props.isLoading}
+            onClick={() => signals.testClicked()}
+            className={styles.button}>Run code</button>
         </div>
       </div>
     );

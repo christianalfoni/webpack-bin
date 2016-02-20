@@ -1,30 +1,26 @@
-import colorChanged from './signals/colorChanged';
-import redirectRoot from './signals/redirectRoot';
-import randomColorClicked from './signals/randomColorClicked';
 import testClicked from './signals/testClicked';
 import fileClicked from './signals/fileClicked';
+import codeChanged from './signals/codeChanged';
 
 export default (options = {}) => {
   return (module, controller) => {
 
     module.addState({
-      title: 'You can change the url too!',
-      color: '#333',
+      url: null,
+      isLoading: false,
       selectedFileIndex: 0,
       files: [{
         name: 'main.js',
-        content: ''
+        content: 'var react = require(\'react\');\nvar react = require(\'./test.js\');'
       },
       {
         name: 'test.js',
-        content: ''
+        content: 'console.log(\'Haha\')'
       }]
     });
 
     module.addSignals({
-      colorChanged,
-      redirectRoot,
-      randomColorClicked,
+      codeChanged,
       testClicked,
       fileClicked
     });

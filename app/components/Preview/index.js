@@ -3,7 +3,7 @@ import { Decorator as Cerebral, Link } from 'cerebral-view-react';
 import styles from './styles.css';
 
 @Cerebral({
-  url: 'url'
+  url: 'bin.url'
 })
 class Preview extends React.Component {
   static propTypes = {
