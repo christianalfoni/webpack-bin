@@ -1,6 +1,7 @@
 import testClicked from './signals/testClicked';
 import fileClicked from './signals/fileClicked';
 import codeChanged from './signals/codeChanged';
+import mounted from './signals/mounted';
 
 export default (options = {}) => {
   return (module, controller) => {
@@ -11,7 +12,13 @@ export default (options = {}) => {
       selectedFileIndex: 0,
       files: [{
         name: 'main.js',
-        content: 'var react = require(\'react\');\nvar react = require(\'./test.js\');'
+        content: `import React from \'react\';
+import {render} from \'react-dom\';
+
+render((
+  <h1>Hello world</h1>
+), document.querySelector(\'#app\'));
+      `
       },
       {
         name: 'test.js',
@@ -22,7 +29,8 @@ export default (options = {}) => {
     module.addSignals({
       codeChanged,
       testClicked,
-      fileClicked
+      fileClicked,
+      mounted
     });
 
   };

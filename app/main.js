@@ -5,15 +5,13 @@ import Model from 'cerebral-model-baobab';
 import {Container} from 'cerebral-view-react';
 import Devtools from 'cerebral-module-devtools';
 import Http from 'cerebral-module-http';
-import Bin from './modules/Bin';
-import CodeEditor from './components/CodeEditor';
-import Toolbar from './components/Toolbar';
-import Preview from './components/Preview';
+import BinModule from './modules/Bin';
+import Bin from './components/Bin';
 
 const controller = Controller(Model({}));
 
 controller.addModules({
-  bin: Bin(),
+  bin: BinModule(),
 
   http: Http(),
   devtools: Devtools()
@@ -21,10 +19,6 @@ controller.addModules({
 
 ReactDOM.render(
   <Container controller={controller}>
-    <Toolbar/>
-    <div style={{height: 'calc(100vh - 50px)', width: '100%', display: 'flex'}}>
-      <CodeEditor/>
-      <Preview/>
-    </div>
+    <Bin/>
   </Container>,
 document.getElementById('root'));
