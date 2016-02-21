@@ -46,10 +46,8 @@ app.use(function (req, res, next) {
   next();
 });
 
-if (isProduction) {
-  console.log('Setting static to ', path.resolve('public'));
-  app.use(express.static(path.resolve('public')));
-}
+console.log('Setting static to ', path.resolve('public'));
+app.use(express.static(path.resolve('public')));
 
 app.get('/', function(req, res) {
   res.send(fs.readFileSync(path.resolve('index.html')).toString().replace('/build/bundle.js', '/client_build.js'));

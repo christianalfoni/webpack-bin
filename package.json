@@ -20,14 +20,14 @@
   },
   "homepage": "https://github.com/cerebral/cerebral-boilerplate",
   "scripts": {
-    "start": "node configure && node server_build.js",
+    "start": "node server_build.js",
     "dev": "concurrently \"npm run client\" \"npm run server\"",
     "client": "kotatsu serve app/main.js --index index.html --config webpack.config.js --devtool eval-source-map --proxy /api http://www.codebox.dev:4000/api",
     "server": "kotatsu start start.js --source-maps",
     "build": "concurrently \"npm run build:client\" \"npm run build:server\"",
     "build:client": "kotatsu build client app/main.js --config webpack.production.config.js --minify -o public/client_build.js",
     "build:server": "kotatsu build server start.js --minify -o server_build.js",
-    "postinstall": "npm run build"
+    "postinstall": "node configure && npm run build"
   },
   "dependencies": {
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
