@@ -1,5 +1,6 @@
 var express = require('express');
 var webpack = require('webpack');
+var compression = require('compression');
 var app = express();
 var memoryFs = require('./memoryFs');
 var middleware = require('./middleware');
@@ -29,6 +30,7 @@ loadLoaders([
 // Move to own file
 memoryFs.mkdirpSync(path.join("/", "api", "sandbox"));
 
+app.use(compression())
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(function (req, res, next) {
@@ -122,7 +124,16 @@ app.post('/api/sandbox', function (req, res) {
             "presets": ["react", "es2015", "stage-0"]
           }
         }]
-      }
+      },
+      plugins: [
+        new webpack.DefinePlugin({
+          'process.env': {
+            // This has effect on the react lib size
+            'NODE_ENV': JSON.stringify('production'),
+          }
+        }),
+        new webpack.optimize.UglifyJsPlugin()
+      ]
     });
     compiler.inputFileSystem = memoryFs;
     compiler.resolvers.normal.fileSystem = compiler.inputFileSystem;
