@@ -11,6 +11,5 @@ export default [
   function action({state}) {
     state.set('bin.url', String(Date.now()));
   },
-  set('state:/bin.isLoading', false),
   set('state:/bin.hasSaved', false)
 ];

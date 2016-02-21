@@ -6,12 +6,22 @@ import styles from './styles.css';
   url: 'bin.url'
 })
 class Preview extends React.Component {
-  static propTypes = {
-    url: PropTypes.string
-  };
+  constructor(props) {
+    super(props);
+    this.onIframeMessage = this.onIframeMessage.bind(this);
+  }
   componentDidUpdate(prevProps) {
     if (prevProps.url !== this.props.url) {
       this.refs.iframe.src =  location.origin + '/api/sandbox';
+    }
+  }
+  componentDidMount() {
+    window.addEventListener('message', this.onIframeMessage);
+  }
+  onIframeMessage(event) {
+    console.log('Got message');
+    if (event.data.type === 'loaded') {
+      this.props.signals.bin.iframeLoaded();
     }
   }
   render() {

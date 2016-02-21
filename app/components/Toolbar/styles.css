@@ -46,3 +46,10 @@
 .button[disabled]:hover {
   text-decoration: none;
 }
+
+.status {
+  float: left;
+  text-indent: 10px;
+  line-height: 48px;
+  color: rgba(255,255,255,0.5);
+}

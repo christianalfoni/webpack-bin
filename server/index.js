@@ -59,7 +59,7 @@ app.get('/', function(req, res) {
 
 app.get('/api/sandbox/', function (req, res) {
   res.type('html');
-  res.send('<!DOCTYPE html><html><body><div id="app"></div><script src="/api/sandbox/' + req.session.id + '/dist/vendors.js"></script><script src="/api/sandbox/' + req.session.id + '/dist/bundle.js"></script></body></html>');
+  res.send('<!DOCTYPE html><html><head><script>window.addEventListener("load", function () {window.parent.postMessage({type: "loaded"}, location.origin)});</script></head><body><div id="app"></div><script src="/api/sandbox/' + req.session.id + '/dist/vendors.js"></script><script src="/api/sandbox/' + req.session.id + '/dist/bundle.js"></script></body></html>');
 })
 
 app.get('/api/sandbox/*', function (req, res, next) {

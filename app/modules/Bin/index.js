@@ -4,12 +4,14 @@ import codeChanged from './signals/codeChanged';
 import mounted from './signals/mounted';
 import linted from './signals/linted';
 import saveShortcutPressed from './signals/saveShortcutPressed';
+import iframeLoaded from './signals/iframeLoaded';
 
 export default (options = {}) => {
   return (module, controller) => {
 
     module.addState({
       url: null,
+      hasInitialized: false,
       hasSaved: false,
       isLinting: false,
       lastLintedIndex: 0,
@@ -20,15 +22,21 @@ export default (options = {}) => {
         name: 'main.js',
         content: `import React from \'react\';
 import {render} from \'react-dom\';
+import HelloWorld from './HelloWorld';
 
-render((
-  <h1>Hello world</h1>
-), document.querySelector(\'#app\'));
-`
+render(<HelloWorld/>, document.querySelector(\'#app\'));`
       },
       {
-        name: 'test.js',
-        content: 'console.log(\'Haha\')'
+        name: 'HelloWorld.js',
+        content: `import React from \'react\';
+
+function HelloWorld() {
+  return (
+    <h1>Hello World</h1>
+  );
+}
+
+export default HelloWorld;`
       }]
     });
 
@@ -38,7 +46,8 @@ render((
       fileClicked,
       mounted,
       linted,
-      saveShortcutPressed
+      saveShortcutPressed,
+      iframeLoaded
     });
 
   };

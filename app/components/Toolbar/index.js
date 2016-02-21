@@ -7,7 +7,8 @@ import classNames from 'classnames';
   files: 'bin.files',
   selectedFileIndex: 'bin.selectedFileIndex',
   isLoading: 'bin.isLoading',
-  isValid: 'bin.isValid'
+  isValid: 'bin.isValid',
+  hasInitialized: 'bin.hasInitialized'
 })
 class Toolbar extends React.Component {
   static propTypes = {
@@ -29,6 +30,15 @@ class Toolbar extends React.Component {
       );
     })
   }
+  renderStatus() {
+    if (!this.props.hasInitialized && this.props.isLoading) {
+      return 'Initializing Webpack instance...';
+    }
+    if (this.props.isLoading) {
+      return 'Rebundling...';
+    }
+    return 'Bundle is valid';
+  }
   render() {
     const signals = this.props.signals.bin;
 
@@ -38,6 +48,9 @@ class Toolbar extends React.Component {
           {this.renderFiles()}
         </div>
         <div className={styles.column}>
+          <div className={styles.status}>
+            {this.renderStatus()}
+          </div>
           <button
             disabled={this.props.isLoading || !this.props.isValid}
             onClick={() => signals.testClicked()}
