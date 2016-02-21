@@ -30,6 +30,8 @@ loadLoaders([
 // Move to own file
 memoryFs.mkdirpSync(path.join("/", "api", "sandbox"));
 
+setInterval(sessions.clean, 60 * 1000 * 5);
+
 app.use(compression())
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -100,6 +102,7 @@ app.post('/api/sandbox', function (req, res) {
   if (!req.session.compiler) {
     console.log('Creating compiler');
     var compiler = webpack({
+      lazy: true,
       devtool: 'cheap-eval-source-map',
       entry: {
         App: path.join('/', 'api', 'sandbox', req.session.id, 'main.js'),

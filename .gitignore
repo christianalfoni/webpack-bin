@@ -1,3 +1,5 @@
 .kotatsu
 node_modules
 npm-debug.log
+public
+server_build.js
