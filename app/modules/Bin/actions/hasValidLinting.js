@@ -1,6 +1,6 @@
 function hasValidLinting({state, output}) {
   const bin = state.select('bin');
-  if (state.get('isValid') && !state.get('isLinting')) {
+  if (bin.get('isValid') && !bin.get('isLinting')) {
     output.true();
   } else {
     output.false();

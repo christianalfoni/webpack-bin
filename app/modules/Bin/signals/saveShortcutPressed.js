@@ -4,12 +4,17 @@ import testClicked from './testClicked';
 import hasValidLinting from '../actions/hasValidLinting';
 
 export default [
-  hasValidLinting, {
-    true: [
-      ...testClicked
-    ],
-    false: [
-      set('state:/bin.hasSaved', true)
+  when('state:/bin.isLoading'), {
+    isTrue: [],
+    isFalse: [
+      hasValidLinting, {
+        true: [
+          ...testClicked
+        ],
+        false: [
+          set('state:/bin.hasSaved', true)
+        ]
+      }    
     ]
   }
 ];
