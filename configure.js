@@ -15,8 +15,10 @@ var deleteFolderRecursive = function(path) {
   }
 };
 
-deleteFolderRecursive(path.resolve('node_modules', 'babel-core'));
-
-fs.renameSync(path.resolve('node_modules', 'webpack-bin-babel-core'), path.resolve('node_modules', 'babel-core'));
-
-console.log('Renamed BABEL-CORE');
+try {
+  deleteFolderRecursive(path.resolve('node_modules', 'babel-core'));
+  fs.renameSync(path.resolve('node_modules', 'webpack-bin-babel-core'), path.resolve('node_modules', 'babel-core'));
+  console.log('Renamed BABEL-CORE');
+} catch (e) {
+  console.log('Could not rename BABEL-CORE', e.message);
+}

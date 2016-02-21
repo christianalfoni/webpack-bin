@@ -27,7 +27,8 @@
     "build": "concurrently \"npm run build:client\" \"npm run build:server\"",
     "build:client": "kotatsu build client app/main.js --config webpack.production.config.js --minify -o public/client_build.js",
     "build:server": "kotatsu build server start.js --minify -o server_build.js",
-    "postinstall": "npm run build && node configure"
+    "postinstall": "npm run build",
+    "prestart": "node configure"
   },
   "dependencies": {
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
