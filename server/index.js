@@ -57,7 +57,7 @@ app.get('/', function(req, res) {
 
 app.get('/api/sandbox/', function (req, res) {
   res.type('html');
-  res.send('<!DOCTYPE html><html><body><div id="app"></div><script src="/api/sandbox/' + req.session.id + '/dist/bundle.js"></script></body></html>');
+  res.send('<!DOCTYPE html><html><body><div id="app"></div><script src="/api/sandbox/' + req.session.id + '/dist/vendors.js"></script><script src="/api/sandbox/' + req.session.id + '/dist/bundle.js"></script></body></html>');
 })
 
 app.get('/api/sandbox/*', function (req, res, next) {
@@ -101,7 +101,10 @@ app.post('/api/sandbox', function (req, res) {
     console.log('Creating compiler');
     var compiler = webpack({
       devtool: 'cheap-eval-source-map',
-      entry: path.join('/', 'api', 'sandbox', req.session.id, 'main.js'),
+      entry: {
+        App: path.join('/', 'api', 'sandbox', req.session.id, 'main.js'),
+        vendors: ['react', 'react-dom']
+      },
       output: {
         path: path.join('/', 'api', 'sandbox', req.session.id, 'dist'),
         filename: 'bundle.js'
@@ -126,6 +129,7 @@ app.post('/api/sandbox', function (req, res) {
         }]
       },
       plugins: [
+        new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
         new webpack.DefinePlugin({
           'process.env': {
             // This has effect on the react lib size
