@@ -98,7 +98,6 @@ app.post('/api/sandbox', function (req, res) {
   if (!req.session.compiler) {
     console.log('Creating compiler');
     var compiler = webpack({
-      context: '/',
       devtool: 'cheap-eval-source-map',
       entry: path.join('/', 'api', 'sandbox', req.session.id, 'main.js'),
       output: {
@@ -106,7 +105,7 @@ app.post('/api/sandbox', function (req, res) {
         filename: 'bundle.js'
       },
       resolveLoader: {
-        root: path.resolve(__dirname , '..', 'node_modules')
+        root: path.resolve('node_modules')
       },
       resolve: {
         root: path.join('/', 'node_modules')
