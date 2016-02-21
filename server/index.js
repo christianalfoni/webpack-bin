@@ -149,7 +149,12 @@ app.post('/api/sandbox', function (req, res) {
     sessions.update(req.session.id, 'compiler', compiler);
   }
 
-  res.send({});
+  (req.session.compiler || compiler).run(function (err) {
+    if (err) {
+      console.log(err);
+    }
+    res.send({});
+  });
 
 });
 
