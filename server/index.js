@@ -98,8 +98,8 @@ app.post('/api/sandbox', function (req, res) {
     console.log('Creating compiler');
     var compiler = webpack({
       watchOptions: {
-        aggregateTimeout: 300,
-        poll: true
+        aggregateTimeout: 100,
+        poll: 100
       },
       devtool: 'cheap-eval-source-map',
       entry: {
