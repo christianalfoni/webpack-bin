@@ -1,0 +1,193 @@
+@font-face {
+	font-family: 'icomoon';
+	src: url('./icomoon.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.font {
+	font-family: 'icomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.loading {
+	composes: font;
+
+	-webkit-animation: spin 2s infinite linear reverse;
+	animation: spin 2s infinite linear reverse;
+}
+.loading:before {
+	content: "\e00e";
+}
+
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.close {composes: font;}
+.close:before {
+    content: "\e209";
+}
+
+.addAssignment {composes: font;}
+.addAssignment:before {
+	content: "\e013";
+}
+
+.addCourse {composes: font;}
+.addCourse:before {
+	content: "\e06a";
+}
+
+.uploadFile {composes: font;}
+.uploadFile:before {
+	content: "\e100";
+}
+
+.mic {composes: font;}
+.mic:before {
+	content: "\e00f";
+}
+
+.pause {composes: font;}
+.pause:before {
+	content: "\e018";
+}
+
+.eye {composes: font;}
+.eye:before {
+	content: "\e1a8";
+}
+
+.stop {composes: font}
+.stop:before {
+	content: "\e02a";
+}
+
+.play {composes: font;}
+.play:before {
+	content: "\e01b";
+}
+
+.save {composes: font;}
+.save:before {
+	content: "\e085";
+}
+
+.menu {composes: font;}
+.menu:before {
+	content: "\e20e";
+}
+
+.school {composes: font;}
+.school:before {
+	content: "\e259";
+}
+
+.checkbox {composes: font;}
+.checkbox:before {
+	content: "\e25c";
+}
+
+.delete {composes: font;}
+.delete:before {
+	content: "\e287";
+}
+
+.description {composes: font;}
+.description:before {
+	content: "\e288";
+}
+
+.addFile {composes: font;}
+.addFile:before {
+	content: "\e2b0";
+}
+
+.thumbDown {composes: font;}
+.thumbDown:before {
+	content: "\e2ed";
+}
+
+.thumbUp {composes: font;}
+.thumbUp:before {
+	content: "\e2ee";
+}
+
+.user {composes: font;}
+.user:before {
+	content: "\e253";
+}
+
+.scene {composes: font;}
+.scene:before {
+	content: "\e12e";
+}
+
+.assignment {composes: font;}
+.assignment:before {
+	content: "\e272";
+}
+
+.assignmentCompleted {composes: font;}
+.assignmentCompleted:before {
+	content: "\e277";
+}
+
+.light {composes: font; transform: rotate(180deg); display: inline-block;}
+.light:before {
+    content: "\e1bf";
+}
+
+.check {composes: font;}
+.check:before {
+    content: "\e206";
+}
+
+.chevronLeft {composes: font;}
+.chevronLeft:before {
+    content: "\e207";
+}
+
+.chevronRight {composes: font;}
+.chevronRight:before {
+    content: "\e208";
+}
+
+.notification {composes: font;}
+.notification:before {
+    content: "\e24b";
+}
+
+.lock {composes: font;}
+.lock:before {
+    content: "\e2ab";
+}
+
+.search {composes: font;}
+.search:before {
+    content: "\e2ca";
+}
