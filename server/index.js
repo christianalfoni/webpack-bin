@@ -97,7 +97,10 @@ app.post('/api/sandbox', function (req, res) {
   if (!req.session.compiler) {
     console.log('Creating compiler');
     var compiler = webpack({
-      lazy: true,
+      watchOptions: {
+        aggregateTimeout: 300,
+        poll: true
+      },
       devtool: 'cheap-eval-source-map',
       entry: {
         App: path.join('/', 'api', 'sandbox', req.session.id, 'main.js'),
