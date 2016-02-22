@@ -4,6 +4,7 @@ import '!style!css!./lint.css';
 import '!style!css!./../../../node_modules/codemirror/lib/codemirror.css';
 import '!style!css!./CodeEditorStyle.css';
 import 'codemirror/mode/jsx/jsx.js';
+import 'codemirror/mode/css/css.js';
 import 'codemirror/addon/lint/lint.js';
 import codemirrorEsLint from './codemirror-eslint.js';
 import React, { PropTypes } from 'react';
@@ -24,21 +25,19 @@ class CodeEditor extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.selectedFileIndex !== prevProps.selectedFileIndex) {
       this.codemirror.getDoc().setValue(this.props.files[this.props.selectedFileIndex].content);
+      this.codemirror.setOption('mode', this.getMode());
+      this.codemirror.setOption('lint', this.getLinter());
     }
   }
   componentDidMount() {
     this.codemirror = CodeMirror(this.refs.code, {
       value: this.props.files[this.props.selectedFileIndex].content,
-      mode: 'jsx',
+      mode: this.getMode(),
       theme: 'learncode',
       matchTags: {bothTags: true},
       autoCloseTags: true,
       gutters: ['CodeMirror-lint-markers'],
-      lint: true,
-      lint: {
-        getAnnotations: codemirrorEsLint(CodeMirror),
-        onUpdateLinting: this.onUpdateLinting
-      },
+      lint: this.getLinter(),
       lineNumbers: true,
       indentUnit: 2,
       extraKeys: {
@@ -49,6 +48,28 @@ class CodeEditor extends React.Component {
       }
     });
     this.codemirror.on('change', this.onCodeChange);
+  }
+  getMode() {
+    const name = this.props.files[this.props.selectedFileIndex].name;
+    const ext = name.split('.')[name.split('.').length - 1];
+    switch (ext) {
+      case 'js':
+        return 'jsx';
+      case 'css':
+        return 'css';
+      default:
+        return 'jsx';
+    }
+  }
+  getLinter() {
+    if (this.getMode() === 'jsx') {
+      return {
+        getAnnotations: codemirrorEsLint(CodeMirror),
+        onUpdateLinting: this.onUpdateLinting
+      };
+    } else {
+      return false;
+    }
   }
   onUpdateLinting(errors) {
     this.props.signals.bin.linted({

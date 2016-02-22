@@ -35,14 +35,21 @@ render(<HelloWorld/>, document.querySelector(\'#app\'));`
       {
         name: 'HelloWorld.js',
         content: `import React from \'react\';
+import styles from './styles.css';
 
 function HelloWorld() {
   return (
-    <h1>Hello World</h1>
+    <h1 className={styles.header}>Hello World</h1>
   );
 }
 
 export default HelloWorld;`
+      },
+      {
+        name: 'styles.css',
+        content: `.header {
+  color: red;
+}`
       }]
     });
 
