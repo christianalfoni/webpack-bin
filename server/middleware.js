@@ -8,7 +8,7 @@ var mime = require("mime");
 var HASH_REGEXP = /[0-9a-f]{10,}/;
 
 // constructor for the middleware
-module.exports = function(compiler, options) {
+module.exports = function(compiler, options, onFileSystemAdded) {
 	if(!options) options = {};
 	if(typeof options.watchOptions === "undefined") options.watchOptions = {};
 	if(typeof options.watchDelay !== "undefined") {
@@ -31,6 +31,8 @@ module.exports = function(compiler, options) {
 	// store our files in memory
 	var files = {};
 	var fs = compiler.outputFileSystem = new MemoryFileSystem();
+
+	onFileSystemAdded && onFileSystemAdded(fs);
 
 	compiler.plugin("done", function(stats) {
 		// We are now on valid state
@@ -177,6 +179,7 @@ module.exports = function(compiler, options) {
 				}
 
 				// server content
+				console.log('reading file', filename);
 				var content = fs.readFileSync(filename);
 				res.setHeader("Access-Control-Allow-Origin", "*"); // To support XHR, etc.
 				res.setHeader("Content-Type", mime.lookup(filename));
@@ -193,8 +196,10 @@ module.exports = function(compiler, options) {
 
 		// in lazy mode, rebuild on bundle request
 		if(bundleName || (options.lazy && (!options.filename || options.filename.test(filename)))) {
+			console.log('Rebundling');
 			rebuild(passResponse);
 		} else {
+			console.log('Passing through');
 			passResponse();
 		}
 	}
