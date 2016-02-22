@@ -1,4 +1,11 @@
+var path = require('path');
+
 module.exports = {
+  resolve: {
+    alias: {
+      'common': path.join(__dirname, 'app/common')
+    }
+  },
   module: {
     loaders: [{
       test: /\.css?$/,
@@ -14,6 +21,9 @@ module.exports = {
           ["transform-decorators-legacy"]
         ]
       }
+    }, {
+      test: /\.woff$/,
+      loader: 'url?limit=100000'
     }]
   }
 };

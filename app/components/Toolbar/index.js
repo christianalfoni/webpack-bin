@@ -1,14 +1,19 @@
 import React, { PropTypes } from 'react';
 import { Decorator as Cerebral, Link } from 'cerebral-view-react';
 import styles from './styles.css';
+import icons from 'common/icons.css';
 import classNames from 'classnames';
+import AddFile from '../AddFile';
+import ToolbarButton from '../ToolbarButton';
 
 @Cerebral({
   files: 'bin.files',
   selectedFileIndex: 'bin.selectedFileIndex',
   isLoading: 'bin.isLoading',
   isValid: 'bin.isValid',
-  hasInitialized: 'bin.hasInitialized'
+  hasInitialized: 'bin.hasInitialized',
+  showAddFileInput: 'bin.showAddFileInput',
+  newFileName: 'bin.newFileName'
 })
 class Toolbar extends React.Component {
   static propTypes = {
@@ -46,15 +51,26 @@ class Toolbar extends React.Component {
       <div className={styles.wrapper}>
         <div className={styles.column}>
           {this.renderFiles()}
+          <AddFile
+            onAddFileClick={this.props.signals.bin.addFileClicked}
+            onFileNameChange={this.props.signals.bin.addFileNameUpdated}
+            onFileSubmit={this.props.signals.bin.addFileSubmitted}
+            onAddFileAborted={this.props.signals.bin.addFileAborted}
+            showInput={this.props.showAddFileInput}
+            placeholder="Filename..."
+            value={this.props.newFileName}/>
         </div>
         <div className={styles.column}>
           <div className={styles.status}>
             {this.renderStatus()}
           </div>
-          <button
-            disabled={this.props.isLoading || !this.props.isValid}
-            onClick={() => signals.testClicked()}
-            className={styles.button}>Run code</button>
+          <div className={styles.buttonWrapper}>
+            <ToolbarButton
+              title='Run code'
+              icon={icons.play}
+              disabled={this.props.isLoading || !this.props.isValid}
+              onClick={() => signals.testClicked()}/>
+          </div>
         </div>
       </div>
     );

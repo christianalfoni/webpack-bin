@@ -1,0 +1,23 @@
+.button {
+  float: right;
+  background: transparent;
+  border: 0;
+  font-family: Ubuntu, sans-serif;
+  color: #eb1e64;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 13px 30px;
+}
+
+.button:hover {
+  text-decoration: underline;
+}
+
+.button[disabled] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.button[disabled]:hover {
+  text-decoration: none;
+}

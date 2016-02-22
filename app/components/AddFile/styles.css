@@ -1,0 +1,39 @@
+.addFileWrapper {
+  cursor: pointer;
+  height: 100%;
+  margin-right: 10px;
+  float: right;
+  margin-top: 9px;
+}
+
+.addFileWrapper:hover {
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.wrapper {
+  height: 100%;
+  float: right;
+}
+
+.inputWrapper {
+  float: right;
+  padding: 0 10px;
+  line-height: 26px;
+}
+
+.input {
+  border-radius: 3px;
+  margin-top: 9px;
+  padding: 3px 10px;
+  width: 70px;
+  transition: width 0.25 ease-out;
+  background-color: #eee;
+  border: 0;
+  height: 24px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.input:focus {
+  outline: 0;
+}

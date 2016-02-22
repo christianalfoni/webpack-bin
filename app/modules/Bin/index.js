@@ -5,6 +5,10 @@ import mounted from './signals/mounted';
 import linted from './signals/linted';
 import saveShortcutPressed from './signals/saveShortcutPressed';
 import iframeLoaded from './signals/iframeLoaded';
+import addFileAborted from './signals/addFileAborted';
+import addFileClicked from './signals/addFileClicked';
+import addFileNameUpdated from './signals/addFileNameUpdated';
+import addFileSubmitted from './signals/addFileSubmitted';
 
 export default (options = {}) => {
   return (module, controller) => {
@@ -17,6 +21,8 @@ export default (options = {}) => {
       lastLintedIndex: 0,
       isValid: true,
       isLoading: false,
+      showAddFileInput: false,
+      newFileName: '',
       selectedFileIndex: 0,
       files: [{
         name: 'main.js',
@@ -47,7 +53,11 @@ export default HelloWorld;`
       mounted,
       linted,
       saveShortcutPressed,
-      iframeLoaded
+      iframeLoaded,
+      addFileAborted,
+      addFileClicked,
+      addFileNameUpdated,
+      addFileSubmitted
     });
 
   };
