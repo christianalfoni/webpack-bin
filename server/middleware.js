@@ -109,11 +109,12 @@ module.exports = function(compiler, options) {
 		state = true;
 	}
 
-	function rebuild() {
+	function rebuild(cb) {
 		if(state) {
 			state = false;
 			compiler.run(function(err) {
 				if(err) throw err;
+				cb();
 			});
 		} else {
 			forceRebuild = true;
@@ -143,53 +144,58 @@ module.exports = function(compiler, options) {
 	}
 
 	// The middleware function
-	function webpackDevMiddleware(req, res, next) {
-		var filename = getFilenameFromUrl(req.url);
+	function webpackDevMiddleware(req, res, next, bundleName) {
+		var filename = bundleName || getFilenameFromUrl(req.url);
 		if (filename === false) return next();
 
-		// in lazy mode, rebuild on bundle request
-		if(options.lazy && (!options.filename || options.filename.test(filename)))
-			rebuild();
-
-		if(HASH_REGEXP.test(filename)) {
-			try {
-				if(fs.statSync(filename).isFile()) {
-					processRequest();
-					return;
+		var passResponse = function () {
+			if(HASH_REGEXP.test(filename)) {
+				try {
+					if(fs.statSync(filename).isFile()) {
+						processRequest();
+						return;
+					}
+				} catch(e) {}
+			}
+			// delay the request until we have a vaild bundle
+			ready(processRequest, req);
+			function processRequest() {
+				try {
+					var stat = fs.statSync(filename);
+					if(!stat.isFile()) {
+						if (stat.isDirectory()) {
+							filename = pathJoin(filename, "index.html");
+							stat = fs.statSync(filename);
+							if(!stat.isFile()) throw "next";
+						} else {
+							throw "next";
+						}
+					}
+				} catch(e) {
+					console.log(e, filename);
+					return next();
 				}
-			} catch(e) {}
-		}
-		// delay the request until we have a vaild bundle
-		ready(processRequest, req);
-		function processRequest() {
-			try {
-				var stat = fs.statSync(filename);
-				if(!stat.isFile()) {
-					if (stat.isDirectory()) {
-						filename = pathJoin(filename, "index.html");
-						stat = fs.statSync(filename);
-						if(!stat.isFile()) throw "next";
-					} else {
-						throw "next";
+
+				// server content
+				var content = fs.readFileSync(filename);
+				res.setHeader("Access-Control-Allow-Origin", "*"); // To support XHR, etc.
+				res.setHeader("Content-Type", mime.lookup(filename));
+				res.setHeader("Content-Length", content.length);
+				if(options.headers) {
+					for(var name in options.headers) {
+						res.setHeader(name, options.headers[name]);
 					}
 				}
-			} catch(e) {
-				console.log(e, filename);
-				return next();
+				if (res.send) res.send(content);
+				else res.end(content);
 			}
+		}
 
-			// server content
-			var content = fs.readFileSync(filename);
-			res.setHeader("Access-Control-Allow-Origin", "*"); // To support XHR, etc.
-			res.setHeader("Content-Type", mime.lookup(filename));
-			res.setHeader("Content-Length", content.length);
-			if(options.headers) {
-				for(var name in options.headers) {
-					res.setHeader(name, options.headers[name]);
-				}
-			}
-			if (res.send) res.send(content);
-			else res.end(content);
+		// in lazy mode, rebuild on bundle request
+		if(bundleName || (options.lazy && (!options.filename || options.filename.test(filename)))) {
+			rebuild(passResponse);
+		} else {
+			passResponse();
 		}
 	}
 

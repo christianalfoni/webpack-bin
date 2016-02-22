@@ -63,27 +63,11 @@ app.get('/api/sandbox/', function (req, res) {
 })
 
 app.get('/api/sandbox/*', function (req, res, next) {
-  if (!middlewares[req.session.id]) {
-    console.log('creating middleware');
-    middlewares[req.session.id] = middleware(req.session.compiler, {
-      publicPath: path.join('/', 'api', 'sandbox', req.session.id, 'dist'),
-      stats: {
-        colors: true,
-        hash: false,
-        timings: true,
-        chunks: true,
-        chunkModules: false,
-        modules: false
-      }
-    });
-    middlewares[req.session.id](req, res, next);
-  } else {
-    console.log('Compiling');
-    middlewares[req.session.id](req, res, next);
-  }
+  console.log('Compiling');
+  middlewares[req.session.id](req, res, next);
 })
 
-app.post('/api/sandbox', function (req, res) {
+app.post('/api/sandbox', function (req, res, next) {
 
   if (!req.session.compiler) {
     memoryFs.mkdirpSync(path.join("/", "api", "sandbox", req.session.id));
@@ -97,10 +81,6 @@ app.post('/api/sandbox', function (req, res) {
   if (!req.session.compiler) {
     console.log('Creating compiler');
     var compiler = webpack({
-      watchOptions: {
-        aggregateTimeout: 100,
-        poll: 100
-      },
       devtool: 'cheap-eval-source-map',
       entry: {
         App: path.join('/', 'api', 'sandbox', req.session.id, 'main.js'),
@@ -145,14 +125,23 @@ app.post('/api/sandbox', function (req, res) {
     compiler.resolvers.context.fileSystem = compiler.inputFileSystem;
     // compiler.resolvers.loader.fileSystem = compiler.inputFileSystem;
     sessions.update(req.session.id, 'compiler', compiler);
+    middlewares[req.session.id] = middleware(compiler, {
+      lazy: true,
+      filename: /bundle.js/,
+      publicPath: path.join('/', 'api', 'sandbox', req.session.id, 'dist'),
+      stats: {
+        colors: true,
+        hash: false,
+        timings: true,
+        chunks: true,
+        chunkModules: false,
+        modules: false
+      }
+    });
+    middlewares[req.session.id](req, res, next, path.join('/', 'api', 'sandbox', req.session.id, 'dist', 'bundle.js'))
+  } else {
+      res.send({});
   }
-
-  (req.session.compiler || compiler).run(function (err) {
-    if (err) {
-      console.log(err);
-    }
-    res.send({});
-  });
 
 });
 
