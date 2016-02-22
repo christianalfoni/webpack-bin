@@ -79,12 +79,7 @@ app.get('/api/sandbox/*', function (req, res, next) {
     middlewares[req.session.id](req, res, next);
   } else {
     console.log('Compiling');
-    req.session.compiler.run(function (err) {
-      if (err) {
-        console.log(err);
-      }
-      middlewares[req.session.id](req, res, next);
-    });
+    middlewares[req.session.id](req, res, next);
   }
 })
 
