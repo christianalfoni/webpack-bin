@@ -46,6 +46,9 @@ export default (options = {}) => {
       }, {
         name: 'underscore',
         version: '1.8.3'
+      }, {
+        name: 'baobab',
+        version: '2.3.3'
       }],
       files: [{
         name: 'main.js',
