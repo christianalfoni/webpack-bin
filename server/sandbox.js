@@ -53,17 +53,15 @@ module.exports = {
 
     memoryFs.updateSessionFiles(req.session, req.body.files);
 
-    const shouldCompile = (
-      !req.session.middleware ||
-      (
-        req.session.middleware &&
-        utils.hasPackages(req) &&
-        req.session.vendorsBundle !== utils.getVendorsBundleName(req.body.packages)
-      )
-    );
-    console.log('should compile?', shouldCompile);
+    if (req.session.middleware && req.session.vendorsBundle !== utils.getVendorsBundleName(req.body.packages)) {
+      console.log('Removing middleware from session');
+      sessions.removeMiddleware(req);
+    }
+
+    sessions.updateVendorsBundle(req);
+
     if (
-      shouldCompile &&
+      !req.session.middleware &&
       utils.hasPackages(req) &&
       !memoryFs.hasVendorsBundle(req.body.packages)
     ) {
@@ -82,18 +80,15 @@ module.exports = {
               .then(db.uploadVendorsBundle);
           }
         })
-        .then(sessions.updateVendorsBundle(req.session))
         .then(sessionBundler.create(req.session))
         .then(sessions.createBundleMiddleware(req, res, next))
         .catch(utils.logError);
 
     } else if (
-      shouldCompile &&
+      !req.session.middleware &&
       utils.hasPackages(req) &&
       memoryFs.hasVendorsBundle(req.body.packages)
     ) {
-
-      sessions.updateVendorsBundle(req.session)(utils.getVendorsBundleName(req.body.packages));
 
       db.getVendorsBundleEntries(req.body.packages)
         .then(sessionBundler.create(req.session))

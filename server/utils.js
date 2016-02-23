@@ -3,7 +3,7 @@ module.exports = {
     return process.env.NODE_ENV === 'production';
   },
   hasPackages: function (req) {
-    return req.body.packages && Object.keys(req.body.packages).length;
+    return Boolean(req.body.packages && Object.keys(req.body.packages).length);
   },
   log: function (message) {
     return function () {
