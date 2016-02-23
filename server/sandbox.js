@@ -96,6 +96,16 @@ module.exports = {
     ) {
 
       db.getVendorsBundleEntries(req.body.packages)
+        .then(function (bundle) {
+          if (bundle) {
+            return bundle;
+          } else {
+            return npm.loadPackages(req.body.packages)
+              .then(vendorsBundler.compile)
+              .then(npm.removePackages)
+              .then(db.uploadVendorsBundle);
+          }
+        })
         .then(sessionBundler.create(req.session))
         .then(sessions.createBundleMiddleware(req, res, next))
         .catch(utils.logError);
