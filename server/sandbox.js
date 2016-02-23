@@ -60,6 +60,10 @@ module.exports = {
 
     sessions.updateVendorsBundle(req);
 
+    console.log('Requested vendors: ', req.body.packages);
+    console.log('Middleware: ', Boolean(req.session.middleware));
+    console.log('Vendors: ', req.session.vendorsBundle);
+
     if (
       !req.session.middleware &&
       utils.hasPackages(req) &&
