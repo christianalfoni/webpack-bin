@@ -1,0 +1,54 @@
+.wrapper {
+  height: 100%;
+  float: left;
+  position: relative;
+}
+
+.arrowBox {
+  position: absolute;
+  top: 50px;
+  margin-left: -25px;
+  z-index: 5;
+}
+
+.arrowBox:before, .arrowBox:after {
+  content: " ";
+  bottom: 100%;
+  left: 65px;
+  border: 10px solid rgba(0, 0, 0, 0);
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  margin-left: -30px;
+}
+
+.arrowBox:before {
+  border-bottom-color: #333;
+}
+
+.arrowBox:after {
+  border-bottom-color: #28374c;
+}
+
+.arrowBoxRight {
+  composes: arrowBox;
+  right: -15px;
+}
+
+.arrowBoxRight:before, .arrowBoxRight:after {
+  right: 26px;
+  margin-left: 0;
+  left: auto;
+}
+
+.contentBox {
+  width: auto;
+  border-radius: 2px;
+  background-color: #28374c;
+  padding: 8px 0;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.24) 0px 1px 4px;
+  font-family: Ubuntu, sans-serif;
+  min-height: 10px;
+  min-width: 100px;
+}

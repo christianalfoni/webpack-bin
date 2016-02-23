@@ -5,6 +5,8 @@ import icons from 'common/icons.css';
 import classNames from 'classnames';
 import AddFile from '../AddFile';
 import ToolbarButton from '../ToolbarButton';
+import ToolbarButtonPopover from '../ToolbarButtonPopover';
+import NpmPackage from '../NpmPackage';
 
 @Cerebral({
   files: 'bin.files',
@@ -13,13 +15,20 @@ import ToolbarButton from '../ToolbarButton';
   isValid: 'bin.isValid',
   hasInitialized: 'bin.hasInitialized',
   showAddFileInput: 'bin.showAddFileInput',
-  newFileName: 'bin.newFileName'
+  newFileName: 'bin.newFileName',
+  npmPackages: 'bin.npmPackages',
+  showPackagesSelector: 'bin.showPackagesSelector',
+  showInfo: 'bin.showInfo'
 })
 class Toolbar extends React.Component {
   static propTypes = {
     files: PropTypes.array
   };
-
+  renderNpmPackages() {
+    return this.props.npmPackages.map((npmPackage, index) => {
+      return <NpmPackage key={index} package={npmPackage}/>
+    });
+  }
   renderFiles() {
     return this.props.files.map((file, index) => {
       const active = index === this.props.selectedFileIndex;
@@ -34,15 +43,6 @@ class Toolbar extends React.Component {
         </div>
       );
     })
-  }
-  renderStatus() {
-    if (!this.props.hasInitialized && this.props.isLoading) {
-      return 'Initializing Webpack instance...';
-    }
-    if (this.props.isLoading) {
-      return 'Rebundling...';
-    }
-    return 'Bundle is valid';
   }
   render() {
     const signals = this.props.signals.bin;
@@ -61,9 +61,6 @@ class Toolbar extends React.Component {
             value={this.props.newFileName}/>
         </div>
         <div className={styles.column}>
-          <div className={styles.status}>
-            {this.renderStatus()}
-          </div>
           <div className={styles.buttonWrapper}>
             <ToolbarButton
               title='Run code'
@@ -71,6 +68,41 @@ class Toolbar extends React.Component {
               disabled={this.props.isLoading || !this.props.isValid}
               onClick={() => signals.testClicked()}/>
           </div>
+          <ToolbarButtonPopover
+            title="Configure packages"
+            className={styles.packagesButton}
+            icon={icons.menu}
+            onClick={() => this.props.signals.bin.toggleShowPackagesSelector()}
+            show={this.props.showPackagesSelector}>
+            {this.renderNpmPackages()}
+          </ToolbarButtonPopover>
+          <ToolbarButtonPopover
+            title="Info"
+            className={styles.packagesButton}
+            icon={icons.help}
+            onClick={() => this.props.signals.bin.toggleShowInfo()}
+            show={this.props.showInfo}>
+            <div className={styles.info}>
+              <h3>What is this project?</h3>
+              <p>
+                WebpackBin is in ALPHA and will allow you to load in any NPM
+                package and webpack loaders to play around with. It has super
+                optimized handling of packages to give the best experience.
+              </p>
+              <h3>How it works</h3>
+              <p>
+                When you configure a package bundle that is already in use
+                it will be delivered directly to you an cached in the browser.
+                The Webpack instance on the server will only handle your little
+                project.
+              </p>
+              <p>
+                A new configured package bundle will be fetched from NPM and
+                an optimized version is cached in the database for later use.
+              </p>
+            </div>
+          </ToolbarButtonPopover>
+          <div className={styles.logo}/>
         </div>
       </div>
     );

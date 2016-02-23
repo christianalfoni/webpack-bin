@@ -28,6 +28,11 @@ class CodeEditor extends React.Component {
       this.codemirror.setOption('mode', this.getMode());
       this.codemirror.setOption('lint', this.getLinter());
     }
+    if (this.props.isLoading) {
+      this.codemirror.setOption('readOnly', 'nocursor');
+    } else {
+      this.codemirror.setOption('readOnly', false);
+    }
   }
   componentDidMount() {
     this.codemirror = CodeMirror(this.refs.code, {

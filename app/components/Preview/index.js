@@ -17,9 +17,13 @@ class Preview extends React.Component {
   }
   componentDidMount() {
     window.addEventListener('message', this.onIframeMessage);
+    this.refs.iframe.addEventListener('load', () => {
+      this.refs.iframe.contentWindow.document.addEventListener('click', () => {
+        this.props.signals.bin.appClicked();
+      });
+    });
   }
   onIframeMessage(event) {
-    console.log('Got message');
     if (event.data.type === 'loaded') {
       this.props.signals.bin.iframeLoaded();
     }

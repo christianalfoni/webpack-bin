@@ -9,11 +9,21 @@ import addFileAborted from './signals/addFileAborted';
 import addFileClicked from './signals/addFileClicked';
 import addFileNameUpdated from './signals/addFileNameUpdated';
 import addFileSubmitted from './signals/addFileSubmitted';
+import togglePackage from './signals/togglePackage';
+import toggleShowPackagesSelector from './signals/toggleShowPackagesSelector';
+import appClicked from './signals/appClicked';
+import toggleShowInfo from './signals/toggleShowInfo';
+
+import hideSnackbar from './actions/hideSnackbar.js';
 
 export default (options = {}) => {
   return (module, controller) => {
 
     module.addState({
+      snackbar: {
+        text: '',
+        show: false
+      },
       url: null,
       hasInitialized: false,
       hasSaved: false,
@@ -24,36 +34,27 @@ export default (options = {}) => {
       showAddFileInput: false,
       newFileName: '',
       selectedFileIndex: 0,
+      showInfo: false,
+      showPackagesSelector: false,
+      packages: {},
+      npmPackages: [{
+        name: 'react',
+        version: '0.14.7'
+      }, {
+        name: 'react-dom',
+        version: '0.14.7'
+      }, {
+        name: 'underscore',
+        version: '1.8.3'
+      }],
       files: [{
         name: 'main.js',
-        content: `import React from \'react\';
-import {render} from \'react-dom\';
-import HelloWorld from './HelloWorld';
-
-render(<HelloWorld/>, document.querySelector(\'#app\'));`
-      },
-      {
-        name: 'HelloWorld.js',
-        content: `import React from \'react\';
-import styles from './styles.css';
-
-function HelloWorld() {
-  return (
-    <h1 className={styles.header}>Hello World</h1>
-  );
-}
-
-export default HelloWorld;`
-      },
-      {
-        name: 'styles.css',
-        content: `.header {
-  color: red;
-}`
+        content: ``
       }]
     });
 
     module.addSignals({
+      snackbarTimedOut: [hideSnackbar],
       codeChanged,
       testClicked,
       fileClicked,
@@ -64,7 +65,11 @@ export default HelloWorld;`
       addFileAborted,
       addFileClicked,
       addFileNameUpdated,
-      addFileSubmitted
+      addFileSubmitted,
+      togglePackage,
+      toggleShowPackagesSelector,
+      appClicked,
+      toggleShowInfo
     });
 
   };

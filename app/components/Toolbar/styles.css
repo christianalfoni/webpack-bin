@@ -31,6 +31,34 @@
 }
 
 .buttonWrapper {
-  float: right;
+  float: left;
   margin-top: 9px;
+  margin-left: 10px;
+}
+
+.packagesButton {
+  float: left;
+  margin-top: 9px;
+}
+
+.info {
+  width: 300px;
+  padding: 0 20px;
+}
+
+.info h3 {
+  color: rgba(255,255,255, 0.5);
+}
+
+.info p {
+  line-height: 20px;
+}
+
+.logo {
+  margin-top: 4px;
+  float: right;
+  width: 200px;
+  height: 44px;
+  background-image: url('/logo.png');
+  background-size: contain;
 }

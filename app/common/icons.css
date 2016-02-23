@@ -191,3 +191,8 @@
 .search:before {
     content: "\e2ca";
 }
+
+.help {composes: font;}
+.help:before {
+    content: "\e29b";
+}

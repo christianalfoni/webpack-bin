@@ -1,0 +1,19 @@
+.wrapper {
+  height: 30px;
+  line-height: 30px;
+  cursor: pointer;
+  padding: 5px 20px;
+}
+
+.wrapper input {
+  margin: 0;
+  margin-right: 5px;
+}
+
+.wrapper:hover {
+  background: rgba(255,255,255, 0.1);
+}
+
+.wrapper small {
+  color: rgba(255,255,255, 0.5);
+}

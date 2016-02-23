@@ -1,6 +1,9 @@
+var utils = require('./utils.js');
+var path = require('path');
 var sessions = {};
+var middleware = require('./middleware');
 
-module.exports = {
+var sessionsModule = {
   get: function (id) {
     var session = sessions[id];
     if (session) {
@@ -26,5 +29,53 @@ module.exports = {
       return remainingSessions;
     }, {});
     console.log('Cleaned sessions: ' + Object.keys(sessions).length);
+  },
+  middleware: function (req, res, next) {
+    if (req.cookies.codebox && sessionsModule.get(req.cookies.codebox)) {
+      req.session = sessionsModule.get(req.cookies.codebox);
+    } else {
+      var id = String(Date.now());
+      req.session = sessionsModule.set(id);
+      res.cookie('codebox', String(id), {
+        expires: 0,
+        domain: utils.isProduction() ? 'webpackbin.herokuapp.com' : '.codebox.dev',
+        httpOnly: true
+      });
+    }
+    next();
+  },
+  createBundleMiddleware: function (req, res, next) {
+    return function (compiler) {
+      return new Promise(function (resolve, reject) {
+        console.log('Creating bundle middleware');
+        var resolver = function () {
+          resolve();
+          next();
+        };
+        var sessionMiddleware = middleware(compiler, {
+          lazy: true,
+          filename: new RegExp(req.session.id),
+          publicPath: path.join('/', 'api', 'sandbox', req.session.id),
+          stats: {
+            colors: true,
+            hash: false,
+            timings: true,
+            chunks: true,
+            chunkModules: false,
+            modules: false
+          }
+        });
+        sessionsModule.update(req.session.id, 'middleware', sessionMiddleware);
+        sessionMiddleware(req, res, resolver, path.join('/', 'api', 'sandbox', req.session.id, 'webpackbin_bundle.js'));
+      });
+    };
+  },
+  updateVendorsBundle: function (session) {
+    return function (result) {
+      sessions[session.id].vendorsBundle = result.vendorsBundle;
+      return result;
+    }
   }
 };
+
+module.exports = sessionsModule;
