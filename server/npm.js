@@ -1,6 +1,7 @@
 var npmExtractor = require('npm-extractor');
 var memoryFs = require('./memoryFs.js');
 var utils = require('./utils');
+var path = require('path');
 
 module.exports = {
   loadPackages: function (packages) {
@@ -30,5 +31,12 @@ module.exports = {
     .catch(function (err) {
       console.log(err);
     });
+  },
+  removePackages: function (result) {
+    var packagesData = result.packagesData;
+    packagesData.forEach(function (packageData) {
+      memoryFs.fs.rmdirSync(path.join('/', 'node_modules', packageData.name));
+    });
+    return result;
   }
 };

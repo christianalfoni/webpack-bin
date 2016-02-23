@@ -81,6 +81,7 @@ module.exports = {
           } else {
             return npm.loadPackages(req.body.packages)
               .then(vendorsBundler.compile)
+              .then(npm.removePackages)
               .then(db.uploadVendorsBundle);
           }
         })
