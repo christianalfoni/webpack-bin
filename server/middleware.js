@@ -77,7 +77,6 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 		state = false;
 	}
 	function invalidAsyncPlugin(compiler, callback) {
-		console.log('watch running!');
 		invalidPlugin();
 		callback();
 	}

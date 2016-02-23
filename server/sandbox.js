@@ -61,7 +61,7 @@ module.exports = {
         req.session.vendorsBundle !== utils.getVendorsBundleName(req.body.packages)
       )
     );
-
+    console.log('should compile?', shouldCompile);
     if (
       shouldCompile &&
       utils.hasPackages(req) &&
