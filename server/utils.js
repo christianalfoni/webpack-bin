@@ -11,7 +11,8 @@ module.exports = {
     };
   },
   logError: function (err) {
-    console.log(err);
+    console.log(err.message);
+    console.log(err.stack);
   },
   getVendorsBundleName: function (packages) {
     return Object.keys(packages).sort().join('--');

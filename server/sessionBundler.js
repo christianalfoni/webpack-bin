@@ -37,7 +37,7 @@ module.exports = {
 
         }
 
-        console.log(externals);
+        console.log('externals', externals);
 
         var compiler = webpack({
           devtool: 'cheap-eval-source-map',
