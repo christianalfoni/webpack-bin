@@ -16,6 +16,9 @@ module.exports = {
     var bundleName = utils.getVendorsBundleName(packages);
     return db.findOne('bundles', {name: bundleName}, {entries: 1, name: 1})
       .then(function (bundle) {
+        if (!bundle) {
+          return null;
+        }
         return {
           vendorsBundle: bundle.name,
           entries: bundle.entries
