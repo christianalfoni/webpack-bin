@@ -9,13 +9,15 @@ class ToolbarButtonPopover extends React.Component {
   onArrowBoxClick(e) {
     e.stopPropagation();
   }
-  renderBox() {
+  renderPopup() {
     return (
-      <div
-        className={this.props.side === 'right' ? styles.arrowBoxRight : styles.arrowBox}
-        onClick={(e) => this.onArrowBoxClick(e)}>
-        <div className={styles.contentBox}>
-          {this.props.children}
+      <div className={styles.popup}>
+        <div
+          className={this.props.right ? styles.arrowBoxRight : styles.arrowBox}
+          onClick={(e) => this.onArrowBoxClick(e)}>
+          <div className={styles.contentBox}>
+            {this.props.children}
+          </div>
         </div>
       </div>
     );
@@ -28,7 +30,7 @@ class ToolbarButtonPopover extends React.Component {
           icon={this.props.icon}
           title={this.props.title}
           onClick={this.props.onClick}/>
-        {this.props.show ? this.renderBox() : null}
+        {this.props.show ? this.renderPopup() : null}
       </div>
     );
   }

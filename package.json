@@ -52,6 +52,7 @@
     "esprima": "^2.7.2",
     "esprima-fb": "^15001.1001.0-dev-harmony-fb",
     "express": "^4.13.4",
+    "gridfs-stream": "^1.1.1",
     "imports-loader": "^0.6.5",
     "jshint": "^2.9.1",
     "kotatsu": "^0.11.0",
@@ -64,6 +65,7 @@
     "react-dom": "^0.14.7",
     "recursive-readdir": "^1.3.0",
     "source-map-support": "^0.4.0",
+    "string-hash": "^1.1.0",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.7",
     "webpack-bin-babel-core": "https://github.com/christianalfoni/webpack-bin-babel-core.git"

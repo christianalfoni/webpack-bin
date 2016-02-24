@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import AddFile from '../AddFile';
 import ToolbarButton from '../ToolbarButton';
 import ToolbarButtonPopover from '../ToolbarButtonPopover';
-import NpmPackage from '../NpmPackage';
+import Npm from '../Npm';
 
 @Cerebral({
   files: 'bin.files',
@@ -16,7 +16,6 @@ import NpmPackage from '../NpmPackage';
   hasInitialized: 'bin.hasInitialized',
   showAddFileInput: 'bin.showAddFileInput',
   newFileName: 'bin.newFileName',
-  npmPackages: 'bin.npmPackages',
   showPackagesSelector: 'bin.showPackagesSelector',
   showInfo: 'bin.showInfo'
 })
@@ -24,11 +23,6 @@ class Toolbar extends React.Component {
   static propTypes = {
     files: PropTypes.array
   };
-  renderNpmPackages() {
-    return this.props.npmPackages.map((npmPackage, index) => {
-      return <NpmPackage key={index} package={npmPackage}/>
-    });
-  }
   renderFiles() {
     return this.props.files.map((file, index) => {
       const active = index === this.props.selectedFileIndex;
@@ -73,8 +67,9 @@ class Toolbar extends React.Component {
             className={styles.packagesButton}
             icon={icons.menu}
             onClick={() => this.props.signals.bin.toggleShowPackagesSelector()}
-            show={this.props.showPackagesSelector}>
-            {this.renderNpmPackages()}
+            show={this.props.showPackagesSelector}
+            right>
+            <Npm/>
           </ToolbarButtonPopover>
           <ToolbarButtonPopover
             title="Info"

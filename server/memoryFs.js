@@ -18,11 +18,9 @@ module.exports = {
     var vendorsBundleName = utils.getVendorsBundleName(packages);
     return fs.existsSync(path.join('/', 'api', 'sandbox', 'vendors', vendorsBundleName,  '/bundle.js'));
   },
-  writeBundle: function (bundle) {
-    console.log('got bundle', Object.keys(bundle), bundle.name);
+  writeBundleManifest: function (bundle) {
     fs.mkdirpSync(path.join('/', 'api', 'sandbox', 'vendors', bundle.name));
-    fs.writeFileSync(path.join('/', 'api', 'sandbox', 'vendors', bundle.name, 'bundle.js'), bundle.content);
     fs.writeFileSync(path.join('/', 'api', 'sandbox', 'vendors', bundle.name, 'manifest.json'), bundle.manifest);
-    return bundle.name;
+    return bundle;
   }
 };

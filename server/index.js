@@ -15,6 +15,7 @@ var preLoadPackages = require('./preLoadPackages');
 var utils = require('./utils');
 var sandbox = require('./sandbox');
 var database = require('./database');
+var npm = require('./npm');
 
 preLoadPackages([
   'process',
@@ -43,11 +44,11 @@ app.get('/', function(req, res) {
     path.resolve('index.html')).toString().replace('/build/bundle.js', '/client_build.js')
   );
 });
-
 app.get('/api/sandbox/', sandbox.getIndex);
-
 app.get('/api/sandbox/*', sandbox.getFile)
-
 app.post('/api/sandbox', sandbox.updateSandbox);
+
+app.get('/api/packages/:packageName', npm.getPackageFromRegistry);
+app.get('/api/bundles', database.searchBundles);
 
 module.exports = app;

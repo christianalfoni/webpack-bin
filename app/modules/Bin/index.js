@@ -37,22 +37,9 @@ export default (options = {}) => {
       showInfo: false,
       showPackagesSelector: false,
       packages: {},
-      npmPackages: [{
-        name: 'react',
-        version: '0.14.7'
-      }, {
-        name: 'react-dom',
-        version: '0.14.7'
-      }, {
-        name: 'underscore',
-        version: '1.8.3'
-      }, {
-        name: 'baobab',
-        version: '2.3.3'
-      }],
       files: [{
         name: 'main.js',
-        content: ``
+        content: ''
       }]
     });
 

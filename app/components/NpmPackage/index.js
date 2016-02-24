@@ -7,13 +7,17 @@ import styles from './styles.css';
 })
 class NpmPackage extends React.Component {
   isActive() {
-    return this.props.packages[this.props.package.name] === this.props.package.version;
+    return this.props.packages[this.props.name] === this.props.version;
   }
   render() {
     return (
-      <div className={styles.wrapper} onClick={() => this.props.signals.bin.togglePackage({package: this.props.package})}>
+      <div className={styles.wrapper} onClick={() => {
+        this.props.signals.bin.togglePackage({
+          name: this.props.name, version: this.props.version
+        });
+      }}>
         <input type="checkbox" checked={this.isActive()} readOnly/>
-        {this.props.package.name} <small>{this.props.package.version}</small>
+        {this.props.name} <small>{this.props.version}</small>
       </div>
     );
   }

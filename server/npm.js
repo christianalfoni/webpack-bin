@@ -2,6 +2,7 @@ var npmExtractor = require('npm-extractor');
 var memoryFs = require('./memoryFs.js');
 var utils = require('./utils');
 var path = require('path');
+var request = require('request');
 
 module.exports = {
   loadPackages: function (packages) {
@@ -23,20 +24,44 @@ module.exports = {
     }))
     .then(function (packagesData) {
       console.log('Loaded packages into memory');
+      var entries = packagesData.reduce(function (entries, packageData) {
+        entries[packageData.name] = '.' + path.resolve('/', 'node_modules', packageData.name, packageData.main || 'index.js');
+        return entries;
+      }, {});
       return {
-        packages: packages,
-        packagesData: packagesData
+        name: utils.getVendorsBundleName(packages),
+        entries: entries,
+        packages: packages
       };
     })
     .catch(function (err) {
       console.log(err);
     });
   },
-  removePackages: function (result) {
-    var packagesData = result.packagesData;
-    packagesData.forEach(function (packageData) {
-      memoryFs.fs.rmdirSync(path.join('/', 'node_modules', packageData.name));
+  removePackages: function (bundle) {
+    console.log('Removing vendor packages');
+    Object.keys(bundle.entries).forEach(function (entry) {
+      memoryFs.fs.rmdirSync(path.join('/', 'node_modules', entry));
     });
-    return result;
+    return bundle;
+  },
+  getPackageFromRegistry: function (req, res) {
+    var nameSplit = req.params.packageName.split('@');
+    var name = nameSplit[0];
+    var version = nameSplit[1];
+    request('http://registry.npmjs.org/' + name, function (err, response, body) {
+      if (err || response.statusCode < 200  || response.statusCode >= 300) {
+        return res.sendStatus(404);
+      }
+      var package = JSON.parse(body);
+      var validVersion = !version || version in package.versions;
+      if (!validVersion) {
+        return res.sendStatus(404);
+      }
+      res.send({
+        name: package.name,
+        version: version || utils.getLatestNpmVersion(package.versions)
+      });
+    });
   }
 };

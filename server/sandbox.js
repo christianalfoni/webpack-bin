@@ -19,7 +19,7 @@ var createIndex = function (req) {
     ' </head>',
     ' <body>',
     '   <div id="app"></div>',
-    req.session.vendorsBundle ? '   <script src="/api/sandbox/vendors/' + req.session.vendorsBundle + '/bundle.js" defer></script>' : '',
+    req.session.vendorsBundleName ? '   <script src="/api/sandbox/vendors/' + req.session.vendorsBundleName + '/bundle.js" defer></script>' : '',
     '   <script src="/api/sandbox/webpackbin_bundle.js" defer></script>',
     ' </body>',
     '</html>'
@@ -53,7 +53,7 @@ module.exports = {
 
     memoryFs.updateSessionFiles(req.session, req.body.files);
 
-    if (req.session.middleware && req.session.vendorsBundle !== utils.getVendorsBundleName(req.body.packages)) {
+    if (req.session.middleware && req.session.vendorsBundleName !== utils.getVendorsBundleName(req.body.packages)) {
       console.log('Removing middleware from session');
       sessions.removeMiddleware(req);
     }
@@ -62,25 +62,23 @@ module.exports = {
 
     console.log('Requested vendors: ', req.body.packages);
     console.log('Middleware: ', Boolean(req.session.middleware));
-    console.log('Vendors: ', req.session.vendorsBundle);
+    console.log('Vendors: ', req.session.vendorsBundleName);
 
     if (
       !req.session.middleware &&
       utils.hasPackages(req) &&
       !memoryFs.hasVendorsBundle(req.body.packages)
     ) {
-
-      return db.getVendorsBundle(req.body.packages)
+      console.log('No vendors in memory');
+      return db.getVendorsBundle(utils.getVendorsBundleName(req.body.packages))
         .then(function (bundle) {
           if (bundle) {
-            memoryFs.writeBundle(bundle);
-            return {
-              vendorsBundle: bundle.name,
-              entries: bundle.entries
-            };
+            memoryFs.writeBundleManifest(bundle);
+            return db.loadVendorsBundle(bundle);
           } else {
             return npm.loadPackages(req.body.packages)
               .then(vendorsBundler.compile)
+              .then(db.saveVendorsBundle)
               .then(npm.removePackages)
               .then(db.uploadVendorsBundle);
           }
@@ -94,14 +92,16 @@ module.exports = {
       utils.hasPackages(req) &&
       memoryFs.hasVendorsBundle(req.body.packages)
     ) {
-
-      db.getVendorsBundleEntries(req.body.packages)
+      console.log('Vendors in memory');
+      db.getVendorsBundleEntries(utils.getVendorsBundleName(req.body.packages))
         .then(function (bundle) {
+          console.log('Got the bundle in DB?', Boolean(bundle));
           if (bundle) {
             return bundle;
           } else {
             return npm.loadPackages(req.body.packages)
               .then(vendorsBundler.compile)
+              .then(db.saveVendorsBundle)
               .then(npm.removePackages)
               .then(db.uploadVendorsBundle);
           }

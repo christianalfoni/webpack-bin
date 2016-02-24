@@ -7,11 +7,13 @@ import Devtools from 'cerebral-module-devtools';
 import Http from 'cerebral-module-http';
 import BinModule from './modules/Bin';
 import Bin from './components/Bin';
+import NpmModule from './modules/Npm';
 
 const controller = Controller(Model({}));
 
 controller.addModules({
   bin: BinModule(),
+  npm: NpmModule(),
 
   http: Http(),
   devtools: Devtools()

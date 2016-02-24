@@ -4,6 +4,17 @@
   position: relative;
 }
 
+.wrapperRight {
+  composes: wrapper;
+  float: right;
+}
+
+.popup {
+  position: relative;
+  left: 0;
+  width: 42px;
+}
+
 .arrowBox {
   position: absolute;
   top: 50px;

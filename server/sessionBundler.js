@@ -5,11 +5,11 @@ var utils = require('./utils');
 
 module.exports = {
   create: function (session) {
-    return function (result) {
+    return function (bundle) {
       return new Promise(function (resolve, reject) {
 
-        var vendorsBundleName = result && result.vendorsBundle;
-        var entries = result && result.entries;
+        var vendorsBundleName = bundle && bundle.name;
+        var entries = bundle && bundle.entries;
         var externals = null;
         var plugins = [
           new webpack.DefinePlugin({
@@ -37,6 +37,8 @@ module.exports = {
 
         }
 
+        console.log('Creating session compiler');
+        console.log('Vendors bundle name', vendorsBundleName);
         console.log('externals', externals);
 
         var compiler = webpack({
@@ -75,7 +77,7 @@ module.exports = {
         compiler.resolvers.normal.fileSystem = memoryFs.fs;
         compiler.resolvers.context.fileSystem = memoryFs.fs;
 
-        console.log('Bundler created');
+        console.log('Session bundler created');
 
         resolve(compiler);
       });

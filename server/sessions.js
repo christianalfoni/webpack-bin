@@ -71,7 +71,7 @@ var sessionsModule = {
     };
   },
   updateVendorsBundle: function (req) {
-    sessions[req.session.id].vendorsBundle = req.body.packages ? utils.getVendorsBundleName(req.body.packages) : null;
+    sessions[req.session.id].vendorsBundleName = req.body.packages ? utils.getVendorsBundleName(req.body.packages) : null;
   },
   removeMiddleware: function (req) {
     delete sessions[req.session.id].middleware;
