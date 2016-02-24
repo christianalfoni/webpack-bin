@@ -6,6 +6,12 @@ var recursive = require('recursive-readdir');
 var loadedDeps = [];
 
 var preLoadPackage = function (name) {
+  
+  // fsevents is MAC specific
+  if (name === 'fsevents') {
+    return;
+  }
+
   if (loadedDeps.indexOf(name) >= 0) {
     return;
   }
