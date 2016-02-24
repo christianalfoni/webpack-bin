@@ -18,16 +18,16 @@ var database = require('./database');
 var npm = require('./npm');
 
 preLoadPackages([
+  // Core node
+  'process',
+  'fsevents',
+  
   // Webpack
   'webpack',
   'node-pre-gyp',
   'nopt',
   'rc',
   'tar-pack',
-  'fsevents',
-
-  // Core node
-  'process',
 
   // Loaders
   'babel-loader',
