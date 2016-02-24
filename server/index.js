@@ -20,8 +20,7 @@ var npm = require('./npm');
 preLoadPackages([
   // Core node
   'process',
-  'fsevents',
-  
+
   // Webpack
   'webpack',
   'node-pre-gyp',
