@@ -13,6 +13,7 @@ import togglePackage from './signals/togglePackage';
 import toggleShowPackagesSelector from './signals/toggleShowPackagesSelector';
 import appClicked from './signals/appClicked';
 import toggleShowInfo from './signals/toggleShowInfo';
+import stillNotLoaded from './signals/stillNotLoaded';
 
 import hideSnackbar from './actions/hideSnackbar.js';
 
@@ -31,6 +32,7 @@ export default (options = {}) => {
       lastLintedIndex: 0,
       isValid: true,
       isLoading: false,
+      isLoadingLong: false,
       showAddFileInput: false,
       newFileName: '',
       selectedFileIndex: 0,
@@ -59,7 +61,8 @@ export default (options = {}) => {
       togglePackage,
       toggleShowPackagesSelector,
       appClicked,
-      toggleShowInfo
+      toggleShowInfo,
+      stillNotLoaded
     });
 
   };

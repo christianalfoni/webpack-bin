@@ -6,7 +6,9 @@ import CodeEditor from '../CodeEditor';
 import Preview from '../Preview';
 
 @Cerebral({
-  snackbar: 'bin.snackbar'
+  snackbar: 'bin.snackbar',
+  isLoading: 'bin.isLoading',
+  isLoadingLong: 'bin.isLoadingLong'
 })
 class Bin extends React.Component {
   componentDidMount() {
@@ -19,6 +21,7 @@ class Bin extends React.Component {
     });
   }
   componentDidUpdate(prevProps) {
+    this.setLoadingTimer(prevProps.isLoading);
     if (!prevProps.snackbar.show && this.props.snackbar.show) {
       this.setSnackbarTimeout();
     }
@@ -37,6 +40,15 @@ class Bin extends React.Component {
       }
     }
   }
+  setLoadingTimer(wasLoading) {
+    if (!wasLoading && this.props.isLoading) {
+      this.timeout = setTimeout(() => {
+        this.props.signals.bin.stillNotLoaded();
+      }, 1000);
+    } else if (wasLoading && !this.props.isLoading) {
+      clearTimeout(this.timeout);
+    }
+  }
   setSnackbarTimeout() {
     this.snackbarTimeout = setTimeout(() => this.props.signals.snackbarTimedOut({}, {isRecorded: true}), 2000);
   }
@@ -44,7 +56,7 @@ class Bin extends React.Component {
     return (
       <div onClick={() => this.props.signals.bin.appClicked()}>
         <Toolbar/>
-        <div style={{height: 'calc(100vh - 50px)', width: '100%', display: 'flex'}}>
+        <div className={this.props.isLoadingLong ? styles.wrapperFaded : styles.wrapper}>
           <CodeEditor/>
           <Preview/>
         </div>

@@ -15,5 +15,6 @@ export default [
     state.set('bin.url', String(Date.now()));
   },
   set('state:/bin.hasSaved', false),
+  set('state:/bin.isLoadingLong', false),
   hideSnackbar
 ];
