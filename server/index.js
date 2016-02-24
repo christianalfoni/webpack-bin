@@ -18,7 +18,17 @@ var database = require('./database');
 var npm = require('./npm');
 
 preLoadPackages([
+  // Webpack
+  'webpack',
+  'node-pre-gyp',
+  'nopt',
+  'rc',
+  'tar-pack',
+
+  // Core node
   'process',
+
+  // Loaders
   'babel-loader',
   'style-loader',
   'css-loader'
