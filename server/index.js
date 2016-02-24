@@ -24,6 +24,7 @@ preLoadPackages([
   'nopt',
   'rc',
   'tar-pack',
+  'fsevents',
 
   // Core node
   'process',
