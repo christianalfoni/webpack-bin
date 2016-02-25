@@ -32,6 +32,7 @@ module.exports = {
     res.send(createIndex(req));
   },
   getFile: function (req, res, next) {
+    console.log('requesting', req.url);
     if (/webpackbin_bundle\.js/.test(req.url)) {
       req.url = req.url.replace('webpackbin_bundle.js', req.session.id + '/webpackbin_bundle.js');
       req.session.middleware(req, res, next);
