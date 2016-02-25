@@ -44,6 +44,12 @@ database.connect(utils.isProduction() ? process.env.MONGOHQ_URL : 'mongodb://loc
   .catch(utils.log('Could not connect to database'));
 
 // Init middleware
+app.use(function (req, res, next) {
+  res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+  res.setHeader('Expires', '-1');
+  res.setHeader('Pragma', 'no-cache');
+  next();
+})
 app.use(compression())
 app.use(cookieParser());
 app.use(bodyParser.json());

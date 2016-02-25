@@ -22,6 +22,7 @@ module.exports = {
       })
   },
   updateBin: function (req) {
+    console.log('Updating BIN', req.session.currentBin);
     if (req.session.currentBin.isOwner) {
       return db.update('bins', {
         id: req.session.currentBin.id
@@ -43,16 +44,16 @@ module.exports = {
       return db.findOne('bins', {
         id: req.session.currentBin.id
       })
-      .then(function (sandbox) {
-        var sandbox = {
+      .then(function (currentBin) {
+        var bin = {
           id: shortid.generate(),
           author: req.session.id,
-          packages: sandbox.packages,
-          files: sandbox.files
-        }
-        return db.insert('bins', sandbox)
+          packages: req.body.packages,
+          files: req.body.files
+        };
+        return db.insert('bins', bin)
           .then(function () {
-            return sandbox;
+            return bin;
           });
       });
     }
