@@ -31,7 +31,7 @@ class CodeEditor extends React.Component {
       this.codemirror.setOption('lint', this.getLinter());
     }
     if (this.props.isLoadingBin || this.props.isRunning) {
-      this.codemirror.setOption('readOnly', 'nocursor');
+      this.codemirror.setOption('readOnly', true);
     } else {
       this.codemirror.setOption('readOnly', false);
     }
