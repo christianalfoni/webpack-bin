@@ -42,7 +42,7 @@ module.exports = {
         console.log('externals', externals);
 
         var compiler = webpack({
-          devtool: 'eval',
+          devtool: 'cheap-module-eval-source-map',
           entry: {
             App: path.join('/', 'api', 'sandbox', session.id, 'main.js')
           },
