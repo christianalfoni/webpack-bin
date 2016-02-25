@@ -34,6 +34,9 @@ module.exports = {
   getFile: function (req, res, next) {
     console.log('requesting', req.url);
     if (/webpackbin_bundle\.js/.test(req.url)) {
+      res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+      res.setHeader('Expires', '-1');
+      res.setHeader('Pragma', 'no-cache');
       req.url = req.url.replace('webpackbin_bundle.js', req.session.id + '/webpackbin_bundle.js');
       req.session.middleware(req, res, next);
       return;
