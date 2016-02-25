@@ -1,9 +1,9 @@
 function shouldSave({input, state, output}) {
   const bin = state.select('bin');
   if (
-    bin.get('hasSaved') &&
+    bin.get('hasTriedToRun') &&
     bin.get('isValid') &&
-    bin.get('selectedFileIndex') === bin.get('lastLintedIndex')
+    bin.get('selectedFileIndex') === bin.get('lastLintedFileIndex')
   ) {
     output.true();
   } else {

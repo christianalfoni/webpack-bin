@@ -3,7 +3,7 @@ import {Decorator as Cerebral} from 'cerebral-view-react';
 import styles from './styles.css';
 
 @Cerebral({
-  packages: 'bin.packages'
+  packages: 'bin.currentBin.packages'
 })
 class NpmPackage extends React.Component {
   isActive() {

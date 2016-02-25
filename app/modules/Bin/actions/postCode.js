@@ -1,7 +1,7 @@
 function postCode({state, input, output, services}) {
   services.http.post('/api/sandbox', {
-    packages: state.get('bin.packages'),
-    files: state.get('bin.files')
+    packages: state.get('bin.currentBin.packages'),
+    files: state.get('bin.currentBin.files')
   })
   .then(output.success)
   .catch(output.error);

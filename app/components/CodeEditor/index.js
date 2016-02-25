@@ -14,7 +14,9 @@ import styles from './styles.css';
 
 @Cerebral({
   selectedFileIndex: 'bin.selectedFileIndex',
-  files: 'bin.files'
+  files: 'bin.currentBin.files',
+  isLoadingBin: 'bin.isLoadingBin',
+  isRunning: 'bin.isRunning',
 })
 class CodeEditor extends React.Component {
   constructor(props) {
@@ -28,10 +30,13 @@ class CodeEditor extends React.Component {
       this.codemirror.setOption('mode', this.getMode());
       this.codemirror.setOption('lint', this.getLinter());
     }
-    if (this.props.isLoading) {
+    if (this.props.isLoadingBin || this.props.isRunning) {
       this.codemirror.setOption('readOnly', 'nocursor');
     } else {
       this.codemirror.setOption('readOnly', false);
+    }
+    if (prevProps.isLoadingBin && !this.props.isLoadingBin) {
+      this.codemirror.setValue(this.props.files[this.props.selectedFileIndex].content);
     }
   }
   componentDidMount() {
@@ -54,7 +59,7 @@ class CodeEditor extends React.Component {
     });
     this.codemirror.on('change', this.onCodeChange);
   }
-  getMode() {
+  getMode() {
     const name = this.props.files[this.props.selectedFileIndex].name;
     const ext = name.split('.')[name.split('.').length - 1];
     switch (ext) {

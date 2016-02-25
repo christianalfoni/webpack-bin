@@ -4,7 +4,7 @@ import styles from './styles.css';
 import NpmPackage from '../NpmPackage';
 
 @Cerebral({
-  packages: 'bin.packages',
+  packages: 'bin.currentBin.packages',
   searchQuery: 'npm.searchQuery',
   packageNameQuery: 'npm.packageNameQuery',
   bundles: 'npm.bundles',
@@ -57,9 +57,8 @@ class Npm extends React.Component {
             this.props.isSearchingBundles ?
               <div className={styles.searching}>Searching...</div>
             :
-              null
+              this.renderBundles()
           }
-          {this.renderBundles()}
         </div>
         <div className={styles.column}>
           <h3 className={styles.title}>Current package bundle</h3>

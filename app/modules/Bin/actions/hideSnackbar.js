@@ -1,6 +1,5 @@
 function hideSnackbar({state}) {
   state.merge('bin.snackbar', {
-    text: '',
     show: false
   });
 }

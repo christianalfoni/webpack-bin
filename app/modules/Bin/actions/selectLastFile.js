@@ -1,5 +1,5 @@
 function selectLastFile({state}) {
-  const lastFile = state.get('bin.files').length - 1;
+  const lastFile = state.get('bin.currentBin.files').length - 1;
   state.set('bin.selectedFileIndex', lastFile);
 }
 

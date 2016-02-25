@@ -24,6 +24,11 @@ module.exports = {
           root: path.join('/', 'node_modules')
         },
         plugins: [
+          new webpack.DefinePlugin({
+            'process.env': {
+              'NODE_ENV': JSON.stringify('production'),
+            }
+          }),
           new webpack.DllPlugin({
            path: path.join('/', 'api', 'sandbox', 'vendors', bundle.name, 'manifest.json'),
            name: 'webpackbin_vendors',

@@ -70,8 +70,10 @@ module.exports = {
       utils.hasPackages(req) &&
       !memoryFs.hasVendorsBundle(req.body.packages)
     ) {
+
+      // Create new Bin
       console.log('No vendors in memory');
-      return db.getVendorsBundle(utils.getVendorsBundleName(req.body.packages))
+      db.getVendorsBundle(utils.getVendorsBundleName(req.body.packages))
         .then(function (bundle) {
           if (bundle) {
             memoryFs.writeBundleManifest(bundle);
@@ -86,6 +88,11 @@ module.exports = {
         })
         .then(sessionBundler.create(req.session))
         .then(sessions.createBundleMiddleware(req, res, next))
+        .then(function () {
+
+          // Update bin in database, but do not wait to finish
+          db.updateBin(req);
+        })
         .catch(utils.logError);
 
     } else if (
@@ -109,6 +116,11 @@ module.exports = {
         })
         .then(sessionBundler.create(req.session))
         .then(sessions.createBundleMiddleware(req, res, next))
+        .then(function () {
+
+          // Update bin in database, but do not wait to finish
+          db.updateBin(req);
+        })
         .catch(utils.logError);
 
     } else if (
@@ -116,9 +128,29 @@ module.exports = {
     ) {
       sessionBundler.create(req.session)()
         .then(sessions.createBundleMiddleware(req, res, next))
+        .then(function () {
+
+          // Update bin in database, but do not wait to finish
+          db.updateBin(req);
+        })
         .catch(utils.logError);
     } else {
-      res.send({});
+
+      if (req.session.currentBin.isOwner) {
+        res.send({});
+
+        // Update bin in database, but do not wait to finish
+        db.updateBin(req);
+      } else {
+        db.updateBin(req).then(function (bin) {
+          sessions.update(req.session.id, 'currentBin', {
+            id: bin.id,
+            isOwner: true
+          });
+          res.send(bin);
+        });
+      }
+
     }
   }
 };

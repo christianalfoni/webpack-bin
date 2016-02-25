@@ -1,6 +1,6 @@
 function isLintable({state, output}) {
   const selectedFileIndex = state.get('bin.selectedFileIndex');
-  const currentFileName = state.get(`bin.files.${selectedFileIndex}.name`);
+  const currentFileName = state.get(`bin.currentBin.files.${selectedFileIndex}.name`);
   const ext = currentFileName.split('.')[currentFileName.split('.').length - 1];
   if (ext === 'js') {
     output.true();

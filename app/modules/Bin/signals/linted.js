@@ -1,6 +1,6 @@
 import set from 'cerebral-addons/set';
 import copy from 'cerebral-addons/copy';
-import testClicked from './testClicked';
+import runClicked from './runClicked';
 import shouldSave from '../actions/shouldSave';
 
 export default [
@@ -8,11 +8,11 @@ export default [
   copy('input:/isValid', 'state:/bin.isValid'),
   shouldSave, {
     true: [
-      ...testClicked
+      ...runClicked
     ],
     false: [
-      set('state:/bin.hasSaved', false)
+      set('state:/bin.hasTriedToRun', false)
     ]
   },
-  copy('state:/bin.selectedFileIndex', 'state:/bin.lastLintedIndex')
+  copy('state:/bin.selectedFileIndex', 'state:/bin.lastLintedFileIndex')
 ]

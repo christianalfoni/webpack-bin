@@ -11,13 +11,7 @@ module.exports = {
         var vendorsBundleName = bundle && bundle.name;
         var entries = bundle && bundle.entries;
         var externals = null;
-        var plugins = [
-          new webpack.DefinePlugin({
-            'process.env': {
-              'NODE_ENV': JSON.stringify('production'),
-            }
-          })
-        ];
+        var plugins = [];
 
         if (vendorsBundleName) {
           var manifest = JSON.parse(memoryFs.fs.readFileSync(path.join('/', 'api', 'sandbox', 'vendors', vendorsBundleName, 'manifest.json')).toString());
@@ -30,6 +24,7 @@ module.exports = {
 
           if (entries) {
             externals = Object.keys(entries).reduce(function (externals, key) {
+              console.log('Package key', entries[key]);
               externals[key] = 'webpackbin_vendors(' + manifest.content[entries[key]] + ')';
               return externals;
             }, {});

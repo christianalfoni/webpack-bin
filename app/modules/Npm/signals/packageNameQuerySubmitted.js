@@ -15,5 +15,6 @@ export default [
       set('state:/npm.packageError', true)
     ]
   },
-  set('state:/npm.isGettingPackage', false)
+  set('state:/npm.isGettingPackage', false),
+  set('state:/bin.hasChangedPackages', true)
 ];

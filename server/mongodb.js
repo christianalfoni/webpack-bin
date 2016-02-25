@@ -32,7 +32,18 @@ module.exports = {
   insert: function (collectionName, doc) {
     return new Promise(function (resolve, reject) {
       var collection = db.collection(collectionName);
-      collection.insert(doc, function (err, doc) {
+      collection.insert(doc, function (err) {
+        if (err) {
+          return reject(err);
+        }
+        resolve(doc);
+      });
+    });
+  },
+  update: function (collectionName, query, update) {
+    return new Promise(function (resolve, reject) {
+      var collection = db.collection(collectionName);
+      collection.update(query, update, function (err, doc) {
         if (err) {
           return reject(err);
         }

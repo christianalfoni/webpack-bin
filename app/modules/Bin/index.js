@@ -1,7 +1,7 @@
-import testClicked from './signals/testClicked';
+import runClicked from './signals/runClicked';
 import fileClicked from './signals/fileClicked';
 import codeChanged from './signals/codeChanged';
-import mounted from './signals/mounted';
+import rootRouted from './signals/rootRouted';
 import linted from './signals/linted';
 import saveShortcutPressed from './signals/saveShortcutPressed';
 import iframeLoaded from './signals/iframeLoaded';
@@ -13,7 +13,7 @@ import togglePackage from './signals/togglePackage';
 import toggleShowPackagesSelector from './signals/toggleShowPackagesSelector';
 import appClicked from './signals/appClicked';
 import toggleShowInfo from './signals/toggleShowInfo';
-import stillNotLoaded from './signals/stillNotLoaded';
+import opened from './signals/opened';
 
 import hideSnackbar from './actions/hideSnackbar.js';
 
@@ -25,32 +25,35 @@ export default (options = {}) => {
         text: '',
         show: false
       },
-      url: null,
-      hasInitialized: false,
-      hasSaved: false,
+      currentBin: {
+        files: [{
+          name: 'main.js',
+          content: ''
+        }],
+        packages: {}
+      },
+      isLoadingBin: false,
+
+      hasTriedToRun: false,
       isLinting: false,
-      lastLintedIndex: 0,
+      lastLintedFileIndex: 0,
       isValid: true,
-      isLoading: false,
-      isLoadingLong: false,
+      isRunning: false,
+      hasChangedPackages: false,
+
       showAddFileInput: false,
       newFileName: '',
       selectedFileIndex: 0,
       showInfo: false,
-      showPackagesSelector: false,
-      packages: {},
-      files: [{
-        name: 'main.js',
-        content: ''
-      }]
+      showPackagesSelector: false
     });
 
     module.addSignals({
       snackbarTimedOut: [hideSnackbar],
       codeChanged,
-      testClicked,
+      runClicked,
       fileClicked,
-      mounted,
+      rootRouted,
       linted,
       saveShortcutPressed,
       iframeLoaded,
@@ -62,7 +65,7 @@ export default (options = {}) => {
       toggleShowPackagesSelector,
       appClicked,
       toggleShowInfo,
-      stillNotLoaded
+      opened
     });
 
   };

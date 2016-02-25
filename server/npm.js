@@ -19,7 +19,8 @@ module.exports = {
           retries: 5,
           factor: 5
         },
-        dest: 'node_modules'
+        tempPath: path.resolve('temp'),
+        memoryPath: '/node_modules'
       });
     }))
     .then(function (packagesData) {
@@ -39,7 +40,7 @@ module.exports = {
     });
   },
   removePackages: function (bundle) {
-    console.log('Removing vendor packages');
+    console.log('Removing vendor packages', Object.keys(bundle.entries));
     Object.keys(bundle.entries).forEach(function (entry) {
       memoryFs.fs.rmdirSync(path.join('/', 'node_modules', entry));
     });

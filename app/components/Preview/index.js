@@ -3,7 +3,7 @@ import { Decorator as Cerebral, Link } from 'cerebral-view-react';
 import styles from './styles.css';
 
 @Cerebral({
-  url: 'bin.url'
+  isRunning: 'bin.isRunning'
 })
 class Preview extends React.Component {
   constructor(props) {
@@ -11,7 +11,7 @@ class Preview extends React.Component {
     this.onIframeMessage = this.onIframeMessage.bind(this);
   }
   componentDidUpdate(prevProps) {
-    if (prevProps.url !== this.props.url) {
+    if (prevProps.isRunning && !this.props.isRunning) {
       this.refs.iframe.src =  location.origin + '/api/sandbox';
     }
   }

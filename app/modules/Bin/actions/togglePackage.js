@@ -1,9 +1,9 @@
 function togglePackage({input, state}) {
-  const packages = state.get('bin.packages');
+  const packages = state.get('bin.currentBin.packages');
   if (packages[input.name]) {
-    state.unset(`bin.packages.${input.name}`);
+    state.unset(`bin.currentBin.packages.${input.name}`);
   } else {
-    state.set(`bin.packages.${input.name}`, input.version);
+    state.set(`bin.currentBin.packages.${input.name}`, input.version);
   }
 }
 

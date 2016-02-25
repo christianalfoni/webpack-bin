@@ -1,20 +1,20 @@
 import when from 'cerebral-addons/when';
 import set from 'cerebral-addons/set';
-import testClicked from './testClicked';
+import runClicked from './runClicked';
 import hasValidLinting from '../actions/hasValidLinting';
 
 export default [
-  when('state:/bin.isLoading'), {
+  when('state:/bin.isRunning'), {
     isTrue: [],
     isFalse: [
       hasValidLinting, {
         true: [
-          ...testClicked
+          ...runClicked
         ],
         false: [
-          set('state:/bin.hasSaved', true)
+          set('state:/bin.hasTriedToRun', true)
         ]
-      }    
+      }
     ]
   }
 ];

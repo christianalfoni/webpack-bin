@@ -16,6 +16,7 @@ var utils = require('./utils');
 var sandbox = require('./sandbox');
 var database = require('./database');
 var npm = require('./npm');
+var bins = require('./bins');
 
 preLoadPackages([
   // Core node
@@ -37,7 +38,7 @@ preLoadPackages([
 // Init
 memoryFs.fs.mkdirpSync(path.join('/', 'api', 'sandbox'));
 memoryFs.fs.mkdirpSync(path.join('/', 'api', 'sandbox', 'vendors'));
-setInterval(sessions.clean, 60 * 1000 * 5);
+setInterval(sessions.clean, 60 * 1000 * 60 * 5);
 database.connect(utils.isProduction() ? process.env.MONGOHQ_URL : 'mongodb://localhost:27017/webpackbin')
   .then(utils.log('Database connected'))
   .catch(utils.log('Could not connect to database'));
@@ -49,16 +50,20 @@ app.use(bodyParser.json());
 app.use(express.static(path.resolve('public')));
 app.use(sessions.middleware);
 
-app.get('/', function(req, res) {
-  res.send(fs.readFileSync(
-    path.resolve('index.html')).toString().replace('/build/bundle.js', '/client_build.js')
-  );
-});
+app.post('/api/bins', bins.create);
+app.get('/api/bins/:id', bins.get);
+
 app.get('/api/sandbox/', sandbox.getIndex);
 app.get('/api/sandbox/*', sandbox.getFile)
 app.post('/api/sandbox', sandbox.updateSandbox);
 
 app.get('/api/packages/:packageName', npm.getPackageFromRegistry);
 app.get('/api/bundles', database.searchBundles);
+
+app.get('*', function(req, res) {
+  res.send(fs.readFileSync(
+    path.resolve('index.html')).toString().replace('/build/bundle.js', '/client_build.js')
+  );
+});
 
 module.exports = app;

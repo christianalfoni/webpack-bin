@@ -9,11 +9,10 @@ import ToolbarButtonPopover from '../ToolbarButtonPopover';
 import Npm from '../Npm';
 
 @Cerebral({
-  files: 'bin.files',
+  files: 'bin.currentBin.files',
   selectedFileIndex: 'bin.selectedFileIndex',
-  isLoading: 'bin.isLoading',
+  isRunning: 'bin.isRunning',
   isValid: 'bin.isValid',
-  hasInitialized: 'bin.hasInitialized',
   showAddFileInput: 'bin.showAddFileInput',
   newFileName: 'bin.newFileName',
   showPackagesSelector: 'bin.showPackagesSelector',
@@ -59,7 +58,7 @@ class Toolbar extends React.Component {
             <ToolbarButton
               title='Run code'
               icon={icons.play}
-              disabled={this.props.isLoading || !this.props.isValid}
+              disabled={this.props.isRunning || !this.props.isValid}
               onClick={() => signals.testClicked()}/>
           </div>
           <ToolbarButtonPopover
@@ -81,19 +80,16 @@ class Toolbar extends React.Component {
               <h3>What is this project?</h3>
               <p>
                 WebpackBin is in ALPHA and will allow you to load in any NPM
-                package and webpack loaders to play around with. It has super
-                optimized handling of packages to give the best experience.
+                package and webpack loaders to play around with.
               </p>
-              <h3>How it works</h3>
+              <h3>Nice to know</h3>
               <p>
-                When you configure a package bundle that is already in use
-                it will be delivered directly to you an cached in the browser.
-                The Webpack instance on the server will only handle your little
-                project.
+                Your WebpackBin will be saved, though your session is short lived in the alpha, about 5 minutes.
+                A copy of your Bin will automatically be created if you save a new one though.
               </p>
               <p>
-                A new configured package bundle will be fetched from NPM and
-                an optimized version is cached in the database for later use.
+                Configuring new package bundles requires them to be downloaded from NPM, but using existing
+                bundles are superfast to load.
               </p>
             </div>
           </ToolbarButtonPopover>
