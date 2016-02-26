@@ -145,7 +145,7 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 	}
 
 	// The middleware function
-	function webpackDevMiddleware(req, res, next, bundleName) {
+	function webpackDevMiddleware(req, res, next, bundleName, cb) {
 		var filename = bundleName || getFilenameFromUrl(req.url);
 		if (filename === false) return next();
 
@@ -190,6 +190,7 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 				}
 				if (res.send) res.send(content);
 				else res.end(content);
+				cb && cb();
 			}
 		}
 

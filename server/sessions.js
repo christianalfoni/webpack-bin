@@ -48,10 +48,6 @@ var sessionsModule = {
     return function (compiler) {
       return new Promise(function (resolve, reject) {
         console.log('Creating bundle middleware');
-        var resolver = function () {
-          resolve();
-          next();
-        };
         var sessionMiddleware = middleware(compiler, {
           lazy: true,
           filename: new RegExp(req.session.id),
@@ -66,7 +62,7 @@ var sessionsModule = {
           }
         });
         sessionsModule.update(req.session.id, 'middleware', sessionMiddleware);
-        sessionMiddleware(req, res, resolver, path.join('/', 'api', 'sandbox', req.session.id, 'webpackbin_bundle.js'));
+        sessionMiddleware(req, res, next, path.join('/', 'api', 'sandbox', req.session.id, 'webpackbin_bundle.js'), resolve);
       });
     };
   },
