@@ -7,7 +7,16 @@ var utils = require('./utils');
 module.exports = {
   compile: function (bundle) {
     return new Promise(function (resolve, reject) {
-          console.log('creating vendors compiler', bundle.entries);
+
+      // Fix esModule issue
+      console.log(bundle.entries);
+      Object.keys(bundle.entries).forEach(function (key) {
+        var entryFile = memoryFs.fs.readFileSync(bundle.entries[key].substr(1)).toString();
+        entryFile += '\ndelete exports.__esModule;';
+        memoryFs.fs.writeFileSync(bundle.entries[key].substr(1), entryFile);
+      });
+
+      console.log('creating vendors compiler', bundle.entries);
       var vendorsCompiler = webpack({
         context: '/',
         entry: {
