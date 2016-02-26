@@ -59,7 +59,7 @@ class Toolbar extends React.Component {
               title='Run code'
               icon={icons.play}
               disabled={this.props.isRunning || !this.props.isValid}
-              onClick={() => signals.testClicked()}/>
+              onClick={() => signals.runClicked()}/>
           </div>
           <ToolbarButtonPopover
             title="Configure packages"

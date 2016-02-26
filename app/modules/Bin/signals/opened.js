@@ -17,7 +17,7 @@ export default [
           showSnackbar('WebpackBin is loaded!')
         ],
         error: [
-          showSnackbar('Sorry, but this WebpackBin does not exist?', true)
+          showSnackbar('Sorry, but this WebpackBin does not exist? Still Alpha though, probably a reset!', true)
         ]
       },
       set('state:/bin.isLoadingBin', false),

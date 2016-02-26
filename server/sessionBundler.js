@@ -8,6 +8,7 @@ module.exports = {
     return function (bundle) {
       return new Promise(function (resolve, reject) {
 
+        console.log('Creating session bundle', bundle);
         var vendorsBundleName = bundle && bundle.name;
         var entries = bundle && bundle.entries;
         var externals = null;

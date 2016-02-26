@@ -7,8 +7,9 @@ var utils = require('./utils');
 module.exports = {
   compile: function (bundle) {
     return new Promise(function (resolve, reject) {
-          console.log('creating vendors compiler', bundle.name);
+          console.log('creating vendors compiler', bundle.entries);
       var vendorsCompiler = webpack({
+        context: '/',
         entry: {
           vendors: Object.keys(bundle.entries)
         },

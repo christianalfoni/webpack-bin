@@ -24,7 +24,9 @@ module.exports = {
       });
     }))
     .then(function (packagesData) {
-      console.log('Loaded packages into memory');
+      var entryFile = memoryFs.fs.readFileSync(path.join('/node_modules/redux', packagesData[0].main)).toString();
+      entryFile += '\ndelete exports.__esModule;';
+      memoryFs.fs.writeFileSync(path.join('/node_modules/redux', packagesData[0].main), entryFile);
       var entries = packagesData.reduce(function (entries, packageData) {
         entries[packageData.name] = '.' + path.resolve('/', 'node_modules', packageData.name, packageData.main || 'index.js');
         return entries;
