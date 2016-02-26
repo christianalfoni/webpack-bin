@@ -20,7 +20,14 @@ module.exports = {
     if (Object.keys(packages).length === 0) {
       return null;
     }
-    return String(hash(JSON.stringify(packages)));
+    var packagesList = Object.keys(packages).map(function (key) {
+      return key + ':' + packages[key];
+    }).sort(function (a, b) {
+      if (a < b) return -1;
+      if (a > b) return 1;
+      return 0;
+    });
+    return String(hash(JSON.stringify(packagesList)));
   },
   readMemDir: function (fs, dir) {
     var logOutDir = function (dir) {
