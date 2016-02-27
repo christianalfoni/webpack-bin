@@ -1,6 +1,9 @@
 var path = require('path');
 
 module.exports = {
+  output: {
+    publicPath: '/'
+  },
   resolve: {
     alias: {
       'common': path.join(__dirname, 'app/common')
