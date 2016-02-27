@@ -12,6 +12,10 @@ class CssConfig extends React.Component {
 
     return (
       <div>
+        <div className={styles.description}>
+          The CSS loader allows you to import any css file and it will be loaded as
+          a normal style tag.
+        </div>
         <div className={styles.config}>
           <input
             type="checkbox"
@@ -20,7 +24,7 @@ class CssConfig extends React.Component {
             onChange={() => this.props.signals.bin.configToggled({name: 'modules'})}/>
           CSS Modules
           <div className={styles.configDescription}>
-            Import css classes
+            Import css classes as an object to reference class names by key
           </div>
         </div>
       </div>

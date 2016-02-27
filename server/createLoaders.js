@@ -38,5 +38,23 @@ module.exports = function (session) {
     loaders.push(loader);
   }
 
+  // TYPESCRIPT
+  if (session.loaders.typescript) {
+    var loader = {
+      test: /\.ts?$/,
+      loader: 'typescript'
+    }
+    loaders.push(loader);
+  }
+
+  // CoffeeScript
+  if (session.loaders.coffeescript) {
+    var loader = {
+      test: /\.coffee?$/,
+      loader: 'coffee'
+    }
+    loaders.push(loader);
+  }
+
   return loaders;
 };

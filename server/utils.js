@@ -17,7 +17,7 @@ module.exports = {
     console.log(err.stack);
   },
   getVendorsBundleName: function (packages) {
-    if (Object.keys(packages).length === 0) {
+    if (!packages || Object.keys(packages).length === 0) {
       return null;
     }
     var packagesList = Object.keys(packages).map(function (key) {

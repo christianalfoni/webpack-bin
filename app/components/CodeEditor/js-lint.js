@@ -1,4 +1,4 @@
-module.exports = function(CodeMirror) {
+module.exports = function(CodeMirror, eslint) {
 
   var defaultConfig = {
     "ecmaFeatures": {
@@ -116,7 +116,7 @@ module.exports = function(CodeMirror) {
         "no-trailing-spaces": 0,
         "no-this-before-super": 2,
         "no-throw-literal": 0,
-        "no-undef": 2,
+        "no-undef": 0,
         "no-undef-init": 0,
         "no-undefined": 0,
         "no-unexpected-multiline": 2,
@@ -252,14 +252,14 @@ module.exports = function(CodeMirror) {
   }
 
   function getSeverity(error) {
-	switch(error.severity) {
-	  case 1:
-	    return "warning";
-	  case 2:
-		return "error";
-	  default:
-		return "error";
-	}
+  	switch(error.severity) {
+  	  case 1:
+  	    return "warning";
+  	  case 2:
+  		  return "error";
+  	  default:
+  		  return "error";
+  	}
   }
 
 }

@@ -44,30 +44,27 @@ var sessionsModule = {
     }
     next();
   },
-  createBundleMiddleware: function (req, res, next) {
+  createBundleMiddleware: function (session) {
     return function (compiler) {
-      return new Promise(function (resolve, reject) {
-        console.log('Creating bundle middleware');
-        var sessionMiddleware = middleware(compiler, {
-          lazy: true,
-          filename: new RegExp(req.session.id),
-          publicPath: path.join('/', 'api', 'sandbox', req.session.id),
-          stats: {
-            colors: true,
-            hash: false,
-            timings: true,
-            chunks: true,
-            chunkModules: false,
-            modules: false
-          }
-        });
-        sessionsModule.update(req.session.id, 'middleware', sessionMiddleware);
-        sessionMiddleware(req, res, next, path.join('/', 'api', 'sandbox', req.session.id, 'webpackbin_bundle.js'), resolve);
+      console.log('Creating bundle middleware', session);
+      var sessionMiddleware = middleware(compiler, {
+        lazy: true,
+        filename: new RegExp(session.id),
+        publicPath: path.join('/', 'api', 'sandbox', session.id),
+        stats: {
+          colors: true,
+          hash: false,
+          timings: true,
+          chunks: true,
+          chunkModules: false,
+          modules: false
+        }
       });
+      sessionsModule.update(session.id, 'middleware', sessionMiddleware);
     };
   },
-  updateVendorsBundle: function (req) {
-    sessions[req.session.id].vendorsBundleName = req.body.packages ? utils.getVendorsBundleName(req.body.packages) : null;
+  updatePackages: function (req) {
+    sessions[req.session.id].packages = Boolean(Object.keys(req.body.packages).length) ? req.body.packages : null;
   },
   removeMiddleware: function (req) {
     delete sessions[req.session.id].middleware;

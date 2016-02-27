@@ -19,7 +19,7 @@ var createIndex = function (req) {
     ' </head>',
     ' <body>',
     '   <div id="app"></div>',
-    req.session.vendorsBundleName ? '   <script src="/api/sandbox/vendors/' + req.session.vendorsBundleName + '/bundle.js" defer></script>' : '',
+    req.session.packages ? '   <script src="/api/sandbox/vendors/' + utils.getVendorsBundleName(req.session.packages) + '/bundle.js" defer></script>' : '',
     '   <script src="/api/sandbox/webpackbin_bundle.js" defer></script>',
     ' </body>',
     '</html>'
@@ -57,13 +57,13 @@ module.exports = {
 
     memoryFs.updateSessionFiles(req.session, req.body.files);
 
-    if (req.session.middleware && req.session.vendorsBundleName !== utils.getVendorsBundleName(req.body.packages)) {
+    if (req.session.middleware && utils.getVendorsBundleName(req.session.packages) !== utils.getVendorsBundleName(req.body.packages)) {
       console.log('Removing middleware from session');
       sessions.removeMiddleware(req);
     }
 
     var hasChangedLoaders = !utils.isSameLoaders(req.session.loaders, req.body.loaders);
-    sessions.updateVendorsBundle(req);
+    sessions.updatePackages(req);
     sessions.updateLoaders(req);
 
     if (!req.session.currentBin) {
@@ -75,7 +75,7 @@ module.exports = {
 
     console.log('Requested vendors: ', req.body.packages);
     console.log('Middleware: ', Boolean(req.session.middleware));
-    console.log('Vendors: ', req.session.vendorsBundleName);
+    console.log('Vendors: ', req.session.pacakges);
 
     if (
       !req.session.middleware &&
@@ -99,9 +99,9 @@ module.exports = {
           }
         })
         .then(sessionBundler.create(req.session))
-        .then(sessions.createBundleMiddleware(req, res, next))
+        .then(sessions.createBundleMiddleware(req.session))
         .then(function () {
-
+          res.send({});
           // Update bin in database, but do not wait to finish
           db.updateBin(req);
         })
@@ -127,9 +127,9 @@ module.exports = {
           }
         })
         .then(sessionBundler.create(req.session))
-        .then(sessions.createBundleMiddleware(req, res, next))
+        .then(sessions.createBundleMiddleware(req.session))
         .then(function () {
-
+          res.send({});
           // Update bin in database, but do not wait to finish
           db.updateBin(req);
         })
@@ -141,9 +141,9 @@ module.exports = {
     ) {
       db.getVendorsBundleEntries(utils.getVendorsBundleName(req.body.packages))
         .then(sessionBundler.create(req.session))
-        .then(sessions.createBundleMiddleware(req, res, next))
+        .then(sessions.createBundleMiddleware(req.session))
         .then(function () {
-
+          res.send({});
           // Update bin in database, but do not wait to finish
           db.updateBin(req);
         })

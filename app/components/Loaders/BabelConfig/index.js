@@ -12,6 +12,10 @@ class BabelConfig extends React.Component {
 
     return (
       <div>
+        <div className={styles.description}>
+          This loader allows you to write modern JavaScript not implemented yet for
+          the browser.
+        </div>
         <div className={styles.config}>
           <input
             type="checkbox"

@@ -50,9 +50,15 @@
 }
 
 .configDescription {
+  margin-top: 5px;
   font-size: 12px;
-  height: 20px;
-  line-height: 20px;
+  line-height: 16px;
   padding-left: 10px;
+  color: rgba(255,255,255,0.5);
+}
+
+.description {
+  padding: 10px;
+  font-size: 14px;
   color: rgba(255,255,255,0.5);
 }

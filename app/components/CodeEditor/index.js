@@ -1,16 +1,14 @@
-import eslint from './eslint';
-window.eslint = eslint;
+
 import '!style!css!./lint.css';
 import '!style!css!./../../../node_modules/codemirror/lib/codemirror.css';
 import '!style!css!./CodeEditorStyle.css';
-import 'codemirror/mode/jsx/jsx.js';
-import 'codemirror/mode/css/css.js';
 import 'codemirror/addon/lint/lint.js';
-import codemirrorEsLint from './codemirror-eslint.js';
 import React, { PropTypes } from 'react';
 import { Decorator as Cerebral, Link } from 'cerebral-view-react';
 import CodeMirror from 'codemirror';
 import styles from './styles.css';
+
+const loadedLinters = ['js'];
 
 @Cerebral({
   selectedFileIndex: 'bin.selectedFileIndex',
@@ -28,8 +26,7 @@ class CodeEditor extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.selectedFileIndex !== prevProps.selectedFileIndex) {
       this.codemirror.getDoc().setValue(this.props.files[this.props.selectedFileIndex].content);
-      this.codemirror.setOption('mode', this.getMode());
-      this.codemirror.setOption('lint', this.getLinter());
+      this.setModeAndLinter();
     }
     if (this.props.isLoadingBin || this.props.isRunning) {
       this.codemirror.setOption('readOnly', true);
@@ -51,7 +48,7 @@ class CodeEditor extends React.Component {
       matchTags: {bothTags: true},
       autoCloseTags: true,
       gutters: ['CodeMirror-lint-markers'],
-      lint: this.getLinter(),
+      lint: false,
       lineNumbers: true,
       indentUnit: 2,
       extraKeys: {
@@ -62,6 +59,7 @@ class CodeEditor extends React.Component {
       }
     });
     this.codemirror.on('change', this.onCodeChange);
+    this.setModeAndLinter();
   }
   getMode() {
     const name = this.props.files[this.props.selectedFileIndex].name;
@@ -71,19 +69,89 @@ class CodeEditor extends React.Component {
         return 'jsx';
       case 'css':
         return 'css';
+      case 'ts':
+        return 'text/typescript';
+      case 'coffee':
+        return 'text/x-coffeescript';
+      case 'elm':
+        return 'elm';
       default:
         return 'jsx';
     }
   }
-  getLinter() {
-    if (this.getMode() === 'jsx') {
-      return {
-        getAnnotations: codemirrorEsLint(CodeMirror),
-        onUpdateLinting: this.onUpdateLinting
-      };
-    } else {
-      return false;
+  setModeAndLinter() {
+    const mode = this.getMode();
+
+    // JavaScript (eslint with JSX)
+    if (mode === 'jsx' && loadedLinters.indexOf(mode) === -1) {
+      loadedLinters.push(mode);
+      this.props.signals.bin.linterRequested();
+      return require.ensure([], (require) => {
+        require('codemirror/mode/jsx/jsx.js');
+        const eslint = require('./linters/jsx');
+        const linter = require('./js-lint.js');
+        this.codemirror.setOption('lint', {
+          getAnnotations: linter(CodeMirror, eslint),
+          onUpdateLinting: this.onUpdateLinting
+        });
+        this.codemirror.setOption('mode', mode);
+        this.codemirror.setValue(this.codemirror.getValue());
+        this.props.signals.bin.linterLoaded();
+      });
     }
+
+    if (mode === 'css' && loadedLinters.indexOf(mode) === -1) {
+      loadedLinters.push(mode);
+      this.props.signals.bin.linterRequested();
+      return require.ensure([], (require) => {
+        require('codemirror/mode/css/css.js');
+        const lintExport = require('./linters/css.js');
+        window.CSSLint = lintExport.CSSLint;
+        const linter = require('codemirror/addon/lint/css-lint.js');
+        this.codemirror.setOption('lint',  {
+          onUpdateLinting: this.onUpdateLinting
+        });
+        this.codemirror.setOption('mode', mode);
+        this.codemirror.setValue(this.codemirror.getValue());
+        this.props.signals.bin.linterLoaded();
+      });
+    }
+
+    if (mode === 'text/typescript' && loadedLinters.indexOf(mode) === -1) {
+      console.log('Changed linter to', mode);
+      loadedLinters.push(mode);
+      this.props.signals.bin.linterRequested({noLinter: true});
+      return require.ensure([], (require) => {
+        require('codemirror/mode/javascript/javascript.js');
+        this.codemirror.setOption('lint', false);
+        this.codemirror.setOption('mode', mode);
+        this.codemirror.setValue(this.codemirror.getValue());
+        this.props.signals.bin.linterLoaded({noLinter: true});
+      });
+    }
+
+    if (mode === 'text/x-coffeescript' && loadedLinters.indexOf(mode) === -1) {
+      console.log('Changed linter to', mode);
+      loadedLinters.push(mode);
+      this.props.signals.bin.linterRequested();
+      return require.ensure([], (require) => {
+        require('codemirror/mode/coffeescript/coffeescript.js');
+        window.CoffeeScript = require('./coffee-script');
+        const coffeeLint = require('coffeelint');
+        const linter = require('./coffee-lint.js');
+        this.codemirror.setOption('lint', {
+          getAnnotations: linter(CodeMirror, coffeeLint),
+          onUpdateLinting: this.onUpdateLinting
+        });
+        this.codemirror.setOption('mode', mode);
+        this.codemirror.setValue(this.codemirror.getValue());
+        this.props.signals.bin.linterLoaded();
+      });
+    }
+
+    this.codemirror.setOption('mode', mode);
+
+    return false;
   }
   onUpdateLinting(errors) {
     this.props.signals.bin.linted({

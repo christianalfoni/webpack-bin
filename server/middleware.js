@@ -31,7 +31,6 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 	// store our files in memory
 	var files = {};
 	var fs = compiler.outputFileSystem = new MemoryFileSystem();
-	var error = null;
 
 	onFileSystemAdded && onFileSystemAdded(fs);
 
@@ -45,6 +44,7 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 			if(!state) return;
 			// print webpack output
 			var displayStats = (!options.quiet && options.stats !== false);
+			var error = null;
 			if(displayStats &&
 				!(stats.hasErrors() || stats.hasWarnings()) &&
 				options.noInfo)
@@ -64,7 +64,7 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 			var cbs = callbacks;
 			callbacks = [];
 			cbs.forEach(function continueBecauseBundleAvailible(cb) {
-				cb();
+				cb(error);
 			});
 		});
 
@@ -99,14 +99,6 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 	// delayed callback
 	var callbacks = [];
 
-	// wait for bundle valid
-	function ready(fn, req) {
-		if(state) return fn();
-		if(!options.noInfo && !options.quiet)
-			console.log("webpack: wait until bundle finished: " + req.url);
-		callbacks.push(fn);
-	}
-
 	// start watching
 	if(!options.lazy) {
 		var watching = compiler.watch(options.watchOptions, function(err) {
@@ -119,9 +111,9 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 	function rebuild(cb) {
 		if(state) {
 			state = false;
+			callbacks.push(cb);
 			compiler.run(function(err) {
 				if(err) throw err;
-				cb();
 			});
 		} else {
 			forceRebuild = true;
@@ -151,77 +143,48 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 	}
 
 	// The middleware function
-	function webpackDevMiddleware(req, res, next, bundleName, cb) {
-		var filename = bundleName || getFilenameFromUrl(req.url);
+	function webpackDevMiddleware(req, res, next) {
+		var filename = getFilenameFromUrl(req.url);
 		if (filename === false) return next();
 
-		var passResponse = function () {
-			if(HASH_REGEXP.test(filename)) {
-				try {
-					if(fs.statSync(filename).isFile()) {
-						processRequest();
-						return;
-					}
-				} catch(e) {}
-			}
-			// delay the request until we have a vaild bundle
-			ready(processRequest, req);
-			function processRequest() {
-				try {
-					var stat = fs.statSync(filename);
-					if(!stat.isFile()) {
-						if (stat.isDirectory()) {
-							filename = pathJoin(filename, "index.html");
-							stat = fs.statSync(filename);
-							if(!stat.isFile()) throw "next";
-						} else {
-							throw "next";
-						}
-					}
-				} catch(e) {
-					console.log(e, filename);
-					return next();
-				}
+		var passResponse = function (error) {
+			console.log('creating response, error?', Boolean(error));
+			if (error) {
+				console.log('Has error!');
 
-				// server content
-				console.log('reading file', filename);
-				var content = fs.readFileSync(filename);
-				res.setHeader("Access-Control-Allow-Origin", "*"); // To support XHR, etc.
-				res.setHeader("Content-Type", mime.lookup(filename));
+				var html = [
+					'<div>',
+					'  <h1 style="color:#eb1e64;padding:10px;margin:0;">ERROR: ' + error.name + '</h1>',
+					'  <textarea id="textarea" style="border:0;resize:none;width:100%;height:500px;font-size:16px;padding:20px;line-height:22px;box-sizing:border-box;">' + error.message.replace(/\n/g, '\\n').replace(/\'/g, '\\\'') + '</textarea>',
+					'</div>'
+				].join('');
+				var content = [
+					'var html = \'' + html + '\';',
+					'document.body.innerHTML = html;'
+				].join('\n');
+				res.setHeader("Content-Type", mime.lookup('error.js'));
 				res.setHeader("Content-Length", content.length);
-				if(options.headers) {
-					for(var name in options.headers) {
-						res.setHeader(name, options.headers[name]);
-					}
-				}
-				if (res.send) res.send(content);
-				else res.end(content);
-				cb && cb();
+				res.send(content);
+				return;
 			}
-		}
 
-		if (error) {
-			console.log('Has error!');
-
-			var html = [
-				'<div>',
-				'  <h1 style="color:#eb1e64;padding:10px;margin:0;">ERROR: ' + error.name + '</h1>',
-				'  <textarea id="textarea" style="border:0;resize:none;width:100%;height:500px;font-size:16px;padding:20px;line-height:22px;box-sizing:border-box;">' + error.message.replace(/\n/g, '\\n').replace(/\'/g, '\\\'') + '</textarea>',
-				'</div>'
-			].join('');
-			var content = [
-				'var html = \'' + html + '\';',
-				'document.body.innerHTML = html;'
-			].join('\n');
-			res.setHeader("Content-Type", mime.lookup('error.js'));
+			// server content
+			console.log('reading file', filename);
+			var content = fs.readFileSync(filename);
+			res.setHeader("Access-Control-Allow-Origin", "*"); // To support XHR, etc.
+			res.setHeader("Content-Type", mime.lookup(filename));
 			res.setHeader("Content-Length", content.length);
-			res.send(content);
-			error = null;
-			return;
+			if(options.headers) {
+				for(var name in options.headers) {
+					res.setHeader(name, options.headers[name]);
+				}
+			}
+			if (res.send) res.send(content);
+			else res.end(content);
 		}
 
 		// in lazy mode, rebuild on bundle request
-		if(bundleName || (options.lazy && (!options.filename || options.filename.test(filename)))) {
+		if(options.lazy && (!options.filename || options.filename.test(filename))) {
 			console.log('Rebundling');
 			rebuild(passResponse);
 		} else {

@@ -4,10 +4,14 @@ import styles from './styles.css';
 
 import BabelConfig from './BabelConfig';
 import CssConfig from './CssConfig';
+import TypescriptConfig from './TypescriptConfig';
+import CoffeescriptConfig from './CoffeescriptConfig';
 
 const loaders = {
   babel: BabelConfig,
-  css: CssConfig
+  css: CssConfig,
+  typescript: TypescriptConfig,
+  coffeescript: CoffeescriptConfig
 };
 
 @Cerebral({

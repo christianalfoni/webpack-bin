@@ -4,13 +4,16 @@ import set from 'cerebral-addons/set';
 import showSnackbar from '../factories/showSnackbar';
 import redirectToBin from '../actions/redirectToBin';
 import createBin from '../actions/createBin';
+import loadBoilerplate from '../actions/loadBoilerplate';
 
 export default [
   set('state:/bin.isLoadingBin'),
   showSnackbar('Creating a WebpackBin for you'),
+  loadBoilerplate,
   createBin, {
     success: [
-      copy('input:/result', 'state:/bin.currentBin')
+      copy('input:/result', 'state:/bin.currentBin'),
+      set('state:/bin.forceUpdateCode', true)
     ],
     error: [
       showSnackbar('Could not create bin, sorry...')

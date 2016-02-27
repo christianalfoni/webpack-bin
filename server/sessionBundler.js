@@ -9,7 +9,7 @@ module.exports = {
     return function (bundle) {
       return new Promise(function (resolve, reject) {
 
-        console.log('Creating session bundle', bundle);
+        console.log('Creating session bundle');
         var vendorsBundleName = bundle && bundle.name;
         var entries = bundle && bundle.entries;
         var externals = null;
@@ -34,7 +34,9 @@ module.exports = {
 
         }
 
-        console.log('Creating session compiler');
+        var loaders = createLoaders(session);
+
+        console.log('Creating session compiler', loaders);
         console.log('Vendors bundle name', vendorsBundleName);
         console.log('externals', externals);
 
@@ -55,7 +57,7 @@ module.exports = {
           },
           externals: externals,
           module: {
-            loaders: createLoaders(session)
+            loaders: loaders
           },
           plugins: plugins
         });

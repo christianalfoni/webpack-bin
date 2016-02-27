@@ -14,7 +14,15 @@ module.exports = {
       loaders: {},
       files: [{
         name: 'main.js',
-        content: ''
+        content: [
+          '/*',
+          '  Welcome to WebpackBin',
+          '',
+          '  - Add packages from NPM',
+          '  - Add loaders for modern JavaScript, css, typescript, coffeescript etc.',
+          '  - Use boilerplates to quickly load up pacakges with Hello World examples',
+          '*/'
+        ].join('\n')
       }]
     };
     return db.insert('bins', bin)
@@ -108,6 +116,17 @@ module.exports = {
       .then(function () {
         return bundle;
       });
+  },
+  vendorsBundleExists: function (vendorsBundleName) {
+    return db.search('bundles', {
+      name: vendorsBundleName
+    })
+    .then(function (result) {
+      return Boolean(result.length);
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
   },
   searchBundles: function (req, res) {
     var query = {};

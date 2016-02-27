@@ -32,7 +32,9 @@ preLoadPackages([
   // Loaders
   'babel-loader',
   'style-loader',
-  'css-loader'
+  'css-loader',
+  'typescript-loader',
+  'coffee-loader'
 ]);
 
 // Init

@@ -55,7 +55,7 @@
 }
 
 .cm-s-learncode span.cm-comment {
-    color: #cdab53;
+    color: rgba(255,255,255,0.5);
 }
 
 .cm-s-learncode span.cm-atom {

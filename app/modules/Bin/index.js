@@ -20,6 +20,8 @@ import loaderToggled from './signals/loaderToggled';
 import configToggled from './signals/configToggled';
 import boilerplatesToggled from './signals/boilerplatesToggled';
 import boilerplateClicked from './signals/boilerplateClicked';
+import linterLoaded from './signals/linterLoaded';
+import linterRequested from './signals/linterRequested';
 
 import hideSnackbar from './actions/hideSnackbar.js';
 
@@ -82,7 +84,9 @@ export default (options = {}) => {
       loaderToggled,
       configToggled,
       boilerplatesToggled,
-      boilerplateClicked
+      boilerplateClicked,
+      linterRequested,
+      linterLoaded
     });
 
   };
