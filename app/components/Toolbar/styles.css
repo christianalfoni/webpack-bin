@@ -53,12 +53,3 @@
 .info p {
   line-height: 20px;
 }
-
-.logo {
-  margin-top: 4px;
-  float: right;
-  width: 200px;
-  height: 44px;
-  background-image: url('/logo.png');
-  background-size: contain;
-}

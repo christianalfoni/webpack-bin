@@ -7,6 +7,8 @@ import AddFile from '../AddFile';
 import ToolbarButton from '../ToolbarButton';
 import ToolbarButtonPopover from '../ToolbarButtonPopover';
 import Npm from '../Npm';
+import Loaders from '../Loaders';
+import Boilerplates from '../Boilerplates';
 
 @Cerebral({
   files: 'bin.currentBin.files',
@@ -16,7 +18,9 @@ import Npm from '../Npm';
   showAddFileInput: 'bin.showAddFileInput',
   newFileName: 'bin.newFileName',
   showPackagesSelector: 'bin.showPackagesSelector',
-  showInfo: 'bin.showInfo'
+  showInfo: 'bin.showInfo',
+  showLoadersSelector: 'bin.showLoadersSelector',
+  showBoilerplatesSelector: 'bin.showBoilerplatesSelector'
 })
 class Toolbar extends React.Component {
   static propTypes = {
@@ -56,19 +60,37 @@ class Toolbar extends React.Component {
         <div className={styles.column}>
           <div className={styles.buttonWrapper}>
             <ToolbarButton
-              title='Run code'
+              title='Run'
               icon={icons.play}
               disabled={this.props.isRunning || !this.props.isValid}
               onClick={() => signals.runClicked()}/>
           </div>
           <ToolbarButtonPopover
-            title="Configure packages"
+            title="Packages"
             className={styles.packagesButton}
-            icon={icons.menu}
-            onClick={() => this.props.signals.bin.toggleShowPackagesSelector()}
+            icon={icons.npm}
+            onClick={() => this.props.signals.bin.packagesToggled()}
             show={this.props.showPackagesSelector}
             right>
             <Npm/>
+          </ToolbarButtonPopover>
+          <ToolbarButtonPopover
+            title="Loaders"
+            className={styles.packagesButton}
+            icon={icons.loaders}
+            onClick={() => this.props.signals.bin.loadersToggled()}
+            show={this.props.showLoadersSelector}
+            right>
+            <Loaders/>
+          </ToolbarButtonPopover>
+          <ToolbarButtonPopover
+            title="Boilerplates"
+            className={styles.packagesButton}
+            icon={icons.boilerplates}
+            onClick={() => this.props.signals.bin.boilerplatesToggled()}
+            show={this.props.showBoilerplatesSelector}
+            right>
+            <Boilerplates/>
           </ToolbarButtonPopover>
           <ToolbarButtonPopover
             title="Info"

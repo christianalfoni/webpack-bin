@@ -11,6 +11,7 @@ module.exports = {
       id: shortid.generate(),
       author: req.session.id,
       packages: {},
+      loaders: {},
       files: [{
         name: 'main.js',
         content: ''
@@ -29,13 +30,15 @@ module.exports = {
       }, {
         $set: {
           files: req.body.files,
-          packages: req.body.packages
+          packages: req.body.packages,
+          loaders: req.body.loaders
         }
       })
       .then(function () {
         return {
           id: req.session.currentBin.id,
           files: req.body.files,
+          loaders: req.body.loaders,
           packages: req.body.packages,
           author: req.session.id
         };
@@ -49,6 +52,7 @@ module.exports = {
           id: shortid.generate(),
           author: req.session.id,
           packages: req.body.packages,
+          loaders: req.body.loaders,
           files: req.body.files
         };
         return db.insert('bins', bin)
@@ -70,7 +74,7 @@ module.exports = {
       });
   },
   getVendorsBundleEntries: function (vendorsBundleName) {
-    return db.findOne('bundles', {name: vendorsBundleName}, {entries: 1, name: 1, packages: 1})
+    return db.findOne('bundles', {name: vendorsBundleName}, {entries: 1, name: 1, packages: 1, loaders: 1})
       .then(function (bundle) {
         return bundle;
       });

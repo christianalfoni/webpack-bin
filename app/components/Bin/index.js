@@ -57,6 +57,15 @@ class Bin extends React.Component {
           <CodeEditor/>
           <Preview/>
         </div>
+        {
+          this.props.isLoadingBin ?
+            <div className={styles.loaderWrapper}>
+              <div className={styles.logo}/>
+              Loading your WebpackBin...
+            </div>
+          :
+            null
+        }
         <div className={this.state.showSnackbar ? styles.snackbarVisible : styles.snackbar}>
           {this.props.snackbar.text}
         </div>

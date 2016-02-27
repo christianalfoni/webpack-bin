@@ -12,7 +12,7 @@ class NpmPackage extends React.Component {
   render() {
     return (
       <div className={styles.wrapper} onClick={() => {
-        this.props.signals.bin.togglePackage({
+        this.props.signals.bin.packageToggled({
           name: this.props.name, version: this.props.version
         });
       }}>

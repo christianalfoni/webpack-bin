@@ -12,7 +12,7 @@ module.exports = {
       console.log(bundle.entries);
       Object.keys(bundle.entries).forEach(function (key) {
         var entryFile = memoryFs.fs.readFileSync(bundle.entries[key].substr(1)).toString();
-        entryFile += '\ndelete exports.__esModule;';
+        entryFile = entryFile.replace('__esModule', '__preventedEsModule');
         memoryFs.fs.writeFileSync(bundle.entries[key].substr(1), entryFile);
       });
 

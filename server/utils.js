@@ -69,5 +69,34 @@ module.exports = {
     }
 
     return Object.keys(versions).sort(sorter)[0];
+  },
+  isSameLoaders: function (loadersA, loadersB) {
+    if (!loadersA || !loadersB) {
+      return false;
+    }
+
+    var sortByName = function (a, b) {
+      if (a.name > b.name) {
+        return 1;
+      } else if (a.name < b.name) {
+        return -1;
+      }
+      return 0;
+    };
+
+    var loadersAList = Object.keys(loadersA).map(function (key) {
+      return {
+        name: key,
+        config: loadersA[key]
+      }
+    }).sort(sortByName);
+    var loadersBList = Object.keys(loadersB).map(function (key) {
+      return {
+        name: key,
+        config: loadersB[key]
+      }
+    }).sort(sortByName);
+
+    return JSON.stringify(loadersAList) === JSON.stringify(loadersBList);
   }
 };

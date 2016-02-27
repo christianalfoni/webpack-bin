@@ -42,7 +42,7 @@ function AddFile(props) {
       </div>
     :
       <div className={styles.addFileWrapper}>
-        <ToolbarButton icon={icons.addFile} onClick={() => props.onAddFileClick()}/>
+        <ToolbarButton title="New File" icon={icons.addFile} onClick={() => props.onAddFileClick()}/>
       </div>
   );
 }

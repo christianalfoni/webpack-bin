@@ -1,0 +1,58 @@
+.wrapper {
+  padding: 10px;
+  min-width: 500px;
+  display: flex;
+}
+
+.loadersList {
+  flex: 1;
+}
+
+.loader {
+  height: 35px;
+  line-height: 35px;
+  cursor: pointer;
+}
+
+.activeLoader {
+  composes: loader;
+  background-color: rgba(0,0,0,0.2);
+  border-bottom-left-radius: 3px;
+  border-top-left-radius: 3px;
+}
+
+.loader:hover {
+  background-color: rgba(0,0,0,0.2);
+}
+
+.loader input {
+  position: relative;
+  top: -1px;
+  margin: 0 10px;
+}
+
+.loaderConfig {
+  flex: 1;
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 3px;
+  padding: 10px;
+  min-height: 300px;
+}
+
+.config {
+  margin: 5px 0;
+}
+
+.config input {
+  position: relative;
+  top: -1px;
+  margin: 0 10px;
+}
+
+.configDescription {
+  font-size: 12px;
+  height: 20px;
+  line-height: 20px;
+  padding-left: 10px;
+  color: rgba(255,255,255,0.5);
+}

@@ -71,6 +71,9 @@ var sessionsModule = {
   },
   removeMiddleware: function (req) {
     delete sessions[req.session.id].middleware;
+  },
+  updateLoaders: function (req) {
+    sessions[req.session.id].loaders = req.body.loaders;
   }
 };
 

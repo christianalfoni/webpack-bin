@@ -196,3 +196,18 @@
 .help:before {
     content: "\e29b";
 }
+
+.loaders {composes: font;}
+.loaders:before {
+    content: "\e093";
+}
+
+.npm {composes: font;}
+.npm:before {
+    content: "\e0fb";
+}
+
+.boilerplates {composes: font;}
+.boilerplates:before {
+    content: "\e284";
+}

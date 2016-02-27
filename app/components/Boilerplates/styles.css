@@ -1,0 +1,16 @@
+.wrapper {
+  padding: 10px;
+  min-width: 200px;
+}
+
+.boilerplate {
+  height: 20px;
+  line-height: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.boilerplate:hover {
+  border-radius: 3px;
+  background-color: rgba(0,0,0,0.5);
+}

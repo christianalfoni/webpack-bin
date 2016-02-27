@@ -31,6 +31,7 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 	// store our files in memory
 	var files = {};
 	var fs = compiler.outputFileSystem = new MemoryFileSystem();
+	var error = null;
 
 	onFileSystemAdded && onFileSystemAdded(fs);
 
@@ -53,6 +54,11 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 			}
 			if (!options.noInfo && !options.quiet)
 				console.info("webpack: bundle is now VALID.");
+
+			if (stats.hasErrors()) {
+				error = stats.compilation.errors[0];
+				console.log('There was an error here!');
+			}
 
 			// execute callback that are delayed
 			var cbs = callbacks;
@@ -192,6 +198,26 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 				else res.end(content);
 				cb && cb();
 			}
+		}
+
+		if (error) {
+			console.log('Has error!');
+
+			var html = [
+				'<div>',
+				'  <h1 style="color:#eb1e64;padding:10px;margin:0;">ERROR: ' + error.name + '</h1>',
+				'  <textarea id="textarea" style="border:0;resize:none;width:100%;height:500px;font-size:16px;padding:20px;line-height:22px;box-sizing:border-box;">' + error.message.replace(/\n/g, '\\n').replace(/\'/g, '\\\'') + '</textarea>',
+				'</div>'
+			].join('');
+			var content = [
+				'var html = \'' + html + '\';',
+				'document.body.innerHTML = html;'
+			].join('\n');
+			res.setHeader("Content-Type", mime.lookup('error.js'));
+			res.setHeader("Content-Length", content.length);
+			res.send(content);
+			error = null;
+			return;
 		}
 
 		// in lazy mode, rebuild on bundle request

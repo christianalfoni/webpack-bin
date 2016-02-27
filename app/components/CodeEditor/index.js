@@ -17,6 +17,7 @@ import styles from './styles.css';
   files: 'bin.currentBin.files',
   isLoadingBin: 'bin.isLoadingBin',
   isRunning: 'bin.isRunning',
+  forceUpdateCode: 'bin.forceUpdateCode'
 })
 class CodeEditor extends React.Component {
   constructor(props) {
@@ -35,7 +36,10 @@ class CodeEditor extends React.Component {
     } else {
       this.codemirror.setOption('readOnly', false);
     }
-    if (prevProps.isLoadingBin && !this.props.isLoadingBin) {
+    if (
+      (prevProps.isLoadingBin && !this.props.isLoadingBin) ||
+      (!prevProps.forceUpdateCode && this.props.forceUpdateCode)
+    ) {
       this.codemirror.setValue(this.props.files[this.props.selectedFileIndex].content);
     }
   }

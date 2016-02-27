@@ -62,7 +62,16 @@ module.exports = {
       sessions.removeMiddleware(req);
     }
 
+    var hasChangedLoaders = !utils.isSameLoaders(req.session.loaders, req.body.loaders);
     sessions.updateVendorsBundle(req);
+    sessions.updateLoaders(req);
+
+    if (!req.session.currentBin) {
+      sessions.update(req.session.id, 'currentBin', {
+        id: req.body.id,
+        isOwner: false
+      });
+    }
 
     console.log('Requested vendors: ', req.body.packages);
     console.log('Middleware: ', Boolean(req.session.middleware));
@@ -127,9 +136,11 @@ module.exports = {
         .catch(utils.logError);
 
     } else if (
-      !req.session.middleware
+      !req.session.middleware ||
+      hasChangedLoaders
     ) {
-      sessionBundler.create(req.session)()
+      db.getVendorsBundleEntries(utils.getVendorsBundleName(req.body.packages))
+        .then(sessionBundler.create(req.session))
         .then(sessions.createBundleMiddleware(req, res, next))
         .then(function () {
 

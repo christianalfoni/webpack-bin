@@ -1,6 +1,5 @@
-import set from 'cerebral-addons/set';
+import hidePopups from '../factories/hidePopups';
 
 export default [
-  set('state:/bin.showPackagesSelector', false),
-  set('state:/bin.showInfo', false)
+  ...hidePopups
 ];

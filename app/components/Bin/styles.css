@@ -3,13 +3,13 @@
   width: 100%;
   display: flex;
   opacity: 1;
-  -webkit-transition: opacity 1s;
-  transition: opacity 1s;
+  -webkit-transition: opacity 0.5s;
+  transition: opacity 0.5s;
 }
 
 .wrapperFaded {
   composes: wrapper;
-  opacity: 0.5;
+  opacity: 0.1;
 }
 
 .snackbar {
@@ -39,4 +39,21 @@
   visibility: visible;
   opacity: 1;
   transform: translate3d(0px, 0px, 0px);
+}
+
+.loaderWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -250px;
+  margin-top: -100px;
+  width: 500px;
+  text-align: center;
+}
+
+.logo {
+  width: 500px;
+  height: 100px;
+  background-image: url('/logo.png');
+  background-size: contain;
 }

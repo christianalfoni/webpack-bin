@@ -9,11 +9,17 @@ import addFileAborted from './signals/addFileAborted';
 import addFileClicked from './signals/addFileClicked';
 import addFileNameUpdated from './signals/addFileNameUpdated';
 import addFileSubmitted from './signals/addFileSubmitted';
-import togglePackage from './signals/togglePackage';
-import toggleShowPackagesSelector from './signals/toggleShowPackagesSelector';
+import packageToggled from './signals/packageToggled';
+import packagesToggled from './signals/packagesToggled';
 import appClicked from './signals/appClicked';
-import toggleShowInfo from './signals/toggleShowInfo';
+import infoToggled from './signals/infoToggled';
 import opened from './signals/opened';
+import loadersToggled from './signals/loadersToggled';
+import loaderClicked from './signals/loaderClicked';
+import loaderToggled from './signals/loaderToggled';
+import configToggled from './signals/configToggled';
+import boilerplatesToggled from './signals/boilerplatesToggled';
+import boilerplateClicked from './signals/boilerplateClicked';
 
 import hideSnackbar from './actions/hideSnackbar.js';
 
@@ -30,7 +36,8 @@ export default (options = {}) => {
           name: 'main.js',
           content: ''
         }],
-        packages: {}
+        packages: {},
+        loaders: {}
       },
       isLoadingBin: false,
 
@@ -45,7 +52,11 @@ export default (options = {}) => {
       newFileName: '',
       selectedFileIndex: 0,
       showInfo: false,
-      showPackagesSelector: false
+      showPackagesSelector: false,
+      showLoadersSelector: false,
+      showBoilerplatesSelector: false,
+      currentLoader: 'babel',
+      forceUpdateCode: false
     });
 
     module.addSignals({
@@ -61,11 +72,17 @@ export default (options = {}) => {
       addFileClicked,
       addFileNameUpdated,
       addFileSubmitted,
-      togglePackage,
-      toggleShowPackagesSelector,
+      packageToggled,
+      packagesToggled,
       appClicked,
-      toggleShowInfo,
-      opened
+      infoToggled,
+      opened,
+      loadersToggled,
+      loaderClicked,
+      loaderToggled,
+      configToggled,
+      boilerplatesToggled,
+      boilerplateClicked
     });
 
   };
