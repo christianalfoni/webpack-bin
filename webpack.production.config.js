@@ -2,7 +2,7 @@ var path = require('path');
 
 module.exports = {
   output: {
-    publicPath: '/'
+    publicPath: '/public'
   },
   resolve: {
     alias: {
