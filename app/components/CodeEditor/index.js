@@ -45,6 +45,7 @@ class CodeEditor extends React.Component {
       console.log("component updated");
       this.codemirror.setOption('keyMap', 'vim');
     } else {
+      console.log("component updated else");
       this.codemirror.setOption('keyMap', 'default');
     }
   }
