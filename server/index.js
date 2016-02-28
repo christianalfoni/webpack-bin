@@ -46,6 +46,15 @@ database.connect(utils.isProduction() ? process.env.MONGOHQ_URL : 'mongodb://loc
   .catch(utils.log('Could not connect to database'));
 
 // Init middleware
+if (utils.isProduction()) {
+  app.use(function (req, res, next) {
+    if (/herokuapp/.test(req.host)) {
+      return res.redirect('http://www.webpackbin.com' + req.url);
+    } else {
+      next();
+    }
+  });
+}
 app.use(compression())
 app.use(cookieParser());
 app.use(bodyParser.json());
