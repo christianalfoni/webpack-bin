@@ -39,11 +39,10 @@ class CodeEditor extends React.Component {
       this.setModeAndLinter();
       this.codemirror.setValue(this.props.files[this.props.selectedFileIndex].content);
     }
+
     if (this.props.vimMode) {
-      console.log("component updated");
       this.codemirror.setOption('keyMap', 'vim');
     } else {
-      console.log("component updated else");
       this.codemirror.setOption('keyMap', 'default');
     }
   }

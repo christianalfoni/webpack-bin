@@ -20,7 +20,7 @@ import Boilerplates from '../Boilerplates';
   showInfo: 'bin.showInfo',
   showLog: 'bin.showLog',
   showBoilerplatesSelector: 'bin.showBoilerplatesSelector',
-  shouldCheckLog: 'bin.shouldCheckLog'
+  shouldCheckLog: 'bin.shouldCheckLog',
   showBoilerplatesSelector: 'bin.showBoilerplatesSelector',
   vimModeEnabled: 'bin.vimMode'
 })
@@ -60,6 +60,7 @@ class Toolbar extends React.Component {
             value={this.props.newFileName}/>
         </div>
         <div className={styles.column}>
+          {/*
           <div className={styles.buttonWrapper}>
             Vim Mode
             <input
@@ -67,6 +68,7 @@ class Toolbar extends React.Component {
               checked={this.props.vimModeEnabled}
               onClick={() => this.props.signals.bin.vimModeClicked()}/>
           </div>
+          */}
           <div className={styles.buttonWrapper}>
             <ToolbarButton
               title='Run'

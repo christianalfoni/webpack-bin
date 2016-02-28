@@ -92,12 +92,9 @@ export default (options = {}) => {
       boilerplateClicked,
       linterRequested,
       linterLoaded,
-<<<<<<< HEAD
       logToggled,
-      logReceived
-=======
+      logReceived,
       vimModeClicked
->>>>>>> origin/master
     });
 
   };
