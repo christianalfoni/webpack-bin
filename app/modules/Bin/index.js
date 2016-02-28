@@ -23,6 +23,7 @@ import linterLoaded from './signals/linterLoaded';
 import linterRequested from './signals/linterRequested';
 import logToggled from './signals/logToggled';
 import logReceived from './signals/logReceived';
+import vimModeClicked from './signals/vimModeClicked';
 
 import hideSnackbar from './actions/hideSnackbar.js';
 
@@ -62,7 +63,8 @@ export default (options = {}) => {
       showBoilerplatesSelector: false,
       showLog: false,
       currentLoader: 'babel',
-      forceUpdateCode: false
+      forceUpdateCode: false,
+      vimMode: false
     });
 
     module.addSignals({
@@ -90,8 +92,12 @@ export default (options = {}) => {
       boilerplateClicked,
       linterRequested,
       linterLoaded,
+<<<<<<< HEAD
       logToggled,
       logReceived
+=======
+      vimModeClicked
+>>>>>>> origin/master
     });
 
   };
