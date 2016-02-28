@@ -59,6 +59,12 @@ class Toolbar extends React.Component {
         </div>
         <div className={styles.column}>
           <div className={styles.buttonWrapper}>
+            Vim Mode
+            <input
+              type="checkbox"
+              onClick={() => this.props.signals.bin.vimModeClicked()}/>
+          </div>
+          <div className={styles.buttonWrapper}>
             <ToolbarButton
               title='Run'
               icon={icons.play}

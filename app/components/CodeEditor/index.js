@@ -6,6 +6,7 @@ import 'codemirror/addon/lint/lint.js';
 import React, { PropTypes } from 'react';
 import { Decorator as Cerebral, Link } from 'cerebral-view-react';
 import CodeMirror from 'codemirror';
+import 'codemirror/keymap/vim.js';
 import styles from './styles.css';
 
 const loadedLinters = ['js'];
@@ -15,7 +16,8 @@ const loadedLinters = ['js'];
   files: 'bin.currentBin.files',
   isLoadingBin: 'bin.isLoadingBin',
   isRunning: 'bin.isRunning',
-  forceUpdateCode: 'bin.forceUpdateCode'
+  forceUpdateCode: 'bin.forceUpdateCode',
+  vimMode: 'bin.vimMode'
 })
 class CodeEditor extends React.Component {
   constructor(props) {
@@ -38,6 +40,12 @@ class CodeEditor extends React.Component {
       (!prevProps.forceUpdateCode && this.props.forceUpdateCode)
     ) {
       this.codemirror.setValue(this.props.files[this.props.selectedFileIndex].content);
+    }
+    if (this.props.vimMode) {
+      console.log("component updated");
+      this.codemirror.setOption('keyMap', 'vim');
+    } else {
+      this.codemirror.setOption('keyMap', 'default');
     }
   }
   componentDidMount() {

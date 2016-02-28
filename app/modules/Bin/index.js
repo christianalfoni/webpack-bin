@@ -22,6 +22,7 @@ import boilerplatesToggled from './signals/boilerplatesToggled';
 import boilerplateClicked from './signals/boilerplateClicked';
 import linterLoaded from './signals/linterLoaded';
 import linterRequested from './signals/linterRequested';
+import vimModeClicked from './signals/vimModeClicked';
 
 import hideSnackbar from './actions/hideSnackbar.js';
 
@@ -58,7 +59,8 @@ export default (options = {}) => {
       showLoadersSelector: false,
       showBoilerplatesSelector: false,
       currentLoader: 'babel',
-      forceUpdateCode: false
+      forceUpdateCode: false,
+      vimMode: false
     });
 
     module.addSignals({
@@ -86,7 +88,8 @@ export default (options = {}) => {
       boilerplatesToggled,
       boilerplateClicked,
       linterRequested,
-      linterLoaded
+      linterLoaded,
+      vimModeClicked
     });
 
   };
