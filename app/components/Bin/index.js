@@ -4,13 +4,15 @@ import styles from './styles.css';
 import Toolbar from '../Toolbar';
 import CodeEditor from '../CodeEditor';
 import Preview from '../Preview';
+import Log from '../Log';
 
 @Cerebral({
   snackbar: 'bin.snackbar',
   isRunning: 'bin.isRunning',
   isRunningLong: 'bin.isRunningLong',
   isLoadingBin: 'bin.isLoadingBin',
-  hasChangedPackages: 'bin.hasChangedPackages'
+  hasChangedPackages: 'bin.hasChangedPackages',
+  showLog: 'bin.showLog'
 })
 class Bin extends React.Component {
   constructor(props) {
@@ -56,6 +58,12 @@ class Bin extends React.Component {
         <div className={this.props.isLoadingBin ? styles.wrapperFaded : styles.wrapper}>
           <CodeEditor/>
           <Preview/>
+          {
+            this.props.showLog ?
+              <Log/>
+            :
+              null
+          }
         </div>
         {
           this.props.isLoadingBin ?

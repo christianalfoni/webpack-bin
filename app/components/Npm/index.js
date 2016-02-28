@@ -2,6 +2,7 @@ import React from 'react';
 import {Decorator as Cerebral} from 'cerebral-view-react';
 import styles from './styles.css';
 import NpmPackage from '../NpmPackage';
+import Loaders from '../Loaders';
 
 @Cerebral({
   packages: 'bin.currentBin.packages',
@@ -79,6 +80,10 @@ class Npm extends React.Component {
               null
           }
           {this.renderSelectedPackages()}
+        </div>
+        <div className={styles.column}>
+          <h3 className={styles.title}>Loaders</h3>
+          <Loaders/>
         </div>
       </div>
     );

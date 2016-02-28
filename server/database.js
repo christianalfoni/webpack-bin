@@ -21,6 +21,7 @@ module.exports = {
           '  - Add packages from NPM',
           '  - Add loaders for modern JavaScript, css, typescript, coffeescript etc.',
           '  - Use boilerplates to quickly load up pacakges with Hello World examples',
+          '  - Use bin.log() in your code to log values',
           '*/'
         ].join('\n')
       }]

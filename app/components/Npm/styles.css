@@ -1,15 +1,16 @@
 .wrapper {
   padding: 10px;
-  min-width: 500px;
   display: flex;
 }
 
 .column {
-  flex: 1;
+  flex-grow: 1;
+  flex-basis: auto;
   margin: 0 5px;
+  min-width: 250px;
 }
 
-.column:last-child {
+.column:not(:first-child) {
   padding-left: 10px;
   border-left: 1px solid rgba(0,0,0,0.2);
 }

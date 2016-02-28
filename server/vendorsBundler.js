@@ -44,7 +44,7 @@ module.exports = {
            name: 'webpackbin_vendors',
            context: '/'
          }),
-         new webpack.optimize.UglifyJsPlugin({minimize: true})
+         // new webpack.optimize.UglifyJsPlugin({minimize: true})
         ]
       });
       vendorsCompiler.outputFileSystem = memoryFs.fs;

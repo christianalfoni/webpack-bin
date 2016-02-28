@@ -1,6 +1,7 @@
 import React from 'react';
 import {Decorator as Cerebral} from 'cerebral-view-react';
 import styles from './styles.css';
+import classnames from 'classnames';
 
 @Cerebral()
 class ToolbarButton extends React.Component {
@@ -23,8 +24,14 @@ class ToolbarButton extends React.Component {
     );
   }
   renderIconButton() {
+    const className = classnames({
+      [styles.activeIcon]: this.props.active,
+      [styles.notifyIcon]: this.props.notify,
+      [styles.disabledIcon]: this.props.disabled,
+      [styles.icon]: !this.props.active && !this.props.notify && !this.props.disabled
+    });
     return (
-      <div className={this.props.active ? styles.activeIcon : this.props.disabled ? styles.disabledIcon : styles.icon}>
+      <div className={className}>
         <div className={this.props.icon}></div>
       </div>
     );

@@ -72,3 +72,23 @@
   color: #cadaed;
   font-family: Ubuntu, sans-serif;
 }
+
+.notifyIcon {
+  composes: icon;
+  /*border-color: #eb1e64;*/
+  color: #fff;
+  animation: notify 1s infinite;
+  -webkit-animation: notify 1s infinite;
+}
+
+@keyframes notify {
+  0%   {background: #242d3c;}
+  50%  {background: #eb1e64;}
+  100% {background: #242d3c;}
+}
+
+@-webkit-keyframes notify {
+  0%   {background: #242d3c;}
+  50%  {background: #eb1e64;}
+  100% {background: #242d3c;}
+}

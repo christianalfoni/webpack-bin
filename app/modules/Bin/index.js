@@ -14,7 +14,6 @@ import packagesToggled from './signals/packagesToggled';
 import appClicked from './signals/appClicked';
 import infoToggled from './signals/infoToggled';
 import opened from './signals/opened';
-import loadersToggled from './signals/loadersToggled';
 import loaderClicked from './signals/loaderClicked';
 import loaderToggled from './signals/loaderToggled';
 import configToggled from './signals/configToggled';
@@ -22,6 +21,8 @@ import boilerplatesToggled from './signals/boilerplatesToggled';
 import boilerplateClicked from './signals/boilerplateClicked';
 import linterLoaded from './signals/linterLoaded';
 import linterRequested from './signals/linterRequested';
+import logToggled from './signals/logToggled';
+import logReceived from './signals/logReceived';
 
 import hideSnackbar from './actions/hideSnackbar.js';
 
@@ -42,8 +43,11 @@ export default (options = {}) => {
         loaders: {}
       },
       isLoadingBin: false,
+      logs: [],
+      shouldCheckLog: false,
 
       hasTriedToRun: false,
+      shouldLint: true,
       isLinting: false,
       lastLintedFileIndex: 0,
       isValid: true,
@@ -55,8 +59,8 @@ export default (options = {}) => {
       selectedFileIndex: 0,
       showInfo: false,
       showPackagesSelector: false,
-      showLoadersSelector: false,
       showBoilerplatesSelector: false,
+      showLog: false,
       currentLoader: 'babel',
       forceUpdateCode: false
     });
@@ -79,14 +83,15 @@ export default (options = {}) => {
       appClicked,
       infoToggled,
       opened,
-      loadersToggled,
       loaderClicked,
       loaderToggled,
       configToggled,
       boilerplatesToggled,
       boilerplateClicked,
       linterRequested,
-      linterLoaded
+      linterLoaded,
+      logToggled,
+      logReceived
     });
 
   };

@@ -1,0 +1,15 @@
+.wrapper {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background-color: #202634;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.log {
+  padding: 5px;
+  border-bottom: 1px solid rgba(255,255,255,0.02);
+}

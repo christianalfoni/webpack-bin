@@ -33,7 +33,7 @@ preLoadPackages([
   'babel-loader',
   'style-loader',
   'css-loader',
-  'typescript-loader',
+  'ts-loader',
   'coffee-loader'
 ]);
 

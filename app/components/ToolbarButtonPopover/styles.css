@@ -44,11 +44,11 @@
 
 .arrowBoxRight {
   composes: arrowBox;
-  right: -15px;
+  right: -340px;
 }
 
 .arrowBoxRight:before, .arrowBoxRight:after {
-  right: 26px;
+  right: 350px;
   margin-left: 0;
   left: auto;
 }

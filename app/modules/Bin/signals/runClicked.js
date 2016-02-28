@@ -32,6 +32,7 @@ export default [
     ],
     error: []
   },
+  set('state:/bin.logs', []),
   function action({state}) {
     state.set('bin.url', String(Date.now()));
   },

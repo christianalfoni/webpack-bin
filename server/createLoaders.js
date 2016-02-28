@@ -42,7 +42,11 @@ module.exports = function (session) {
   if (session.loaders.typescript) {
     var loader = {
       test: /\.ts?$/,
-      loader: 'typescript'
+      loader: 'ts',
+      query: {
+        transpileOnly: true,
+        isolatedModules: true
+      }
     }
     loaders.push(loader);
   }

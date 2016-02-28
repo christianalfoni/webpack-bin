@@ -7,15 +7,16 @@ var sessions = require('./sessions');
 var npm = require('./npm');
 var path = require('path');
 var mime = require('mime');
+var fs = require('fs');
+
+var wbtools = fs.readFileSync(path.resolve('server', 'wbTools.js')).toString();
 
 var createIndex = function (req) {
   return [
     '<!DOCTYPE html>',
     '<html>',
     ' <head>',
-    '   <script>',
-    '     window.addEventListener("load", function () {window.parent.postMessage({type: "loaded"}, location.origin)});',
-    '   </script>',
+    '   <script src="/api/sandbox/wbtools_v1.js"></script>',
     ' </head>',
     ' <body>',
     '   <div id="app"></div>',
@@ -33,6 +34,15 @@ module.exports = {
   },
   getFile: function (req, res, next) {
     console.log('requesting', req.url);
+    if (/wbtools/.test(req.url)) {
+      res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+      res.setHeader('Expires', '-1');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader("Content-Type", mime.lookup('wbtools.js'));
+      res.setHeader("Content-Length", wbtools.length);
+      return res.send(wbtools);
+    }
+
     if (/webpackbin_bundle\.js/.test(req.url)) {
       res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
       res.setHeader('Expires', '-1');

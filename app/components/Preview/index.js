@@ -27,6 +27,11 @@ class Preview extends React.Component {
     if (event.data.type === 'loaded') {
       this.props.signals.bin.iframeLoaded();
     }
+    if (event.data.type === 'log') {
+      this.props.signals.bin.logReceived({
+        value: event.data.value
+      });
+    }
   }
   render() {
     return (

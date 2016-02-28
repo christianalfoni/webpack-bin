@@ -1,4 +1,5 @@
 .wrapper {
+  position: relative;
   height: calc(100vh - 50px);
   width: 100%;
   display: flex;
@@ -53,7 +54,7 @@
 
 .logo {
   width: 500px;
-  height: 100px;
+  height: 97px;
   background-image: url('/logo.png');
   background-size: contain;
 }
