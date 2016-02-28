@@ -100,7 +100,7 @@ class Toolbar extends React.Component {
             icon={icons.boilerplates}
             onClick={() => this.props.signals.bin.boilerplatesToggled()}
             show={this.props.showBoilerplatesSelector}
-            right>
+            >
             <Boilerplates/>
           </ToolbarButtonPopover>
           <ToolbarButtonPopover
