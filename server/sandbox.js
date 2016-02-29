@@ -75,6 +75,7 @@ module.exports = {
     var hasChangedLoaders = !utils.isSameLoaders(req.session.loaders, req.body.loaders);
     sessions.updatePackages(req);
     sessions.updateLoaders(req);
+    sessions.updateFiles(req);
 
     if (!req.session.currentBin) {
       sessions.update(req.session.id, 'currentBin', {

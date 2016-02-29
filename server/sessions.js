@@ -12,7 +12,7 @@ var sessionsModule = {
     return session;
   },
   set: function (id) {
-    sessions[id] = {id: id, lastUpdate: Date.now()};
+    sessions[id] = {id: id, lastUpdate: Date.now(), files: []};
     return sessions[id];
   },
   update: function (id, key, value) {
@@ -71,6 +71,11 @@ var sessionsModule = {
   },
   updateLoaders: function (req) {
     sessions[req.session.id].loaders = req.body.loaders;
+  },
+  updateFiles: function (req) {
+    sessions[req.session.id].files = req.body.files.map(function (file) {
+      return file.name;
+    });
   }
 };
 
