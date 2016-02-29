@@ -14,9 +14,14 @@
 }
 
 .file {
+  position: relative;
   display: inline-block;
   padding: 15px 30px;
   cursor: pointer;
+}
+
+.file:not(:first-child):hover i {
+  display: block;
 }
 
 .active {
@@ -52,4 +57,18 @@
 
 .info p {
   line-height: 20px;
+}
+
+.deleteFile {
+  position: absolute;
+  font-style: normal;
+  right: 5px;
+  display: none;
+  top: 15px;
+  font-weight: bold;
+  color: rgba(255,255,255,0.5);
+}
+
+.deleteFile:hover {
+  color: rgba(255,255,255,1);
 }

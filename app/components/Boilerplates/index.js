@@ -4,7 +4,8 @@ import styles from './styles.css';
 
 const boilerplates = {
   'react': 'React',
-  'cerebral': 'Cerebral with React'
+  'cerebral': 'Cerebral with React',
+  'redux': 'Redux Counter'
 };
 
 @Cerebral()

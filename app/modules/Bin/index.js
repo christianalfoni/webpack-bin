@@ -24,6 +24,7 @@ import linterRequested from './signals/linterRequested';
 import logToggled from './signals/logToggled';
 import logReceived from './signals/logReceived';
 import vimModeClicked from './signals/vimModeClicked';
+import fileDeleted from './signals/fileDeleted';
 
 import hideSnackbar from './actions/hideSnackbar.js';
 
@@ -94,7 +95,8 @@ export default (options = {}) => {
       linterLoaded,
       logToggled,
       logReceived,
-      vimModeClicked
+      vimModeClicked,
+      fileDeleted
     });
 
   };
