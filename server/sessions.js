@@ -38,7 +38,7 @@ var sessionsModule = {
       req.session = sessionsModule.set(id);
       res.cookie('codebox', String(id), {
         expires: 0,
-        domain: utils.isProduction() ? 'webpackbin.herokuapp.com' : '.codebox.dev',
+        domain: utils.isProduction() ? 'www.webpackbin.com' : '.codebox.dev',
         httpOnly: true
       });
     }
