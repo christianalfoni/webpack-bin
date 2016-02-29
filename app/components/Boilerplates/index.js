@@ -3,7 +3,8 @@ import {Decorator as Cerebral} from 'cerebral-view-react';
 import styles from './styles.css';
 
 const boilerplates = {
-  'react': 'React'
+  'react': 'React',
+  'cerebral': 'Cerebral with React'
 };
 
 @Cerebral()

@@ -9,7 +9,7 @@ module.exports = function (session) {
       exclude: /node_modules/,
       loader: 'babel',
       query: {
-        "presets": []
+        presets: []
       }
     };
     if (session.loaders.babel.stage0) {
@@ -56,6 +56,24 @@ module.exports = function (session) {
     var loader = {
       test: /\.coffee?$/,
       loader: 'coffee'
+    }
+    loaders.push(loader);
+  }
+
+  // Less
+  if (session.loaders.css && session.loaders.css.less) {
+    var loader = {
+      test: /\.less?$/,
+      loader: 'style!css!less'
+    }
+    loaders.push(loader);
+  }
+
+  // Sass
+  if (session.loaders.css && session.loaders.css.sass) {
+    var loader = {
+      test: /\.scss?$/,
+      loader: 'style!css!sass'
     }
     loaders.push(loader);
   }

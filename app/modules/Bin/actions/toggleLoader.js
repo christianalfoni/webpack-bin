@@ -8,7 +8,9 @@ const loaderTemplates = {
     modules: false
   },
   typescript: {},
-  coffeescript: {}
+  coffeescript: {},
+  less: {},
+  sass: {}
 };
 
 function toggleLoader({input, state}) {

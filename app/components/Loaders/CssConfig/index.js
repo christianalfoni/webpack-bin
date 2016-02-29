@@ -24,7 +24,29 @@ class CssConfig extends React.Component {
             onChange={() => this.props.signals.bin.configToggled({name: 'modules'})}/>
           CSS Modules
           <div className={styles.configDescription}>
-            Import css classes as an object to reference class names by key
+            Import css classes as an object to reference class names by key, on .css files
+          </div>
+        </div>
+        <div className={styles.config}>
+          <input
+            type="checkbox"
+            checked={loader && loader.less}
+            disabled={!loader}
+            onChange={() => this.props.signals.bin.configToggled({name: 'less'})}/>
+          Less
+          <div className={styles.configDescription}>
+            Import .less files to styles tags
+          </div>
+        </div>
+        <div className={styles.config}>
+          <input
+            type="checkbox"
+            checked={loader && loader.sass}
+            disabled={!loader}
+            onChange={() => this.props.signals.bin.configToggled({name: 'sass'})}/>
+          Sass
+          <div className={styles.configDescription}>
+            Import .scss files to styles tags
           </div>
         </div>
       </div>

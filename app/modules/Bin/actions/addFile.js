@@ -14,6 +14,22 @@ function addFile({state}) {
   if (ext === 'coffee' && !state.get('bin.currentBin.loaders.coffeescript')) {
     state.set('bin.currentBin.loaders.coffeescript', {});
   }
+  if (ext === 'less' && !state.get('bin.currentBin.loaders.css.less')) {
+    if (!state.get('bin.currentBin.loaders.css')) {
+      state.set('bin.currentBin.loaders.css', {});
+    }
+    state.merge('bin.currentBin.loaders.css', {
+      less: true
+    });
+  }
+  if (ext === 'scss' && !state.get('bin.currentBin.loaders.css.sass')) {
+    if (!state.get('bin.currentBin.loaders.css')) {
+      state.set('bin.currentBin.loaders.css', {});
+    }
+    state.merge('bin.currentBin.loaders.css', {
+      sass: true
+    });
+  }
 }
 
 export default addFile;

@@ -22,7 +22,7 @@
 }
 
 .cm-s-learncode div.CodeMirror-selected {
-    background: #171c26 !important;
+    background: rgba(255,255,255,0.1) !important;
 }
 
 .cm-s-learncode.CodeMirror::selection {

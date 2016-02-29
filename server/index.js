@@ -34,7 +34,12 @@ preLoadPackages([
   'style-loader',
   'css-loader',
   'ts-loader',
-  'coffee-loader'
+  'coffee-loader',
+  'less',
+  'less-loader',
+  'node-sass',
+  'sass-loader',
+  'babel-plugin-transform-decorators-legacy'
 ]);
 
 // Init

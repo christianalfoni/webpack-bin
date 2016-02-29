@@ -79,8 +79,10 @@ class CodeEditor extends React.Component {
         return 'text/typescript';
       case 'coffee':
         return 'text/x-coffeescript';
-      case 'elm':
-        return 'elm';
+      case 'less':
+        return 'text/x-less';
+      case 'scss':
+        return 'text/x-sass';
       default:
         return 'jsx';
     }
@@ -189,6 +191,49 @@ class CodeEditor extends React.Component {
         return require.ensure([], () => {
           setCoffeeModeAndLinter();
           this.props.signals.bin.linterLoaded();
+        });
+      }
+
+    }
+
+    if (mode === 'text/x-less') {
+      const setLessModeAndLinter = function () {
+        loadedLinters.push(mode);
+        require('codemirror/mode/css/css.js');
+        this.codemirror.setOption('lint', false);
+        this.codemirror.setOption('mode', mode);
+        this.codemirror.setValue(this.codemirror.getValue());
+      }.bind(this);
+
+      if (loadedLinters.indexOf(mode) >= 0) {
+        setLessModeAndLinter();
+      } else {
+        this.props.signals.bin.linterRequested({noLint: true});
+        return require.ensure([], () => {
+          setLessModeAndLinter();
+          this.props.signals.bin.linterLoaded({noLint: true});
+        });
+      }
+
+    }
+
+    if (mode === 'text/x-sass') {
+
+      const setSassModeAndLinter = function () {
+        loadedLinters.push(mode);
+        require('codemirror/mode/sass/sass.js');
+        this.codemirror.setOption('lint', false);
+        this.codemirror.setOption('mode', mode);
+        this.codemirror.setValue(this.codemirror.getValue());
+      }.bind(this);
+
+      if (loadedLinters.indexOf(mode) >= 0) {
+        setSassModeAndLinter();
+      } else {
+        this.props.signals.bin.linterRequested({noLint: true});
+        return require.ensure([], () => {
+          setSassModeAndLinter();
+          this.props.signals.bin.linterLoaded({noLint: true});
         });
       }
 
