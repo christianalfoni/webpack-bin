@@ -12,7 +12,7 @@ module.exports = {
       console.log(bundle.entries);
       Object.keys(bundle.entries).forEach(function (key) {
         var entryFile = memoryFs.fs.readFileSync(bundle.entries[key].substr(1)).toString();
-        entryFile = entryFile.replace('__esModule', '__preventedEsModule');
+        entryFile = entryFile.replace('__esModule', '__preventedEsModule').replace(/exports\.default/g, 'module.exports');
         memoryFs.fs.writeFileSync(bundle.entries[key].substr(1), entryFile);
       });
 
@@ -44,7 +44,7 @@ module.exports = {
            name: 'webpackbin_vendors',
            context: '/'
          }),
-         // new webpack.optimize.UglifyJsPlugin({minimize: true})
+         new webpack.optimize.UglifyJsPlugin({minimize: true})
         ]
       });
       vendorsCompiler.outputFileSystem = memoryFs.fs;

@@ -13,6 +13,7 @@ module.exports = {
         package: key,
         targetFs: memoryFs.fs,
         version: packages[key],
+        allPackages: Object.keys(packages),
         options: {
           registry: 'http://registry.npmjs.org/',
           mindelay: 5000,
