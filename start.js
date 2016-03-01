@@ -1,6 +1,7 @@
 var app = require('./server'),
     http = require('http');
 
+console.log('Running WebpackBin version: ', require('./package.json').version);
 var server = http.createServer(app);
 
 server.listen(process.env.NODE_ENV === 'production' ? process.env.PORT : 4000);

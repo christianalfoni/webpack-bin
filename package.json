@@ -1,6 +1,6 @@
 {
   "name": "cerebral-boilerplate",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "A boilerplate for Cerebral",
   "main": "server.js",
   "repository": {
