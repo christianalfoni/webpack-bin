@@ -22,7 +22,7 @@ module.exports = {
           '  - Add loaders for modern JavaScript, Css, Typescript, Coffeescript, Sass, Less etc.',
           '  - Use boilerplates to quickly load up packages with Hello World examples',
           '  - Use bin.log() in your code to log values',
-          '  - There is a DOM element with ID "app" which you can render to'
+          '  - There is a DOM element with ID "app" which you can render to',
           '*/'
         ].join('\n')
       }]
