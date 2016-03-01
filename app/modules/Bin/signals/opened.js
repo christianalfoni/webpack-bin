@@ -21,6 +21,7 @@ export default [
         ]
       },
       set('state:/bin.isLoadingBin', false),
+      set('state:/bin.showLoadingBin', false),
       ...runClicked
     ],
     false: [

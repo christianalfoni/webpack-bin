@@ -9,10 +9,9 @@ import Log from '../Log';
 @Cerebral({
   snackbar: 'bin.snackbar',
   isRunning: 'bin.isRunning',
-  isRunningLong: 'bin.isRunningLong',
   isLoadingBin: 'bin.isLoadingBin',
-  hasChangedPackages: 'bin.hasChangedPackages',
-  showLog: 'bin.showLog'
+  showLog: 'bin.showLog',
+  showLoadingBin: 'bin.showLoadingBin'
 })
 class Bin extends React.Component {
   constructor(props) {
@@ -30,6 +29,12 @@ class Bin extends React.Component {
     });
   }
   componentDidUpdate(prevProps) {
+    if (!prevProps.isLoadingBin && this.props.isLoadingBin) {
+      this.setLoaderTimeout();
+    } else if (prevProps.isLoadingBin && !this.props.isLoadingBin) {
+      clearTimeout(this.loaderTimeout);
+    }
+
     if (!prevProps.snackbar.show && this.props.snackbar.show) {
       this.setSnackbarTimeout();
       this.setState({
@@ -41,6 +46,11 @@ class Bin extends React.Component {
     if (this.props.snackbar.show && prevProps.snackbar.text !== this.props.snackbar.text) {
       this.setSnackbarTimeout();
     }
+  }
+  setLoaderTimeout() {
+    this.loaderTimeout = setTimeout(() => {
+      this.props.signals.bin.loadingTimeoutReached();
+    }, 500);
   }
   setSnackbarTimeout() {
     clearTimeout(this.snackbarTimeout);
@@ -55,7 +65,7 @@ class Bin extends React.Component {
     return (
       <div onClick={() => this.props.signals.bin.appClicked()}>
         <Toolbar/>
-        <div className={this.props.isLoadingBin ? styles.wrapperFaded : styles.wrapper}>
+        <div className={this.props.showLoadingBin ? styles.wrapperFaded : styles.wrapper}>
           <CodeEditor/>
           <Preview/>
           {
@@ -66,7 +76,7 @@ class Bin extends React.Component {
           }
         </div>
         {
-          this.props.isLoadingBin ?
+          this.props.showLoadingBin ?
             <div className={styles.loaderWrapper}>
               <div className={styles.logo}/>
               Loading your WebpackBin...

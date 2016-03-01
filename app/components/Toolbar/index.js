@@ -28,6 +28,9 @@ class Toolbar extends React.Component {
   static propTypes = {
     files: PropTypes.array
   };
+  getTwitterUrl() {
+    return 'http://twitter.com/share?text=Take a look at this awesome new code bin service!&url=http://www.webpackbin.com/&hashtags=webpackbin,webpack,javascript';
+  }
   renderFiles() {
     return this.props.files.map((file, index) => {
       const active = index === this.props.selectedFileIndex;
@@ -94,7 +97,7 @@ class Toolbar extends React.Component {
             icon={icons.npm}
             onClick={() => this.props.signals.bin.packagesToggled()}
             show={this.props.showPackagesSelector}
-            right>
+            middle>
             <Npm/>
           </ToolbarButtonPopover>
           <ToolbarButtonPopover
@@ -103,30 +106,32 @@ class Toolbar extends React.Component {
             icon={icons.boilerplates}
             onClick={() => this.props.signals.bin.boilerplatesToggled()}
             show={this.props.showBoilerplatesSelector}
-            >
+            right>
             <Boilerplates/>
           </ToolbarButtonPopover>
           <ToolbarButtonPopover
             title="Info"
             className={styles.packagesButton}
             icon={icons.help}
-            onClick={() => this.props.signals.bin.toggleShowInfo()}
-            show={this.props.showInfo}>
+            onClick={() => this.props.signals.bin.infoToggled()}
+            show={this.props.showInfo}
+            right>
             <div className={styles.info}>
-              <h3>What is this project?</h3>
+              <h3>WebpackBin</h3>
               <p>
-                WebpackBin is in ALPHA and will allow you to load in any NPM
-                package and webpack loaders to play around with.
+                WebpackBin is in ALPHA and allows you to load up NPM packages and webpack
+                loaders superfast. All bins has its own url and you can share your code
+                with anyone.
               </p>
-              <h3>Nice to know</h3>
-              <p>
-                Your WebpackBin will be saved, though your session is short lived in the alpha, about 5 minutes.
-                A copy of your Bin will automatically be created if you save a new one though.
-              </p>
-              <p>
-                Configuring new package bundles requires them to be downloaded from NPM, but using existing
-                bundles are superfast to load.
-              </p>
+              <div className={styles.link} onClick={() => {const win = window.open('https://github.com/christianalfoni/webpack-bin/issues');win.focus();}}>
+                <i className={icons.issue}/> Create an issue
+              </div>
+              <div className={styles.link} onClick={() => {const win = window.open('https://github.com/christianalfoni/webpack-bin');win.focus();}}>
+                <i className={icons.github}/> Contribute to the project
+              </div>
+              <div className={styles.link} onClick={() => {const win = window.open(this.getTwitterUrl());win.focus();}}>
+                <i className={icons.twitter}/> Share on Twitter
+              </div>
             </div>
           </ToolbarButtonPopover>
           <div className={styles.logo}/>

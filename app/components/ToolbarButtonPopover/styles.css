@@ -42,13 +42,24 @@
   border-bottom-color: #28374c;
 }
 
-.arrowBoxRight {
+.arrowBoxMiddle {
   composes: arrowBox;
   right: -340px;
 }
 
-.arrowBoxRight:before, .arrowBoxRight:after {
+.arrowBoxMiddle:before, .arrowBoxMiddle:after {
   right: 350px;
+  margin-left: 0;
+  left: auto;
+}
+
+.arrowBoxRight {
+  composes: arrowBox;
+  right: -15px;
+}
+
+.arrowBoxRight:before, .arrowBoxRight:after {
+  right: 26px;
   margin-left: 0;
   left: auto;
 }

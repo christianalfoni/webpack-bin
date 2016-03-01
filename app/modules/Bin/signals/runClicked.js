@@ -9,14 +9,8 @@ import redirectToBin from '../actions/redirectToBin';
 import gotNewBin from '../actions/gotNewBin';
 
 export default [
-  when('state:/bin.hasChangedPackages'), {
-    isTrue: [
-      showSnackbar('You changed packages and might be the first to combine them this way, hold on please...', true),
-      set('state:/bin.isLoadingBin', true)
-    ],
-    isFalse: []
-  },
   set('state:/bin.isRunning', true),
+  set('state:/bin.isLoadingBin', true),
   postCode, {
     success: [
       gotNewBin, {
@@ -39,5 +33,6 @@ export default [
   set('state:/bin.hasTriedToRun', false),
   set('state:/bin.isRunning', false),
   set('state:/bin.hasChangedPackages', false),
-  set('state:/bin.isLoadingBin', false)
+  set('state:/bin.isLoadingBin', false),
+  set('state:/bin.showLoadingBin', false)
 ];

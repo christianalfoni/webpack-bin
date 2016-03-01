@@ -19,8 +19,8 @@ module.exports = {
           '  Welcome to WebpackBin',
           '',
           '  - Add packages from NPM',
-          '  - Add loaders for modern JavaScript, css, typescript, coffeescript etc.',
-          '  - Use boilerplates to quickly load up pacakges with Hello World examples',
+          '  - Add loaders for modern JavaScript, Css, Typescript, Coffeescript, Sass, Less etc.',
+          '  - Use boilerplates to quickly load up packages with Hello World examples',
           '  - Use bin.log() in your code to log values',
           '*/'
         ].join('\n')

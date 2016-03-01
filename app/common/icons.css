@@ -211,3 +211,18 @@
 .boilerplates:before {
     content: "\e284";
 }
+
+.github {composes: font;}
+.github:before {
+    content: "\e900";
+}
+
+.issue {composes: font;}
+.issue:before {
+    content: "\e0c5";
+}
+
+.twitter {composes: font;}
+.twitter:before {
+    content: "\e901";
+}

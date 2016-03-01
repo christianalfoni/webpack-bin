@@ -10,10 +10,14 @@ class ToolbarButtonPopover extends React.Component {
     e.stopPropagation();
   }
   renderPopup() {
+    const className = classNames(styles.arrowBox, {
+      [styles.arrowBoxRight]: this.props.right,
+      [styles.arrowBoxMiddle]: this.props.middle
+    });
     return (
       <div className={styles.popup}>
         <div
-          className={this.props.right ? styles.arrowBoxRight : styles.arrowBox}
+          className={className}
           onClick={(e) => this.onArrowBoxClick(e)}>
           <div className={styles.contentBox}>
             {this.props.children}

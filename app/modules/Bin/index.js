@@ -25,7 +25,7 @@ import logToggled from './signals/logToggled';
 import logReceived from './signals/logReceived';
 import vimModeClicked from './signals/vimModeClicked';
 import fileDeleted from './signals/fileDeleted';
-
+import loadingTimeoutReached from './signals/loadingTimeoutReached';
 import hideSnackbar from './actions/hideSnackbar.js';
 
 export default (options = {}) => {
@@ -45,6 +45,7 @@ export default (options = {}) => {
         loaders: {}
       },
       isLoadingBin: false,
+      showBinLoader: false,
       logs: [],
       shouldCheckLog: false,
 
@@ -96,7 +97,8 @@ export default (options = {}) => {
       logToggled,
       logReceived,
       vimModeClicked,
-      fileDeleted
+      fileDeleted,
+      loadingTimeoutReached
     });
 
   };
