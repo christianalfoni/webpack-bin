@@ -34,7 +34,8 @@ export default [
       set('state:/bin.isRunning', false),
       set('state:/bin.hasChangedPackages', false),
       set('state:/bin.isLoadingBin', false),
-      set('state:/bin.showLoadingBin', false)
+      set('state:/bin.showLoadingBin', false),
+      set('state:/bin.forceUpdateCode', false)
     ]
   }
 ];

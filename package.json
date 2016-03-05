@@ -23,7 +23,7 @@
     "start": "node start.js",
     "dev": "concurrently \"npm run client\" \"npm run server\"",
     "client": "kotatsu serve app/main.js --public public --index index.html --config webpack.config.js --devtool eval-source-map --proxy /api http://www.codebox.dev:4000/api",
-    "server": "kotatsu start start.js --devtool cheap-eval-sourcemap",
+    "server": "kotatsu start start.js --source-maps",
     "build": "npm run build:client",
     "build:client": "kotatsu build client app/main.js --config webpack.production.config.js --minify -o public/client_build.js",
     "build:server": "kotatsu build server start.js --minify -o server_build.js",

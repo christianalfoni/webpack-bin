@@ -1,7 +1,7 @@
 import canControlComputed from '../../../computed/canControl';
 
 function canControlBin({input, state, output}) {
-  if (state.get(canControlComputed)) {
+  if (state.get('live.connected') && state.get(canControlComputed)) {
     output.true();
   } else {
     output.false();

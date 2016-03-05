@@ -1,11 +1,21 @@
 import set from 'cerebral-addons/set';
 import hidePopups from '../factories/hidePopups';
 import runClicked from './runClicked';
-import redirectToBoilerplate from '../actions/redirectToBoilerplate';
+import getBoilerplate from '../actions/getBoilerplate';
+import setBoilerplate from '../actions/setBoilerplate';
+import showSnackbar from '../factories/showSnackbar';
 
 export default [
-  set('state:/bin.forceUpdateCode', true),
   set('state:/bin.hasChangedPackages', true),
   ...hidePopups,
-  redirectToBoilerplate
+  getBoilerplate, {
+    success: [
+      set('state:/bin.forceUpdateCode', true),
+      setBoilerplate,
+      ...runClicked
+    ],
+    error: [
+      showSnackbar('Could not load boilerplate, sorry')
+    ]
+  }
 ];

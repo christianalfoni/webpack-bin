@@ -79,6 +79,8 @@ app.post('/api/sandbox', sandbox.updateSandbox);
 app.get('/api/packages/:packageName', npm.getPackageFromRegistry);
 app.get('/api/bundles', database.searchBundles);
 
+app.get('/api/boilerplates/:id', bins.getBoilerplate);
+
 app.get('*', function(req, res) {
   res.send(fs.readFileSync(
     path.resolve('index.html')).toString().replace('/build/bundle.js', '/client_build.js')

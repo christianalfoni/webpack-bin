@@ -108,7 +108,7 @@ module.exports = {
     sessions.updateFiles(req);
     vendorsBundlesCleaner.update(req);
 
-    if (!req.session.currentBin) {
+    if (!req.session.currentBin || req.session.currentBin.id !== req.body.id) {
       sessions.update(req.session.id, 'currentBin', {
         id: req.body.id,
         isOwner: false

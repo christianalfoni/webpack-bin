@@ -35,5 +35,17 @@ module.exports = {
         console.log(err, err.stack);
         res.sendStatus(500);
       })
+  },
+  getBoilerplate: function (req, res) {
+    db.getBin(req.params.id)
+      .then(function (bin) {
+        if (!bin) {
+          return res.sendStatus(404);
+        }
+        res.send(bin);
+      })
+      .catch(function (err) {
+        res.sendStatus(500);
+      })
   }
 };
