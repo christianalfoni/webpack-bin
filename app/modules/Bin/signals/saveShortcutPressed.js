@@ -8,6 +8,8 @@ export default [
   when('state:/bin.isRunning'), {
     isTrue: [],
     isFalse: [
+      set('state:/bin.logs', []),
+      set('state:/bin.selectedLogPath', []),
       canControlBin, {
         true: [
           hasValidLinting, {

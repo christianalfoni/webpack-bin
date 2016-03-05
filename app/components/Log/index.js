@@ -12,21 +12,19 @@ class Log extends React.Component {
   render() {
     return (
       <div className={styles.wrapper}>
+        <div className={styles.info}>Use bin.log() in your code to log</div>
         {
-          this.props.logs.length ?
-            this.props.logs.map((value, index) => (
-              <div className={styles.log} key={index}>
-                <Inspector
-                  value={value}
-                  path={[index]}
-                  highlight={this.props.connected}
-                  onTogglePath={this.props.signals.bin.logValueToggled}
-                  onSelectPath={this.props.signals.bin.logPathSelected}
-                  selectedPath={this.props.selectedPath}/>
-              </div>
-            ))
-          :
-            <span className={styles.info}>No logs, use bin.log() in your code to log something...</span>
+          this.props.logs.map((value, index) => (
+            <div className={styles.log} key={index}>
+              <Inspector
+                value={value}
+                path={[index]}
+                highlight={this.props.connected}
+                onTogglePath={this.props.signals.bin.logValueToggled}
+                onSelectPath={this.props.signals.bin.logPathSelected}
+                selectedPath={this.props.selectedPath}/>
+            </div>
+          ))
         }
       </div>
     );
