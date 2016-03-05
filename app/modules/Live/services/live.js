@@ -15,7 +15,6 @@ export default (controller) => {
     if (preventedSignals.indexOf(args.signal.name) >= 0) {
       return;
     }
-    console.log('Sending signal', args.signal.name);
     ws.send(JSON.stringify({
       type: 'signal',
       signal: {

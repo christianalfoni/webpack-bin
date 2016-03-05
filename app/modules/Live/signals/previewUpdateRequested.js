@@ -1,12 +1,12 @@
 import set from 'cerebral-addons/set';
-import canControlBin from '../actions/canControlBin';
+import when from 'cerebral-addons/when';
 
 export default [
-  canControlBin, {
-    true: [],
-    false: [
+  when('state:/live.hasJoined'), {
+    isTrue: [
       set('state:/bin.logs', [])
-    ]
+    ],
+    isFalse: []
   },
   set('state:/bin.hasTriedToRun', false),
   set('state:/bin.isRunning', false),
