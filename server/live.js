@@ -98,6 +98,7 @@ module.exports = function connection(client) {
     client.send(JSON.stringify({
       type: 'created'
     }));
+    console.log('created channel')
   } else {
     client.send(JSON.stringify({
       type: 'connected',
