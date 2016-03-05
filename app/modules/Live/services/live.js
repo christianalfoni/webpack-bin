@@ -60,7 +60,8 @@ export default (controller) => {
     },
     connect() {
       return new Promise((resolve, reject) => {
-        ws = new WebSocket('ws://www.codebox.dev:4000/');
+        const url = process.env.NODE_ENV === 'production' ? 'ws://www.webpackbin.com/' : 'ws://www.codebox.dev:4000/';
+        ws = new WebSocket(url);
 
         ws.onopen = function open() {
           console.log('connected');
