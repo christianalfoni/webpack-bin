@@ -22,9 +22,12 @@ module.exports = {
         if (!bin) {
           return res.sendStatus(404);
         }
+        bin.isOwner = req.session.id === bin.author;
         sessions.update(req.session.id, 'currentBin', {
           id: bin.id,
-          isOwner: req.session.id === bin.author
+          author: bin.author,
+          isOwner: bin.isOwner,
+          isLive: bin.isLive
         });
         res.send(bin);
       })

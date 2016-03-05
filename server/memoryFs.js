@@ -28,6 +28,10 @@ module.exports = {
     var vendorsBundleName = utils.getVendorsBundleName(packages);
     return fs.existsSync(path.join('/', 'api', 'sandbox', 'vendors', vendorsBundleName,  '/bundle.js'));
   },
+  removeVendorsBundle: function (vendorsBundleName) {
+    fs.unlinkSync(path.join('/', 'api', 'sandbox', 'vendors', vendorsBundleName,  '/bundle.js'));
+    fs.unlinkSync(path.join('/', 'api', 'sandbox', 'vendors', vendorsBundleName,  '/manifest.json'));
+  },
   writeBundleManifest: function (bundle) {
     fs.mkdirpSync(path.join('/', 'api', 'sandbox', 'vendors', bundle.name));
     fs.writeFileSync(path.join('/', 'api', 'sandbox', 'vendors', bundle.name, 'manifest.json'), bundle.manifest);

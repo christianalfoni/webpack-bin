@@ -5,13 +5,16 @@ import Toolbar from '../Toolbar';
 import CodeEditor from '../CodeEditor';
 import Preview from '../Preview';
 import Log from '../Log';
+import LiveUsers from '../LiveUsers';
+import LiveUser from '../LiveUser';
 
 @Cerebral({
   snackbar: 'bin.snackbar',
   isRunning: 'bin.isRunning',
   isLoadingBin: 'bin.isLoadingBin',
   showLog: 'bin.showLog',
-  showLoadingBin: 'bin.showLoadingBin'
+  showLoadingBin: 'bin.showLoadingBin',
+  live: 'live'
 })
 class Bin extends React.Component {
   constructor(props) {
@@ -67,13 +70,27 @@ class Bin extends React.Component {
         <Toolbar/>
         <div className={this.props.showLoadingBin ? styles.wrapperFaded : styles.wrapper}>
           <CodeEditor/>
-          <Preview/>
-          {
-            this.props.showLog ?
-              <Log/>
-            :
-              null
-          }
+          <div className={styles.previewAndLog}>
+            <Preview/>
+            {
+              this.props.showLog ?
+                <Log/>
+              :
+                null
+            }
+            </div>
+            {
+              this.props.live.connected && this.props.live.hasJoined ?
+                <LiveUser/>
+              :
+                null
+            }
+            {
+              this.props.live.connected && !this.props.live.hasJoined ?
+                <LiveUsers/>
+              :
+                null
+            }
         </div>
         {
           this.props.showLoadingBin ?

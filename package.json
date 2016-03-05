@@ -23,7 +23,7 @@
     "start": "node start.js",
     "dev": "concurrently \"npm run client\" \"npm run server\"",
     "client": "kotatsu serve app/main.js --public public --index index.html --config webpack.config.js --devtool eval-source-map --proxy /api http://www.codebox.dev:4000/api",
-    "server": "kotatsu start start.js",
+    "server": "kotatsu start start.js --devtool cheap-eval-sourcemap",
     "build": "npm run build:client",
     "build:client": "kotatsu build client app/main.js --config webpack.production.config.js --minify -o public/client_build.js",
     "build:server": "kotatsu build server start.js --minify -o server_build.js",
@@ -49,6 +49,7 @@
     "coffeelint": "^1.14.2",
     "compression": "^1.6.1",
     "concurrently": "^2.0.0",
+    "cookie": "^0.2.3",
     "cookie-parser": "^1.4.1",
     "css-loader": "^0.23.1",
     "csslint": "^0.10.0",
@@ -63,6 +64,7 @@
     "less-loader": "^2.2.2",
     "memory-fs": "^0.3.0",
     "mongodb": "^2.1.7",
+    "moniker": "^0.1.2",
     "node-libs-browser": "^1.0.0",
     "node-pre-gyp": "^0.6.21",
     "node-sass": "^3.4.2",
@@ -82,6 +84,7 @@
     "ts-loader": "^0.8.1",
     "typescript": "^1.8.2",
     "url-loader": "^0.5.7",
-    "webpack-bin-babel-core": "https://github.com/christianalfoni/webpack-bin-babel-core.git"
+    "webpack-bin-babel-core": "https://github.com/christianalfoni/webpack-bin-babel-core.git",
+    "ws": "^1.0.1"
   }
 }

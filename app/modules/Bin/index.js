@@ -1,3 +1,4 @@
+import preventIfLive from '../Live/factories/preventIfLive';
 import runClicked from './signals/runClicked';
 import fileClicked from './signals/fileClicked';
 import codeChanged from './signals/codeChanged';
@@ -37,12 +38,10 @@ export default (options = {}) => {
         show: false
       },
       currentBin: {
-        files: [{
-          name: 'main.js',
-          content: ''
-        }],
+        files: [],
         packages: {},
-        loaders: {}
+        loaders: {},
+        isLive: false
       },
       isLoadingBin: false,
       showBinLoader: false,
@@ -59,7 +58,7 @@ export default (options = {}) => {
 
       showAddFileInput: false,
       newFileName: '',
-      selectedFileIndex: 0,
+      selectedFileIndex: -1,
       showInfo: false,
       showPackagesSelector: false,
       showBoilerplatesSelector: false,
@@ -70,35 +69,35 @@ export default (options = {}) => {
     });
 
     module.addSignals({
-      snackbarTimedOut: [hideSnackbar],
-      codeChanged,
-      runClicked,
-      fileClicked,
-      rootRouted,
-      linted,
-      saveShortcutPressed,
-      iframeLoaded,
-      addFileAborted,
-      addFileClicked,
-      addFileNameUpdated,
-      addFileSubmitted,
-      packageToggled,
-      packagesToggled,
-      appClicked,
-      infoToggled,
+      snackbarTimedOut: preventIfLive([hideSnackbar]),
+      codeChanged: preventIfLive(codeChanged),
+      runClicked: preventIfLive(runClicked),
+      fileClicked: preventIfLive(fileClicked),
+      saveShortcutPressed: preventIfLive(saveShortcutPressed),
+      addFileClicked: preventIfLive(addFileClicked),
+      packageToggled: preventIfLive(packageToggled),
+      packagesToggled: preventIfLive(packagesToggled),
+      appClicked: preventIfLive(appClicked),
+      infoToggled: preventIfLive(infoToggled),
+      loaderClicked: preventIfLive(loaderClicked),
+      loaderToggled: preventIfLive(loaderToggled),
+      configToggled: preventIfLive(configToggled),
+      boilerplatesToggled: preventIfLive(boilerplatesToggled),
+      boilerplateClicked: preventIfLive(boilerplateClicked),
+      logToggled: preventIfLive(logToggled),
+      fileDeleted: preventIfLive(fileDeleted),
+      logReceived,
       opened,
-      loaderClicked,
-      loaderToggled,
-      configToggled,
-      boilerplatesToggled,
-      boilerplateClicked,
+      vimModeClicked,
       linterRequested,
       linterLoaded,
-      logToggled,
-      logReceived,
-      vimModeClicked,
-      fileDeleted,
-      loadingTimeoutReached
+      loadingTimeoutReached,
+      rootRouted,
+      linted,
+      iframeLoaded,
+      addFileAborted,
+      addFileNameUpdated,
+      addFileSubmitted,
     });
 
   };

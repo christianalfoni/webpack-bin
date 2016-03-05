@@ -62,9 +62,10 @@
 .deleteFile {
   position: absolute;
   font-style: normal;
+  font-size: 14px;
   right: 5px;
   display: none;
-  top: 15px;
+  top: 5px;
   font-weight: bold;
   color: rgba(255,255,255,0.5);
 }

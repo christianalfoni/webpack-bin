@@ -1,3 +1,6 @@
+var server = require('http').createServer();
+var WebSocketServer = require('ws').Server;
+var wss = new WebSocketServer({ server: server });
 var express = require('express');
 var webpack = require('webpack');
 var compression = require('compression');
@@ -17,6 +20,7 @@ var sandbox = require('./sandbox');
 var database = require('./database');
 var npm = require('./npm');
 var bins = require('./bins');
+var liveConnection = require('./live');
 
 preLoadPackages([
   // Core node
@@ -66,7 +70,6 @@ app.use(bodyParser.json());
 app.use(express.static(path.resolve('public')));
 app.use(sessions.middleware);
 
-app.post('/api/bins', bins.create);
 app.get('/api/bins/:id', bins.get);
 
 app.get('/api/sandbox/', sandbox.getIndex);
@@ -82,4 +85,9 @@ app.get('*', function(req, res) {
   );
 });
 
-module.exports = app;
+wss.on('connection', liveConnection);
+
+module.exports = {
+  server: server,
+  app: app
+};

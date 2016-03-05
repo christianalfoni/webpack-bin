@@ -9,6 +9,7 @@ import Http from 'cerebral-module-http';
 import BinModule from './modules/Bin';
 import Bin from './components/Bin';
 import NpmModule from './modules/Npm';
+import LiveModule from './modules/Live';
 import hideSnackbar from './modules/Bin/actions/hideSnackbar';
 
 const controller = Controller(Model({}));
@@ -22,6 +23,7 @@ controller.addSignals({
 controller.addModules({
   bin: BinModule(),
   npm: NpmModule(),
+  live: LiveModule(),
 
   http: Http(),
   devtools: process.env.NODE_ENV === 'production' ? function () {} : Devtools(),

@@ -1,24 +1,5 @@
-import httpPost from 'cerebral-module-http/post';
-import copy from 'cerebral-addons/copy';
-import set from 'cerebral-addons/set';
-import showSnackbar from '../factories/showSnackbar';
-import redirectToBin from '../actions/redirectToBin';
-import createBin from '../actions/createBin';
+import setDefaultBin from '../actions/setDefaultBin';
 
 export default [
-  set('state:/bin.isLoadingBin'),
-  showSnackbar('Creating a WebpackBin for you'),
-  createBin, {
-    success: [
-      copy('input:/result', 'state:/bin.currentBin'),
-      set('state:/bin.forceUpdateCode', true)
-    ],
-    error: [
-      showSnackbar('Could not create bin, sorry...')
-    ]
-  },
-  set('state:/bin.isLoadingBin', false),
-  set('state:/bin.showLoadingBin', false),
-  showSnackbar('WebpackBin created!'),
-  redirectToBin
+  setDefaultBin
 ];

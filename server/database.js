@@ -6,32 +6,6 @@ var shortid = require('shortid');
 
 module.exports = {
   connect: db.connect,
-  createBin: function (req) {
-    var bin = {
-      id: shortid.generate(),
-      author: req.session.id,
-      packages: {},
-      loaders: {},
-      files: [{
-        name: 'main.js',
-        content: [
-          '/*',
-          '  Welcome to WebpackBin',
-          '',
-          '  - Add packages from NPM',
-          '  - Add loaders for modern JavaScript, Css, Typescript, Coffeescript, Sass, Less etc.',
-          '  - Use boilerplates to quickly load up packages with Hello World examples',
-          '  - Use bin.log() in your code to log values',
-          '  - There is a DOM element with ID "app" which you can render to',
-          '*/'
-        ].join('\n')
-      }]
-    };
-    return db.insert('bins', bin)
-      then(function () {
-        return bin;
-      })
-  },
   updateBin: function (req) {
     console.log('Updating BIN', req.session.currentBin);
     if (req.session.currentBin.isOwner) {
@@ -39,9 +13,11 @@ module.exports = {
         id: req.session.currentBin.id
       }, {
         $set: {
+          updated: Date.now(),
           files: req.body.files,
           packages: req.body.packages,
-          loaders: req.body.loaders
+          loaders: req.body.loaders,
+          isLive: req.body.isLive
         }
       })
       .then(function () {
@@ -50,7 +26,9 @@ module.exports = {
           files: req.body.files,
           loaders: req.body.loaders,
           packages: req.body.packages,
-          author: req.session.id
+          author: req.session.id,
+          isLive: req.body.isLive,
+          isOwner: true
         };
       })
     } else {
@@ -63,10 +41,12 @@ module.exports = {
           author: req.session.id,
           packages: req.body.packages,
           loaders: req.body.loaders,
-          files: req.body.files
+          files: req.body.files,
+          isLive: req.body.isLive
         };
         return db.insert('bins', bin)
           .then(function () {
+            bin.isOwner = true;
             return bin;
           });
       });

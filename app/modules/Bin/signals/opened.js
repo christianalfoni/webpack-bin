@@ -1,10 +1,12 @@
 import set from 'cerebral-addons/set';
 import copy from 'cerebral-addons/copy';
+import when from 'cerebral-addons/when';
 import httpGet from 'cerebral-module-http/get';
 import showSnackbar from '../factories/showSnackbar';
 import hideSnackbar from '../actions/hideSnackbar';
 import isNewBin from '../actions/isNewBin';
 import runClicked from './runClicked';
+import connectToLiveBin from '../actions/connectToLiveBin';
 
 export default [
   isNewBin, {
@@ -22,9 +24,18 @@ export default [
       },
       set('state:/bin.isLoadingBin', false),
       set('state:/bin.showLoadingBin', false),
-      ...runClicked
+      set('state:/bin.selectedFileIndex', 0),
+      when('state:/bin.currentBin.isLive'), {
+        isTrue: [
+          connectToLiveBin
+        ],
+        isFalse: [
+          ...runClicked
+        ]
+      }
     ],
     false: [
+      set('state:/bin.selectedFileIndex', 0),
       ...runClicked
     ]
   }

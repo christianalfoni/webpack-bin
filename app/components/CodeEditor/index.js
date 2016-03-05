@@ -8,6 +8,7 @@ import { Decorator as Cerebral, Link } from 'cerebral-view-react';
 import CodeMirror from 'codemirror';
 import 'codemirror/keymap/vim.js';
 import styles from './styles.css';
+import canControl from '../../computed/canControl';
 
 const loadedLinters = ['js'];
 
@@ -17,7 +18,9 @@ const loadedLinters = ['js'];
   isLoadingBin: 'bin.isLoadingBin',
   isRunning: 'bin.isRunning',
   forceUpdateCode: 'bin.forceUpdateCode',
-  vimMode: 'bin.vimMode'
+  vimMode: 'bin.vimMode',
+  hasJoinedLive: 'live.hasJoined',
+  canControl: canControl
 })
 class CodeEditor extends React.Component {
   constructor(props) {
@@ -26,18 +29,23 @@ class CodeEditor extends React.Component {
     this.onUpdateLinting = this.onUpdateLinting.bind(this);
   }
   componentDidUpdate(prevProps) {
-    if (this.props.isLoadingBin || this.props.isRunning) {
-      this.codemirror.setOption('readOnly', true);
+    if (
+      this.props.isLoadingBin || this.props.isRunning ||
+      (prevProps.canControl && !this.props.canControl)
+    ) {
+      this.codemirror.setOption('readOnly', this.props.canControl ? true : 'nocursor');
     } else {
       this.codemirror.setOption('readOnly', false);
     }
     if (
       this.props.selectedFileIndex !== prevProps.selectedFileIndex ||
-      (prevProps.isLoadingBin && !this.props.isLoadingBin) ||
-      (!prevProps.forceUpdateCode && this.props.forceUpdateCode)
+      (!prevProps.forceUpdateCode && this.props.forceUpdateCode) || (
+        !this.props.canControl &&
+        prevProps.files[prevProps.selectedFileIndex].content !== this.props.files[this.props.selectedFileIndex].content
+      )
     ) {
       this.setModeAndLinter();
-      this.codemirror.setValue(this.props.files[this.props.selectedFileIndex].content);
+      this.setEditorValue(this.props.selectedFileIndex === -1 ? '' : this.props.files[this.props.selectedFileIndex].content);
     }
 
     if (this.props.vimMode) {
@@ -48,7 +56,7 @@ class CodeEditor extends React.Component {
   }
   componentDidMount() {
     this.codemirror = CodeMirror(this.refs.code, {
-      value: this.props.files[this.props.selectedFileIndex].content,
+      value: this.props.selectedFileIndex === -1 ? '' : this.props.files[this.props.selectedFileIndex].content,
       mode: this.getMode(),
       theme: 'learncode',
       matchTags: {bothTags: true},
@@ -67,7 +75,15 @@ class CodeEditor extends React.Component {
     this.codemirror.on('change', this.onCodeChange);
     this.setModeAndLinter();
   }
+  setEditorValue(value) {
+    this.isUpdatingCode = true;
+    this.codemirror.setValue(value);
+    this.isUpdatingCode = false;
+  }
   getMode() {
+    if (this.props.selectedFileIndex === -1) {
+      return 'jsx';
+    }
     const name = this.props.files[this.props.selectedFileIndex].name;
     const ext = name.split('.')[name.split('.').length - 1];
     switch (ext) {
@@ -103,7 +119,7 @@ class CodeEditor extends React.Component {
           onUpdateLinting: this.onUpdateLinting
         });
         this.codemirror.setOption('mode', mode);
-        this.codemirror.setValue(this.codemirror.getValue());
+        this.setEditorValue(this.codemirror.getValue());
       }.bind(this);
 
       if (loadedLinters.indexOf(mode) >= 0) {
@@ -130,7 +146,7 @@ class CodeEditor extends React.Component {
           onUpdateLinting: this.onUpdateLinting
         });
         this.codemirror.setOption('mode', mode);
-        this.codemirror.setValue(this.codemirror.getValue());
+        this.setEditorValue(this.codemirror.getValue());
       }.bind(this);
 
       if (loadedLinters.indexOf(mode) >= 0) {
@@ -152,7 +168,7 @@ class CodeEditor extends React.Component {
         require('codemirror/mode/javascript/javascript.js');
         this.codemirror.setOption('lint', false);
         this.codemirror.setOption('mode', mode);
-        this.codemirror.setValue(this.codemirror.getValue());
+        this.setEditorValue(this.codemirror.getValue());
       }.bind(this);
 
       if (loadedLinters.indexOf(mode) >= 0) {
@@ -180,7 +196,7 @@ class CodeEditor extends React.Component {
           onUpdateLinting: this.onUpdateLinting
         });
         this.codemirror.setOption('mode', mode);
-        this.codemirror.setValue(this.codemirror.getValue());
+        this.setEditorValue(this.codemirror.getValue());
         this.props.signals.bin.linterLoaded();
       }.bind(this);
 
@@ -202,7 +218,7 @@ class CodeEditor extends React.Component {
         require('codemirror/mode/css/css.js');
         this.codemirror.setOption('lint', false);
         this.codemirror.setOption('mode', mode);
-        this.codemirror.setValue(this.codemirror.getValue());
+        this.setEditorValue(this.codemirror.getValue());
       }.bind(this);
 
       if (loadedLinters.indexOf(mode) >= 0) {
@@ -224,7 +240,7 @@ class CodeEditor extends React.Component {
         require('codemirror/mode/sass/sass.js');
         this.codemirror.setOption('lint', false);
         this.codemirror.setOption('mode', mode);
-        this.codemirror.setValue(this.codemirror.getValue());
+        this.setEditorValue(this.codemirror.getValue());
       }.bind(this);
 
       if (loadedLinters.indexOf(mode) >= 0) {
@@ -248,10 +264,18 @@ class CodeEditor extends React.Component {
       isValid: !Boolean(errors.length)
     });
   }
-  onCodeChange() {
-    this.props.signals.bin.codeChanged({
-      code: this.codemirror.getDoc().getValue()
-    });
+  onCodeChange(instance, event) {
+    if (!this.isUpdatingCode) {
+      if (event.text.length === 2) {
+        event.text = ['\n'];
+      }
+
+      this.props.signals.bin.codeChanged({
+        from: event.from,
+        to: event.to,
+        text: event.text
+      });
+    }
   }
   render() {
     return (

@@ -7,12 +7,19 @@ export default [
   when('state:/bin.isRunning'), {
     isTrue: [],
     isFalse: [
-      hasValidLinting, {
-        true: [
-          ...runClicked
+      when('state:/live.hasJoined'), {
+        isTrue: [
+          set('state:/bin.isRunning', true)
         ],
-        false: [
-          set('state:/bin.hasTriedToRun', true)
+        isFalse: [
+          hasValidLinting, {
+            true: [
+              ...runClicked
+            ],
+            false: [
+              set('state:/bin.hasTriedToRun', true)
+            ]
+          }
         ]
       }
     ]

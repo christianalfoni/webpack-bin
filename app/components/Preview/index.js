@@ -25,6 +25,7 @@ class Preview extends React.Component {
   }
   onIframeMessage(event) {
     if (event.data.type === 'loaded') {
+      console.log('Loaded!');
       this.props.signals.bin.iframeLoaded();
     }
     if (event.data.type === 'log') {

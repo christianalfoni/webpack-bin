@@ -63,6 +63,7 @@ module.exports = {
         });
 
         compiler.inputFileSystem = memoryFs.fs;
+        compiler.outputFileSystem = memoryFs.fs;
         compiler.resolvers.normal.fileSystem = memoryFs.fs;
         compiler.resolvers.context.fileSystem = memoryFs.fs;
 

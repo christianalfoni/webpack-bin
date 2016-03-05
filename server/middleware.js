@@ -30,7 +30,7 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 
 	// store our files in memory
 	var files = {};
-	var fs = compiler.outputFileSystem = new MemoryFileSystem();
+	var fs = compiler.outputFileSystem;
 
 	onFileSystemAdded && onFileSystemAdded(fs);
 

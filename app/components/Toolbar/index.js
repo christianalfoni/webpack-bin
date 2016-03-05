@@ -22,7 +22,8 @@ import Boilerplates from '../Boilerplates';
   showBoilerplatesSelector: 'bin.showBoilerplatesSelector',
   shouldCheckLog: 'bin.shouldCheckLog',
   showBoilerplatesSelector: 'bin.showBoilerplatesSelector',
-  vimModeEnabled: 'bin.vimMode'
+  vimModeEnabled: 'bin.vimMode',
+  currentBin: 'bin.currentBin'
 })
 class Toolbar extends React.Component {
   static propTypes = {
@@ -34,33 +35,33 @@ class Toolbar extends React.Component {
   renderFiles() {
     return this.props.files.map((file, index) => {
       const active = index === this.props.selectedFileIndex;
-      const signals = this.props.signals.bin;
+      const signals = this.props.signals;
 
       return (
         <div
           key={index}
           className={classNames(styles.file, {[styles.active]: active})}
-          onClick={() => signals.fileClicked({index})}>
+          onClick={() => signals.bin.fileClicked({index})}>
           {file.name}
           <i
             className={styles.deleteFile}
-            onClick={(e) => {e.stopPropagation();signals.fileDeleted({index})}}>x</i>
+            onClick={(e) => {e.stopPropagation();signals.bin.fileDeleted({index})}}>x</i>
         </div>
       );
     })
   }
   render() {
-    const signals = this.props.signals.bin;
+    const signals = this.props.signals;
 
     return (
       <div className={styles.wrapper}>
         <div className={styles.column}>
           {this.renderFiles()}
           <AddFile
-            onAddFileClick={this.props.signals.bin.addFileClicked}
-            onFileNameChange={this.props.signals.bin.addFileNameUpdated}
-            onFileSubmit={this.props.signals.bin.addFileSubmitted}
-            onAddFileAborted={this.props.signals.bin.addFileAborted}
+            onAddFileClick={signals.bin.addFileClicked}
+            onFileNameChange={signals.bin.addFileNameUpdated}
+            onFileSubmit={signals.bin.addFileSubmitted}
+            onAddFileAborted={signals.bin.addFileAborted}
             showInput={this.props.showAddFileInput}
             placeholder="Filename..."
             value={this.props.newFileName}/>
@@ -72,7 +73,7 @@ class Toolbar extends React.Component {
             <input
               type="checkbox"
               checked={this.props.vimModeEnabled}
-              onClick={() => this.props.signals.bin.vimModeClicked()}/>
+              onClick={() => signals.bin.vimModeClicked()}/>
           </div>
           */}
           <div className={styles.buttonWrapper}>
@@ -80,7 +81,7 @@ class Toolbar extends React.Component {
               title='Run'
               icon={icons.play}
               disabled={this.props.isRunning || !this.props.isValid}
-              onClick={() => signals.runClicked()}/>
+              onClick={() => signals.bin.runClicked()}/>
           </div>
           <div className={styles.buttonWrapper}>
             <ToolbarButton
@@ -89,13 +90,25 @@ class Toolbar extends React.Component {
               icon={icons.assignment}
               notify={this.props.shouldCheckLog}
               disabled={this.props.isRunning || !this.props.isValid}
-              onClick={() => signals.logToggled()}/>
+              onClick={() => signals.bin.logToggled()}/>
+          </div>
+          <div className={styles.buttonWrapper}>
+            <ToolbarButton
+              title='Live'
+              active={this.props.currentBin.isLive}
+              icon={icons.assignment}
+              disabled={
+                (!this.props.currentBin.isOwner && this.props.currentBin.author) ||
+                this.props.isRunning ||
+                !this.props.isValid
+              }
+              onClick={() => signals.live.liveToggled()}/>
           </div>
           <ToolbarButtonPopover
             title="Configure"
             className={styles.packagesButton}
             icon={icons.npm}
-            onClick={() => this.props.signals.bin.packagesToggled()}
+            onClick={() => signals.bin.packagesToggled()}
             show={this.props.showPackagesSelector}
             middle>
             <Npm/>
@@ -104,7 +117,7 @@ class Toolbar extends React.Component {
             title="Boilerplates"
             className={styles.packagesButton}
             icon={icons.boilerplates}
-            onClick={() => this.props.signals.bin.boilerplatesToggled()}
+            onClick={() => signals.bin.boilerplatesToggled()}
             show={this.props.showBoilerplatesSelector}
             right>
             <Boilerplates/>
@@ -113,7 +126,7 @@ class Toolbar extends React.Component {
             title="Info"
             className={styles.packagesButton}
             icon={icons.help}
-            onClick={() => this.props.signals.bin.infoToggled()}
+            onClick={() => signals.bin.infoToggled()}
             show={this.props.showInfo}
             right>
             <div className={styles.info}>

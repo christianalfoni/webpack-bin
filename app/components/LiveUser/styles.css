@@ -1,0 +1,21 @@
+.wrapper {
+  position: fixed;
+  display: flex;
+  bottom: 10px;
+  right: 10px;
+  z-index: 99999;
+  color: #FFF;
+}
+
+.user {
+  flex: 1;
+  white-space: nowrap;
+  background-color: #232e3c;
+  padding: 5px 10px;
+  border-radius: 3px;
+}
+
+.activeUser {
+  composes: user;
+  background-color: #eb1e64;
+}

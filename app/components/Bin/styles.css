@@ -58,3 +58,9 @@
   background-image: url('/logo.png');
   background-size: contain;
 }
+
+.previewAndLog {
+  flex: 1;
+  position: relative;
+  height: 100%;
+}
