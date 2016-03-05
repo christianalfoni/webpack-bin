@@ -10,19 +10,21 @@ import canControlBin from '../../Live/actions/canControlBin';
 export default [
   set('state:/bin.hasChangedPackages', true),
   ...hidePopups,
-  canControlBin, {
-    true: [
-      getBoilerplate, {
-        success: [
-          set('state:/bin.forceUpdateCode', true),
-          setBoilerplate,
+  getBoilerplate, {
+    success: [
+      set('state:/bin.forceUpdateCode', true),
+      setBoilerplate,
+      canControlBin, {
+        true: [
           ...runClicked
         ],
-        error: [
-          showSnackbar('Could not load boilerplate, sorry')
+        false: [
+          set('state:/bin.isRunning', true)
         ]
       }
     ],
-    false: []
+    error: [
+      showSnackbar('Could not load boilerplate, sorry')
+    ]
   }
 ];

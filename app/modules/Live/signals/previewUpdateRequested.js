@@ -1,7 +1,13 @@
 import set from 'cerebral-addons/set';
+import canControlBin from '../actions/canControlBin';
 
 export default [
-  set('state:/bin.logs', []),
+  canControlBin, {
+    true: [],
+    false: [
+      set('state:/bin.logs', [])
+    ]
+  },
   set('state:/bin.hasTriedToRun', false),
   set('state:/bin.isRunning', false),
   set('state:/bin.hasChangedPackages', false),

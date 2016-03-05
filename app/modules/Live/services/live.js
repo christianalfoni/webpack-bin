@@ -8,12 +8,14 @@ export default (controller) => {
     'live.userJoined',
     'live.userLeft',
     'live.controlDesignated',
-    'live.controlRetracted'
+    'live.controlRetracted',
+    'live.previewUpdateRequested'
   ];
-  let onChange = (args) => {
+  let onSignalEnd = (args) => {
     if (preventedSignals.indexOf(args.signal.name) >= 0) {
       return;
     }
+    console.log('Sending signal', args.signal.name);
     ws.send(JSON.stringify({
       type: 'signal',
       signal: {
@@ -41,14 +43,15 @@ export default (controller) => {
       }));
     },
     designateControl(name) {
-      controller.removeListener('change', onChange);
+      controller.removeListener('signalEnd', onSignalEnd);
       ws.send(JSON.stringify({
         type: 'designateControl',
         name
       }));
     },
     takeControl() {
-      controller.on('change', onChange);
+      controller.removeListener('signalEnd', onSignalEnd);
+      controller.on('signalEnd', onSignalEnd);
     },
     retractControl() {
       ws.send(JSON.stringify({
@@ -56,7 +59,7 @@ export default (controller) => {
       }));
     },
     releaseControl() {
-      controller.removeListener('change', onChange);
+      controller.removeListener('signalEnd', onSignalEnd);
     },
     connect() {
       return new Promise((resolve, reject) => {
@@ -83,7 +86,8 @@ export default (controller) => {
 
           if (data.type === 'created') {
             controller.getSignals().live.created();
-            controller.on('change', onChange);
+            controller.removeListener('signalEnd', onSignalEnd);
+            controller.on('signalEnd', onSignalEnd);
           }
 
           if (data.type === 'connected') {
