@@ -72,6 +72,9 @@ function createOnMessageCallback(session, client) {
         type: 'controlDesignated'
       }));
     } else {
+      if (!channels[session.currentBin.id]) {
+        return;
+      }
       var clients = channels[session.currentBin.id].clients;
       Object.keys(clients).forEach(function (name) {
         if (clients[name] === client) {
