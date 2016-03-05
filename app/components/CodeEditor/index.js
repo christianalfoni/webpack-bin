@@ -29,10 +29,7 @@ class CodeEditor extends React.Component {
     this.onUpdateLinting = this.onUpdateLinting.bind(this);
   }
   componentDidUpdate(prevProps) {
-    if (
-      this.props.isLoadingBin || this.props.isRunning ||
-      (prevProps.canControl && !this.props.canControl)
-    ) {
+    if (this.props.isLoadingBin || this.props.isRunning || !this.props.canControl) {
       this.codemirror.setOption('readOnly', this.props.canControl ? true : 'nocursor');
     } else {
       this.codemirror.setOption('readOnly', false);

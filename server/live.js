@@ -74,7 +74,7 @@ function createOnMessageCallback(session, client) {
     } else {
       var clients = channels[session.currentBin.id].clients;
       Object.keys(clients).forEach(function (name) {
-        if (clients[name] === channels[session.currentBin.id].controller) {
+        if (clients[name] === client) {
           return;
         }
         clients[name].send(message);

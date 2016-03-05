@@ -7,11 +7,15 @@ import showSnackbar from '../factories/showSnackbar';
 import hideSnackbar from '../actions/hideSnackbar';
 import redirectToBin from '../actions/redirectToBin';
 import gotNewBin from '../actions/gotNewBin';
+import sendPreviewUpdate from '../../Live/actions/sendPreviewUpdate';
+import requestBinUpdate from '../../Live/actions/requestBinUpdate';
 
 export default [
   set('state:/bin.isRunning', true),
   when('state:/live.hasJoined'), {
-    isTrue: [],
+    isTrue: [
+      requestBinUpdate
+    ],
     isFalse: [
       set('state:/bin.isLoadingBin', true),
       postCode, {
@@ -35,7 +39,11 @@ export default [
       set('state:/bin.hasChangedPackages', false),
       set('state:/bin.isLoadingBin', false),
       set('state:/bin.showLoadingBin', false),
-      set('state:/bin.forceUpdateCode', false)
+      set('state:/bin.forceUpdateCode', false),
+      when('state:/live.connected'), {
+        isTrue: [sendPreviewUpdate],
+        isFalse: []
+      }
     ]
   }
 ];
