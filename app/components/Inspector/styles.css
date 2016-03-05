@@ -15,7 +15,7 @@
 }
 
 .highlight {
-  background-color: #FFF;
+  background-color: rgba(255,255,255,0.1);
   border: 1px solid #eb1e64;
   padding: 3px;
   margin: 3px;
@@ -63,6 +63,10 @@
 }
 
 .highlightValue {
+  composes: highlight;
+}
+
+.highlightFunction {
   composes: highlight;
 }
 

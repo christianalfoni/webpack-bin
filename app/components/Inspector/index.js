@@ -13,166 +13,140 @@ import {
   isCircular
 } from './utils';
 
-function renderType(value, hasNext, propertyKey) {
-  if (value === undefined) {
+function renderType(props) {
+  if (props.value === undefined) {
     return null;
   }
 
-  if (isError(value)) {
-    return <ErrorValue value={value}/>
+  if (isError(props.value)) {
+    return <ErrorValue {...props}/>
   }
 
-  if (isFunction(value)) {
-    return <FunctionValue value={value} propertyKey={propertyKey} hasNext={hasNext}/>
+  if (isFunction(props.value)) {
+    return <FunctionValue {...props}/>
   }
 
-  if (isCircular(value)) {
-    return <CircularValue value={value} propertyKey={propertyKey} hasNext={hasNext}/>
+  if (isCircular(props.value)) {
+    return <CircularValue {...props}/>
   }
 
-  if (isArray(value)) {
+  if (isArray(props.value.value)) {
     return (
-      <ArrayValue
-        value={value}
-        hasNext={hasNext}
-        propertyKey={propertyKey}/>
+      <ArrayValue {...props}/>
     );
   }
-  if (isObject(value)) {
+  if (isObject(props.value.value)) {
     return (
-      <ObjectValue
-        value={value}
-        hasNext={hasNext}
-        propertyKey={propertyKey}/>
+      <ObjectValue {...props}/>
     );
   }
 
   return (
-    <Value
-      value={value}
-      hasNext={hasNext}
-      propertyKey={propertyKey}/>
+    <Value {...props}/>
   );
 
 }
 
-class ObjectValue extends React.Component {
-  constructor(props, context) {
-    super(props);
-    const numberOfKeys = Object.keys(props.value).length;
-
-    this.state = {
-      isCollapsed: numberOfKeys > 3 || numberOfKeys === 0 ? true : false
-    };
-
-    this.onCollapseClick = this.onCollapseClick.bind(this);
-    this.onExpandClick = this.onExpandClick.bind(this);
-  }
-  onExpandClick() {
-    this.setState({isCollapsed: false})
-  }
-  onCollapseClick() {
-    this.setState({isCollapsed: true});
-  }
-  renderProperty(key, value, index, hasNext) {
-    const property = (
+function ObjectValue(props) {
+  const renderProperty = (key, value, index, hasNext) => {
+    return (
       <div className={styles.objectProperty} key={index}>
-        <div className={styles.objectPropertyValue}>{renderType(value, hasNext, key)}</div>
+        <div className={styles.objectPropertyValue}>{renderType({
+          ...props,
+          path: props.path.concat('value', key),
+          value: value,
+          hasNext: hasNext,
+          propertyKey: key
+        })}</div>
       </div>
     );
-    return property;
-  }
-  renderKeys(keys) {
+  };
+
+  const renderKeys = (keys) => {
     if (keys.length > 3) {
       return keys.slice(0, 3).join(', ') + '...'
     }
     return keys.join(', ');
-  }
-  render() {
-    const {value, hasNext} = this.props;
-    if (this.state.isCollapsed) {
-      return (
-        <div className={styles.object} onClick={this.onExpandClick}>
-          {this.props.propertyKey ? this.props.propertyKey + ': ' : null}
-          <strong>{'{ '}</strong>{this.renderKeys(Object.keys(value))}<strong>{' }'}</strong>
-          {hasNext ? ',' : null}
-        </div>
-      );
-    } else if (this.props.propertyKey) {
-      const keys = Object.keys(value);
-      return (
-        <div className={styles.object}>
-          <div onClick={this.onCollapseClick}>{this.props.propertyKey}: <strong>{'{ '}</strong></div>
-          {keys.map((key, index) => this.renderProperty(key, value[key], index, index < keys.length - 1))}
-          <div><strong>{' }'}</strong>{hasNext ? ',' : null}</div>
-        </div>
-      );
-    } else {
-      const keys = Object.keys(value);
-      return (
-        <div className={styles.object}>
-          <div onClick={this.onCollapseClick}><strong>{'{ '}</strong></div>
-          {keys.map((key, index) => this.renderProperty(key, value[key], index, index < keys.length - 1))}
-          <div><strong>{' }'}</strong>{hasNext ? ',' : null}</div>
-        </div>
-      );
-    }
+  };
+
+  const {value, hasNext, path, highlight} = props;
+  const isSelected = String(props.selectedPath) === String(path);
+
+  if (value.isCollapsed) {
+    return (
+      <div
+        className={highlight && isSelected ? styles.highlightObject : styles.object}
+        onClick={() => !highlight || isSelected ? props.onTogglePath({path}) : props.onSelectPath({path})}>
+        {props.propertyKey ? props.propertyKey + ': ' : null}
+        <strong>{'{ '}</strong>{renderKeys(Object.keys(value.value))}<strong>{' }'}</strong>
+        {hasNext ? ',' : null}
+      </div>
+    );
+  } else if (props.propertyKey) {
+    const keys = Object.keys(value.value);
+    return (
+      <div className={highlight && isSelected ? styles.highlightObject : styles.object}>
+        <div onClick={() => !highlight || isSelected ? props.onTogglePath({path}) : props.onSelectPath({path})}>{props.propertyKey}: <strong>{'{ '}</strong></div>
+        {keys.map((key, index) => renderProperty(key, value.value[key], index, index < keys.length - 1))}
+        <div><strong>{' }'}</strong>{hasNext ? ',' : null}</div>
+      </div>
+    );
+  } else {
+    const keys = Object.keys(value.value);
+    return (
+      <div className={highlight && isSelected ? styles.highlightObject : styles.object}>
+        <div onClick={() => !highlight || isSelected ? props.onTogglePath({path}) : props.onSelectPath({path})}><strong>{'{ '}</strong></div>
+        {keys.map((key, index) => renderProperty(key, value.value[key], index, index < keys.length - 1))}
+        <div><strong>{' }'}</strong>{hasNext ? ',' : null}</div>
+      </div>
+    );
   }
 }
 
-class ArrayValue extends React.Component {
-  constructor(props, context) {
-    super(props);
-    const numberOfItems = props.value.length;
-    this.state = {
-      isCollapsed: numberOfItems > 3 || numberOfItems === 0 ? true : false
-    };
-    this.onCollapseClick = this.onCollapseClick.bind(this);
-    this.onExpandClick = this.onExpandClick.bind(this);
-  }
-  onExpandClick() {
-    this.setState({isCollapsed: false})
-  }
-  onCollapseClick() {
-    this.setState({isCollapsed: true});
-  }
-  renderItem(item, index, hasNext) {
-    const arrayItem = (
+function ArrayValue(props) {
+
+  const renderItem = (item, index, hasNext) => {
+    return (
       <div className={styles.arrayItem} key={index}>
-        {renderType(item, hasNext)}
+        {renderType({
+          ...props,
+          propertyKey: null,
+          path: props.path.concat('value', index),
+          value: item,
+          hasNext: hasNext
+        })}
       </div>
     );
-    return arrayItem;
   }
-  render() {
-    const {value, hasNext} = this.props;
+  const {value, hasNext, path, highlight} = props;
+  const isSelected = String(props.selectedPath) === String(path);
 
-    if (this.state.isCollapsed) {
-      return (
-        <div className={styles.array} onClick={this.onExpandClick}>
-          {this.props.propertyKey ? this.props.propertyKey + ': ' : null}
-          <strong>{'[ '}</strong>{value.length}<strong>{' ]'}</strong>
-          {hasNext ? ',' : null}
-        </div>
-      );
-    } else if (this.props.propertyKey) {
-      const keys = Object.keys(value);
-      return (
-        <div className={styles.array}>
-          <div onClick={this.onCollapseClick}>{this.props.propertyKey}: <strong>{'[ '}</strong></div>
-          {value.map((item, index) => this.renderItem(item, index, index < value.length - 1))}
-          <div><strong>{' ]'}</strong>{hasNext ? ',' : null}</div>
-        </div>
-      );
-    } else {
-      return (
-        <div className={styles.array}>
-          <div onClick={this.onCollapseClick}><strong>{'[ '}</strong></div>
-          {value.map((item, index) => this.renderItem(item, index, index < value.length - 1))}
-          <div><strong>{' ]'}</strong>{hasNext ? ',' : null}</div>
-        </div>
-      );
-    }
+  if (value.isCollapsed) {
+    return (
+      <div
+        className={highlight && isSelected ? styles.highlightArray : styles.array}
+        onClick={() => !highlight || isSelected ? props.onTogglePath({path}) : props.onSelectPath({path})}>
+        {props.propertyKey ? props.propertyKey + ': ' : null}
+        <strong>{'[ '}</strong>{value.value.length}<strong>{' ]'}</strong>
+        {hasNext ? ',' : null}
+      </div>
+    );
+  } else if (props.propertyKey) {
+    return (
+      <div className={highlight && isSelected ? styles.highlightArray : styles.array}>
+        <div onClick={() => !highlight || isSelected ? props.onTogglePath({path}) : props.onSelectPath({path})}>{props.propertyKey}: <strong>{'[ '}</strong></div>
+        {value.value.map((item, index) => renderItem(item, index, index < value.value.length - 1))}
+        <div><strong>{' ]'}</strong>{hasNext ? ',' : null}</div>
+      </div>
+    );
+  } else {
+    return (
+      <div className={highlight && isSelected ? styles.highlightArray : styles.array}>
+        <div onClick={() => !highlight || isSelected ? props.onTogglePath({path}) : props.onSelectPath({path})}><strong>{'[ '}</strong></div>
+        {value.value.map((item, index) => renderItem(item, index, index < value.value.length - 1))}
+        <div><strong>{' ]'}</strong>{hasNext ? ',' : null}</div>
+      </div>
+    );
   }
 }
 
@@ -186,21 +160,25 @@ function ErrorValue(props) {
 
 function Value(props) {
   let className = styles.string;
+  const isSelected = String(props.selectedPath) === String(props.path);
   if (isNumber(props.value)) className = styles.number;
   if (isBoolean(props.value)) className = styles.boolean;
   if (isNull(props.value)) className = styles.null;
   return (
     <div className={className}>
-      {props.propertyKey ? props.propertyKey + ': ' : <span/>}
-      <span>{isString(props.value) ? '"' + props.value + '"' : String(props.value)}</span>
-      {props.hasNext ? ',' : null}
+      <div onClick={() => props.onSelectPath({path: props.path})} className={props.highlight && isSelected ? styles.highlightValue : null}>
+        {props.propertyKey ? props.propertyKey + ': ' : <span/>}
+        <span>{isString(props.value) ? '"' + props.value + '"' : String(props.value)}</span>
+        {props.hasNext ? ',' : null}
+      </div>
     </div>
   );
 }
 
 function FunctionValue(props) {
+  const isSelected = String(props.selectedPath) === String(props.path);
   return (
-    <div className={styles.function}>
+    <div onClick={() => props.onSelectPath({path: props.path})} className={props.highlight && isSelected ? styles.highlightFunction : null}>
       {props.propertyKey ? props.propertyKey + ': ' : <span/>}
       <span className={styles.functionKeyword}>function </span>
       <span className={styles.functionName}>{props.value.name}</span>
@@ -210,8 +188,9 @@ function FunctionValue(props) {
 }
 
 function CircularValue(props) {
+  const isSelected = String(props.selectedPath) === String(props.path);
   return (
-    <div>
+    <div onClick={() => props.onSelectPath({path: props.path})} className={props.highlight && isSelected ? styles.highlightFunction : null}>
       {props.propertyKey ? props.propertyKey + ': ' : <span/>}
       <span className={styles.circular}>[Circular]</span>
       {props.hasNext ? ',' : null}
@@ -220,6 +199,15 @@ function CircularValue(props) {
 }
 
 function Inspector(props) {
-  return renderType(props.value, false, null);
+  return renderType({
+    value: props.value,
+    propertyKey: null,
+    hasNext: false,
+    path: props.path,
+    highlight: props.highlight,
+    onTogglePath: props.onTogglePath,
+    onSelectPath: props.onSelectPath,
+    selectedPath: props.selectedPath
+  });
 }
 export default Inspector;

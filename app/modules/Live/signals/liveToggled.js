@@ -3,11 +3,13 @@ import set from 'cerebral-addons/set';
 import showSnackbar from '../../Bin/factories/showSnackbar';
 import runClicked from '../../Bin/signals/runClicked';
 import connect from '../actions/connect';
+import disconnect from '../actions/disconnect';
 
 export default [
   when('state:/bin.currentBin.isLive'), {
     isTrue: [
-      set('state:/bin.currentBin.isLive', false)
+      set('state:/bin.currentBin.isLive', false),
+      disconnect
     ],
     isFalse: [
       set('state:/bin.currentBin.isLive', true),

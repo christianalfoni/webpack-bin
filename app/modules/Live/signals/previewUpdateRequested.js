@@ -4,7 +4,8 @@ import when from 'cerebral-addons/when';
 export default [
   when('state:/live.hasJoined'), {
     isTrue: [
-      set('state:/bin.logs', [])
+      set('state:/bin.logs', []),
+      set('state:/bin.selectedLogPath', [])
     ],
     isFalse: []
   },

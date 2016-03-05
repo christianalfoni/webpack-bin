@@ -4,7 +4,6 @@ export default (controller) => {
   const preventedSignals = [
     'bin.linted',
     'bin.iframeLoaded',
-    'bin.logReceived',
     'live.userJoined',
     'live.userLeft',
     'live.controlDesignated',
@@ -59,6 +58,9 @@ export default (controller) => {
     },
     releaseControl() {
       controller.removeListener('signalEnd', onSignalEnd);
+    },
+    disconnect() {
+      ws.close();
     },
     connect() {
       return new Promise((resolve, reject) => {

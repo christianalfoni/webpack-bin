@@ -28,6 +28,8 @@ import vimModeClicked from './signals/vimModeClicked';
 import fileDeleted from './signals/fileDeleted';
 import loadingTimeoutReached from './signals/loadingTimeoutReached';
 import hideSnackbar from './actions/hideSnackbar.js';
+import logValueToggled from './signals/logValueToggled';
+import logPathSelected from './signals/logPathSelected';
 
 export default (options = {}) => {
   return (module, controller) => {
@@ -46,6 +48,7 @@ export default (options = {}) => {
       isLoadingBin: false,
       showBinLoader: false,
       logs: [],
+      selectedLogPath: [],
       shouldCheckLog: false,
 
       hasTriedToRun: false,
@@ -86,7 +89,9 @@ export default (options = {}) => {
       boilerplateClicked: preventIfLive(boilerplateClicked),
       logToggled: preventIfLive(logToggled),
       fileDeleted: preventIfLive(fileDeleted),
-      logReceived,
+      logReceived: preventIfLive(logReceived),
+      logValueToggled: preventIfLive(logValueToggled),
+      logPathSelected: preventIfLive(logPathSelected),
       opened,
       vimModeClicked,
       linterRequested,

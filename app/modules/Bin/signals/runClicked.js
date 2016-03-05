@@ -33,6 +33,7 @@ export default [
         error: []
       },
       set('state:/bin.logs', []),
+      set('state:/bin.selectedLogPath', []),
       set('state:/bin.hasTriedToRun', false),
       set('state:/bin.isRunning', false),
       set('state:/bin.hasChangedPackages', false),
