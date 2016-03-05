@@ -226,3 +226,8 @@
 .twitter:before {
     content: "\e901";
 }
+
+.live {composes: font;}
+.live:before {
+    content: "\e258";
+}

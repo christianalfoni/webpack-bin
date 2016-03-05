@@ -96,7 +96,7 @@ class Toolbar extends React.Component {
             <ToolbarButton
               title='Live'
               active={this.props.currentBin.isLive}
-              icon={icons.assignment}
+              icon={icons.live}
               disabled={
                 (!this.props.currentBin.isOwner && this.props.currentBin.author) ||
                 this.props.isRunning ||
