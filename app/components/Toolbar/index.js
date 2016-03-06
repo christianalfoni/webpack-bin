@@ -130,12 +130,10 @@ class Toolbar extends React.Component {
             show={this.props.showInfo}
             right>
             <div className={styles.info}>
-              <h3>WebpackBin</h3>
-              <p>
-                WebpackBin is in ALPHA and allows you to load up NPM packages and webpack
-                loaders superfast. All bins has its own url and you can share your code
-                with anyone.
-              </p>
+              <h3>WebpackBin - ALPHA</h3>
+              <a className={styles.link} href="/api/project.zip" download>
+                <i className={icons.save}/> Download bin
+              </a>
               <div className={styles.link} onClick={() => {const win = window.open('https://github.com/christianalfoni/webpack-bin/issues');win.focus();}}>
                 <i className={icons.issue}/> Create an issue
               </div>

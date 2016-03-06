@@ -21,6 +21,7 @@ var database = require('./database');
 var npm = require('./npm');
 var bins = require('./bins');
 var liveConnection = require('./live');
+var zip = require('./zip');
 
 preLoadPackages([
   // Core node
@@ -80,6 +81,8 @@ app.get('/api/packages/:packageName', npm.getPackageFromRegistry);
 app.get('/api/bundles', database.searchBundles);
 
 app.get('/api/boilerplates/:id', bins.getBoilerplate);
+
+app.get('/api/project.zip', zip);
 
 app.get('*', function(req, res) {
   res.send(fs.readFileSync(

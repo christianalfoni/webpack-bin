@@ -1,9 +1,9 @@
-module.exports = function (session) {
+module.exports = function (currentLoaders) {
 
   var loaders = [];
 
   // BABEL
-  if (session.loaders.babel) {
+  if (currentLoaders.babel) {
     var loader = {
       test: /\.js?$/,
       exclude: /node_modules/,
@@ -12,34 +12,34 @@ module.exports = function (session) {
         presets: []
       }
     };
-    if (session.loaders.babel.stage0) {
+    if (currentLoaders.babel.stage0) {
       loader.query.presets.push('stage-0');
     }
-    if (session.loaders.babel.es2015) {
+    if (currentLoaders.babel.es2015) {
       loader.query.presets.push('es2015');
     }
-    if (session.loaders.babel.react) {
+    if (currentLoaders.babel.react) {
       loader.query.presets.push('react');
     }
     loaders.push(loader);
   }
 
   // CSS
-  if (session.loaders.css) {
+  if (currentLoaders.css) {
 
     var loader = {
       test: /\.css?$/,
       loader: 'style!css'
     }
 
-    if (session.loaders.css.modules) {
+    if (currentLoaders.css.modules) {
       loader.loader = 'style!css?modules&localIdentName=[name]---[local]---[hash:base64:5]';
     }
     loaders.push(loader);
   }
 
   // TYPESCRIPT
-  if (session.loaders.typescript) {
+  if (currentLoaders.typescript) {
     var loader = {
       test: /\.ts?$/,
       loader: 'ts',
@@ -52,7 +52,7 @@ module.exports = function (session) {
   }
 
   // CoffeeScript
-  if (session.loaders.coffeescript) {
+  if (currentLoaders.coffeescript) {
     var loader = {
       test: /\.coffee?$/,
       loader: 'coffee'
@@ -61,7 +61,7 @@ module.exports = function (session) {
   }
 
   // Less
-  if (session.loaders.css && session.loaders.css.less) {
+  if (currentLoaders.css && currentLoaders.css.less) {
     var loader = {
       test: /\.less?$/,
       loader: 'style!css!less'
@@ -70,7 +70,7 @@ module.exports = function (session) {
   }
 
   // Sass
-  if (session.loaders.css && session.loaders.css.sass) {
+  if (currentLoaders.css && currentLoaders.css.sass) {
     var loader = {
       test: /\.scss?$/,
       loader: 'style!css!sass'

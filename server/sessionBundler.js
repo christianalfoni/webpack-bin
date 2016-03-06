@@ -34,7 +34,7 @@ module.exports = {
 
         }
 
-        var loaders = createLoaders(session);
+        var loaders = createLoaders(session.loaders);
 
         console.log('Creating session compiler', loaders);
         console.log('Vendors bundle name', vendorsBundleName);

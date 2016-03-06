@@ -75,6 +75,7 @@
 }
 
 .link {
+  display: block;
   background-color: rgba(0,0,0,0.15);
   border-radius: 3px;
   padding: 10px;
@@ -82,6 +83,7 @@
   font-size: 18px;
   color: rgba(255,255,255,0.8);
   margin-bottom: 5px;
+  text-decoration: none;
 }
 
 .link i {
