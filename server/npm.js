@@ -27,7 +27,11 @@ module.exports = {
     }))
     .then(function (packagesData) {
       var entries = packagesData.reduce(function (entries, packageData) {
-        entries[packageData.name] = '.' + path.resolve('/', 'node_modules', packageData.name, packageData.main || 'index.js');
+        var packageEntry = packageData.main || 'index.js';
+        if (packageData.browser && packageData.browser[packageData.main]) {
+          packageEntry = packageData.browser[packageData.main];
+        }
+        entries[packageData.name] = '.' + path.resolve('/', 'node_modules', packageData.name, packageEntry);
         return entries;
       }, {});
       return {
