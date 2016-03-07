@@ -136,6 +136,9 @@ class Toolbar extends React.Component {
                 show={this.props.showInfo}
                 right>
                 <div className={styles.info}>
+                  <div className={styles.link} onClick={() => {const win = window.open('http://www.youtube.com/watch?v=LGaJwjVPh9I');win.focus();}}>
+                    <i className={icons.movie}/> Watch an introduction
+                  </div>
                   <div className={styles.link} onClick={() => {const win = window.open('https://github.com/christianalfoni/webpack-bin/issues');win.focus();}}>
                     <i className={icons.issue}/> Create an issue
                   </div>
