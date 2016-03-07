@@ -45,7 +45,7 @@ function createOnCloseCallback(session, client) {
 function createOnMessageCallback(session, client) {
   return function (message) {
     var payload = JSON.parse(message);
-    if (!session.currentBin) {
+    if (!session.currentBin || !channels[session.currentBin.id]) {
       return client.close();
     }
     if (payload.type === 'join') {
