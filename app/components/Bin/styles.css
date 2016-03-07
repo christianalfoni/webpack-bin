@@ -1,6 +1,6 @@
 .wrapper {
   position: relative;
-  height: calc(100vh - 50px);
+  height: calc(100vh - 104px);
   width: 100%;
   display: flex;
   opacity: 1;
@@ -50,13 +50,6 @@
   margin-top: -100px;
   width: 500px;
   text-align: center;
-}
-
-.logo {
-  width: 500px;
-  height: 97px;
-  background-image: url('/logo.png');
-  background-size: contain;
 }
 
 .previewAndLog {

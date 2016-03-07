@@ -1,9 +1,10 @@
 .addFileWrapper {
   cursor: pointer;
-  height: 100%;
-  margin-right: 10px;
-  float: right;
-  margin-top: 9px;
+  height: 50px;
+  float: left;
+  padding-top: 9px;
+  box-sizing: border-box;
+  border-right: 2px solid #232e3c;
 }
 
 .addFileWrapper:hover {
@@ -12,13 +13,13 @@
 
 .wrapper {
   height: 100%;
-  float: right;
 }
 
 .inputWrapper {
-  float: right;
+  float: left;
   padding: 0 10px;
   line-height: 26px;
+  border-right: 2px solid #232e3c;
 }
 
 .input {

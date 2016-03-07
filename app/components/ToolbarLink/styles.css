@@ -1,0 +1,94 @@
+.button {
+  background: transparent;
+  border: 0;
+  float: left;
+  padding: 0;
+  cursor: pointer;
+  text-align: center;
+}
+
+.button[disabled] {
+  opacity: 0.2;
+}
+
+.button[disabled]:hover {
+  color: #cadaed;
+  background-color: transparent;
+}
+
+.icon {
+  border: 2px solid #eb1e64;
+  border-radius: 50%;
+  font-size: 16px;
+  color: #cadaed;
+  transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  position: relative;
+  padding: 6px;
+  margin-right: 5px;
+  margin-left: 5px;
+  display: inline-block;
+}
+
+.icon:hover, .button:focus .icon {
+  color: #fff;
+  background-color: #28374b;
+}
+
+.disabledIcon {
+  composes: icon;
+  border: 2px solid #cadaed;
+  cursor: default;
+}
+
+.activeIcon {
+  composes: icon;
+  border-color: #eb1e64;
+  background-color: #eb1e64;
+  color: #fff;
+}
+
+.activeIcon:hover, .button:focus .activeIcon, .activeTextIcon:hover, .button:focus .activeTextIcon {
+  background-color: #eb1e64;
+  color: #fff;
+}
+
+.button:focus{
+  outline: 0;
+}
+
+.iconTitleWrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.iconTitle {
+  font-size: 14px;
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 9px;
+  margin-left: 5px;
+  margin-right: 20px;
+  text-align: center;
+  color: #cadaed;
+  font-family: Ubuntu, sans-serif;
+}
+
+.notifyIcon {
+  composes: icon;
+  /*border-color: #eb1e64;*/
+  color: #fff;
+  animation: notify 1s infinite;
+  -webkit-animation: notify 1s infinite;
+}
+
+@keyframes notify {
+  0%   {background: #242d3c;}
+  50%  {background: #eb1e64;}
+  100% {background: #242d3c;}
+}
+
+@-webkit-keyframes notify {
+  0%   {background: #242d3c;}
+  50%  {background: #eb1e64;}
+  100% {background: #242d3c;}
+}

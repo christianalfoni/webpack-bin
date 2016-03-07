@@ -1,23 +1,35 @@
 .wrapper {
-  height: 50px;
   width: 100%;
-  box-sizing: border-box;
-  border-bottom: 2px solid #232e3c;
   background-color: #202634;
+}
+
+.columnWrapper {
   display: flex;
 }
 
-.column {
-  border-right: 2px solid #232e3c;
-  box-sizing: border-box;
+.column1 {
+  flex: 2;
+}
+
+.column2 {
   flex: 1;
+}
+
+.row {
+  border-bottom: 2px solid #232e3c;
+  min-height: 50px;
 }
 
 .file {
   position: relative;
+  float: left;
   display: inline-block;
   padding: 15px 30px;
   cursor: pointer;
+}
+
+.files {
+  float: left;
 }
 
 .file:not(:first-child):hover i {
@@ -93,4 +105,27 @@
 .link:hover {
   background-color: rgba(0,0,0,0.1);
   color: rgba(255,255,255,1);
+}
+
+.logo {
+  float: left;
+  width: 257px;
+  height: 50px;
+  background-image: url('/logo.png');
+  background-size: contain;
+  background-position: 0 -2px;
+}
+
+.version {
+  position: relative;
+  float: left;
+  width: 50px;
+  height: 50px;
+}
+
+.versionText {
+  position: absolute;
+  left: 0;
+  bottom: 8px;
+  opacity: 0.5;
 }

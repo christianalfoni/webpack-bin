@@ -231,3 +231,13 @@
 .live:before {
     content: "\e258";
 }
+
+.zip {composes: font;}
+.zip:before {
+    content: "\e902";
+}
+
+.movie {composes: font;}
+.movie:before {
+    content: "\e012";
+}

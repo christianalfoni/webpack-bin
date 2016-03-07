@@ -78,19 +78,19 @@ class Bin extends React.Component {
               :
                 null
             }
-            </div>
-            {
-              this.props.live.connected && this.props.live.hasJoined ?
-                <LiveUser/>
-              :
-                null
-            }
-            {
-              this.props.live.connected && !this.props.live.hasJoined ?
-                <LiveUsers/>
-              :
-                null
-            }
+          </div>
+          {
+            this.props.live.connected && this.props.live.hasJoined ?
+              <LiveUser/>
+            :
+              null
+          }
+          {
+            this.props.live.connected && !this.props.live.hasJoined ?
+              <LiveUsers/>
+            :
+              null
+          }
         </div>
         {
           this.props.showLoadingBin ?

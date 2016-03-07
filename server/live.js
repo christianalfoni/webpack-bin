@@ -45,6 +45,9 @@ function createOnCloseCallback(session, client) {
 function createOnMessageCallback(session, client) {
   return function (message) {
     var payload = JSON.parse(message);
+    if (!session.currentBin) {
+      return client.close();
+    }
     if (payload.type === 'join') {
       var name = moniker.choose();
       channels[session.currentBin.id].clients[name] = client;
@@ -88,7 +91,7 @@ function createOnMessageCallback(session, client) {
 
 module.exports = function connection(client) {
 
-  var sessionId = cookie.parse(client.upgradeReq.headers.cookie).codebox;
+  var sessionId = cookie.parse(client.upgradeReq.headers.cookie).webpackbin;
   var session = sessions.get(sessionId);
 
   if (session.currentBin.isOwner) {

@@ -23,7 +23,7 @@ var sessionsModule = {
     var now = Date.now();
     console.log('Cleaning sessions: ' + Object.keys(sessions).length);
     sessions = Object.keys(sessions).filter(function (key) {
-      return now - sessions[key].lastUpdate < 60 * 1000 * 5;
+      return now - sessions[key].lastUpdate < 60 * 1000 * 30; // Clean up after 30 min of inactivity
     }).reduce(function (remainingSessions, key) {
       remainingSessions[key] = sessions[key];
       return remainingSessions;
@@ -31,14 +31,15 @@ var sessionsModule = {
     console.log('Cleaned sessions: ' + Object.keys(sessions).length);
   },
   middleware: function (req, res, next) {
-    if (req.cookies.codebox && sessionsModule.get(req.cookies.codebox)) {
-      req.session = sessionsModule.get(req.cookies.codebox);
+    if (req.cookies.webpackbin && sessionsModule.get(req.cookies.webpackbin)) {
+      req.session = sessionsModule.get(req.cookies.webpackbin);
     } else {
-      var id = String(Date.now());
+      var id = String(Date.now()) + (Math.random() * 10000).toFixed(0);
       req.session = sessionsModule.set(id);
-      res.cookie('codebox', String(id), {
-        expires: 0,
-        domain: utils.isProduction() ? 'www.webpackbin.com' : '.codebox.dev',
+      console.log('Setting session', id);
+      res.cookie('webpackbin', String(id), {
+        maxAge: 3600000 * 24, // One day
+        domain: utils.isProduction() ? 'www.webpackbin.com' : '.webpackbin.dev',
         httpOnly: true
       });
     }
