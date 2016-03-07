@@ -52,6 +52,13 @@
   text-align: center;
 }
 
+.logo {
+  width: 500px;
+  height: 97px;
+  background-image: url('/logo.png');
+  background-size: contain;
+}
+
 .previewAndLog {
   flex: 1;
   position: relative;

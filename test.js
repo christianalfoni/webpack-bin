@@ -1,28 +1,22 @@
-var webpack = require('webpack');
 var MemoryFileSystem = require('memory-fs');
-var middleware = require('./middleware');
-var config = require('./config');
 var fs = new MemoryFileSystem();
 var path = require('path');
 
 fs.mkdirpSync(path.resolve("src"));
 fs.writeFileSync(path.resolve("src", "test.js"), "var test = 'hest';");
+fs.mkdirpSync(path.resolve("src", "test"));
+fs.writeFileSync(path.resolve("src", "test", "test.js"), "var test = 'hest';");
 
-var compiler = webpack(config);
-compiler.inputFileSystem = fs;
-compiler.resolvers.normal.fileSystem = compiler.inputFileSystem;
-compiler.resolvers.context.fileSystem = compiler.inputFileSystem;
-
-var test = middleware(compiler, {
-    contentBase: 'src',
-    stats: {
-      colors: true,
-      hash: false,
-      timings: true,
-      chunks: true,
-      chunkModules: false,
-      modules: false
+var extract = function (dir) {
+  var entries = fs.readdirSync(dir);
+  return entries.reduce(function (points, fileOrDir) {
+    if (path.extname(fileOrDir) === '.js') {
+      return points.concat(dir + '/' + fileOrDir);
+    } else if (fs.statSync(dir + '/' + fileOrDir).isDirectory()) {
+      return points.concat(extract(dir + '/' + fileOrDir));
     }
-  });
+  }, []);
+};
 
-console.log(test(path.resolve("src", "test.js")));
+
+console.log(extract(path.resolve('')));

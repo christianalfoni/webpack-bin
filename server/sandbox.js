@@ -43,7 +43,7 @@ module.exports = {
 
   },
   getFile: function (req, res, next) {
-    console.log('requesting', req.url, req.session);
+    console.log('requesting', req.url);
     if (/wbtools/.test(req.url)) {
       res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
       res.setHeader('Expires', '-1');
