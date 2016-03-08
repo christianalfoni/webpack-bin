@@ -36,7 +36,7 @@ export default (options = {}) => {
   return (module, controller) => {
 
     module.addState({
-      showWelcome: true,
+      showWelcome: !Boolean(localStorage && localStorage.getItem('hasVisited')),
       snackbar: {
         text: '',
         show: false
