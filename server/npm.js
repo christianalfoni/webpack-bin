@@ -31,9 +31,13 @@ module.exports = {
         if (packageData.browser && packageData.browser[packageData.main]) {
           packageEntry = packageData.browser[packageData.main];
         }
+        if (!path.extname(packageEntry)) {
+          packageEntry += '.js';
+        }
         entries[packageData.name] = '.' + path.resolve('/', 'node_modules', packageData.name, packageEntry);
         return entries;
       }, {});
+      console.log('Got entries', Object.keys(entries));
       return {
         name: utils.getVendorsBundleName(packages),
         entries: entries,
@@ -53,8 +57,16 @@ module.exports = {
   },
   getPackageFromRegistry: function (req, res) {
     var nameSplit = req.params.packageName.split('@');
+
+    // If leading @
+    if (!nameSplit[0]) {
+      nameSplit.shift();
+      nameSplit[0] = '@' + encodeURIComponent(nameSplit[0]);
+    }
+
     var name = nameSplit[0];
     var version = nameSplit[1];
+
     new Promise(function (resolve, reject) {
       request('http://registry.npmjs.org/' + name, function (err, response, body) {
         if (err || response.statusCode < 200  || response.statusCode >= 300) {

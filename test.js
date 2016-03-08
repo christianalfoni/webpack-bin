@@ -2,6 +2,8 @@ var MemoryFileSystem = require('memory-fs');
 var fs = new MemoryFileSystem();
 var path = require('path');
 
+console.log(!path.extname('index'));
+return
 fs.mkdirpSync(path.resolve("src"));
 fs.writeFileSync(path.resolve("src", "test.js"), "var test = 'hest';");
 fs.mkdirpSync(path.resolve("src", "test"));
