@@ -96,6 +96,10 @@ class CodeEditor extends React.Component {
         return 'text/x-less';
       case 'scss':
         return 'text/x-sass';
+      case 'html':
+        return 'htmlmixed';
+      case 'json':
+        return 'application/json';
       default:
         return 'jsx';
     }
@@ -247,6 +251,62 @@ class CodeEditor extends React.Component {
         return require.ensure([], () => {
           setSassModeAndLinter();
           this.props.signals.bin.linterLoaded({noLint: true});
+        });
+      }
+
+    }
+
+    if (mode === 'htmlmixed') {
+
+      const setHtmlModeAndLinter = function () {
+        loadedLinters.push(mode);
+        require('codemirror/mode/htmlmixed/htmlmixed.js');
+        require('codemirror/addon/edit/matchtags.js');
+        require('codemirror/addon/edit/closetag.js');
+        const htmlhint = require('htmlhint');
+        const linter = require('./html-lint.js');
+        this.codemirror.setOption('lint', {
+          getAnnotations: linter(CodeMirror, htmlhint.HTMLHint),
+          onUpdateLinting: this.onUpdateLinting
+        });
+        this.codemirror.setOption('mode', mode);
+        this.setEditorValue(this.codemirror.getValue());
+      }.bind(this);
+
+      if (loadedLinters.indexOf(mode) >= 0) {
+        setHtmlModeAndLinter();
+      } else {
+        this.props.signals.bin.linterRequested();
+        return require.ensure([], () => {
+          setHtmlModeAndLinter();
+          this.props.signals.bin.linterLoaded();
+        });
+      }
+
+    }
+
+    if (mode === 'application/json') {
+
+      const setJsonModeAndLinter = function () {
+        loadedLinters.push(mode);
+        require('codemirror/mode/javascript/javascript.js');
+        const jsonLint = require('./linters/json.js');
+        const linter = require('./json-lint.js');
+        this.codemirror.setOption('lint', {
+          getAnnotations: linter(CodeMirror, jsonLint),
+          onUpdateLinting: this.onUpdateLinting
+        });
+        this.codemirror.setOption('mode', mode);
+        this.setEditorValue(this.codemirror.getValue());
+      }.bind(this);
+
+      if (loadedLinters.indexOf(mode) >= 0) {
+        setJsonModeAndLinter();
+      } else {
+        this.props.signals.bin.linterRequested();
+        return require.ensure([], () => {
+          setJsonModeAndLinter();
+          this.props.signals.bin.linterLoaded();
         });
       }
 

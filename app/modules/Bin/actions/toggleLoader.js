@@ -10,7 +10,9 @@ const loaderTemplates = {
   typescript: {},
   coffeescript: {},
   less: {},
-  sass: {}
+  sass: {},
+  raw: {},
+  json: {}
 };
 
 function toggleLoader({input, state}) {

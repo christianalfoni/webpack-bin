@@ -1,7 +1,7 @@
 import set from 'cerebral-addons/set';
 import when from 'cerebral-addons/when';
 import hidePopups from '../factories/hidePopups';
-import runClicked from './runClicked';
+import runBin from '../factories/runBin';
 import getBoilerplate from '../actions/getBoilerplate';
 import setBoilerplate from '../actions/setBoilerplate';
 import showSnackbar from '../factories/showSnackbar';
@@ -16,7 +16,7 @@ export default [
       setBoilerplate,
       canControlBin, {
         true: [
-          ...runClicked
+          ...runBin
         ],
         false: [
           set('state:/bin.isRunning', true)

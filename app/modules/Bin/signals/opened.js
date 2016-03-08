@@ -5,7 +5,7 @@ import httpGet from 'cerebral-module-http/get';
 import showSnackbar from '../factories/showSnackbar';
 import hideSnackbar from '../actions/hideSnackbar';
 import isNewBin from '../actions/isNewBin';
-import runClicked from './runClicked';
+import runBin from '../factories/runBin';
 import connectToLiveBin from '../actions/connectToLiveBin';
 
 export default [
@@ -30,13 +30,13 @@ export default [
           connectToLiveBin
         ],
         isFalse: [
-          ...runClicked
+          ...runBin
         ]
       }
     ],
     false: [
       set('state:/bin.selectedFileIndex', 0),
-      ...runClicked
+      ...runBin
     ]
   }
 ];

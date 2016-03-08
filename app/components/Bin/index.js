@@ -7,6 +7,7 @@ import Preview from '../Preview';
 import Log from '../Log';
 import LiveUsers from '../LiveUsers';
 import LiveUser from '../LiveUser';
+import Welcome from '../Welcome';
 
 @Cerebral({
   snackbar: 'bin.snackbar',
@@ -14,7 +15,8 @@ import LiveUser from '../LiveUser';
   isLoadingBin: 'bin.isLoadingBin',
   showLog: 'bin.showLog',
   showLoadingBin: 'bin.showLoadingBin',
-  live: 'live'
+  live: 'live',
+  showWelcome: 'bin.showWelcome'
 })
 class Bin extends React.Component {
   constructor(props) {
@@ -22,6 +24,9 @@ class Bin extends React.Component {
     this.state = {
       showSnackbar: false
     };
+  }
+  componentWillMount() {
+    document.querySelector('#loader').style.display = 'none';
   }
   componentDidMount() {
     window.addEventListener('keydown', (event) => {
@@ -65,6 +70,11 @@ class Bin extends React.Component {
     }, 4000);
   }
   render() {
+
+    if (this.props.showWelcome) {
+      return <Welcome/>;
+    }
+
     return (
       <div onClick={() => this.props.signals.bin.appClicked()}>
         <Toolbar/>

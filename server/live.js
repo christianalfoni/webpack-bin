@@ -94,6 +94,10 @@ module.exports = function connection(client) {
   var sessionId = cookie.parse(client.upgradeReq.headers.cookie).webpackbin;
   var session = sessions.get(sessionId);
 
+  if (!session || !session.currentBin) {
+    return client.close();
+  }
+
   if (session.currentBin.isOwner) {
     channels[session.currentBin.id] = {
       controller: client,

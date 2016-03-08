@@ -44,7 +44,9 @@ preLoadPackages([
   'less-loader',
   'node-sass',
   'sass-loader',
-  'babel-plugin-transform-decorators-legacy'
+  'babel-plugin-transform-decorators-legacy',
+  'raw-loader',
+  'json-loader'
 ]);
 
 // Init

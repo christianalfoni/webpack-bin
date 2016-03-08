@@ -6,12 +6,16 @@ import BabelConfig from './BabelConfig';
 import CssConfig from './CssConfig';
 import TypescriptConfig from './TypescriptConfig';
 import CoffeescriptConfig from './CoffeescriptConfig';
+import RawConfig from './RawConfig';
+import JsonConfig from './JsonConfig';
 
 const loaders = {
   babel: BabelConfig,
   css: CssConfig,
   typescript: TypescriptConfig,
-  coffeescript: CoffeescriptConfig
+  coffeescript: CoffeescriptConfig,
+  raw: RawConfig,
+  json: JsonConfig
 };
 
 @Cerebral({

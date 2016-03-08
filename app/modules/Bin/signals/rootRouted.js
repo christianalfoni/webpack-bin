@@ -1,5 +1,5 @@
-import setDefaultBin from '../actions/setDefaultBin';
+import set from 'cerebral-addons/set';
 
 export default [
-  setDefaultBin
+  set('state:/bin.showWelcome', true)
 ];

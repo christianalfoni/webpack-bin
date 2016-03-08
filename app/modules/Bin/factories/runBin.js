@@ -3,7 +3,7 @@ import copy from 'cerebral-addons/copy';
 import when from 'cerebral-addons/when';
 import postCode from '../actions/postCode';
 import httpGet from 'cerebral-module-http/get';
-import showSnackbar from '../factories/showSnackbar';
+import showSnackbar from './showSnackbar';
 import hideSnackbar from '../actions/hideSnackbar';
 import redirectToBin from '../actions/redirectToBin';
 import gotNewBin from '../actions/gotNewBin';

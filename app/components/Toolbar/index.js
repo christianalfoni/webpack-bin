@@ -78,7 +78,7 @@ class Toolbar extends React.Component {
                 <ToolbarButton
                   title='Run'
                   icon={icons.play}
-                  disabled={this.props.isRunning || !this.props.isValid}
+                  disabled={this.props.isRunning}
                   onClick={() => signals.bin.runClicked()}/>
               </div>
               <div className={styles.buttonWrapper}>
@@ -87,7 +87,7 @@ class Toolbar extends React.Component {
                   active={this.props.showLog}
                   icon={icons.assignment}
                   notify={this.props.shouldCheckLog}
-                  disabled={this.props.isRunning || !this.props.isValid}
+                  disabled={this.props.isRunning}
                   onClick={() => signals.bin.logToggled()}/>
               </div>
               <div className={styles.buttonWrapper}>
@@ -97,8 +97,7 @@ class Toolbar extends React.Component {
                   icon={icons.live}
                   disabled={
                     (!this.props.currentBin.isOwner && this.props.currentBin.author) ||
-                    this.props.isRunning ||
-                    !this.props.isValid
+                    this.props.isRunning
                   }
                   onClick={() => signals.live.liveToggled()}/>
               </div>

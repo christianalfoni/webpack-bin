@@ -8,16 +8,49 @@
     <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
     <style>
       html, body {
-          margin: 0;
-          background-color: #242d3c;
-          color: #fff;
-          font-family: Ubuntu, sans-serif;
-          overflow: hidden;
-        }
+        margin: 0;
+        background-color: #242d3c;
+        color: #fff;
+        font-family: Ubuntu, sans-serif;
+        overflow: hidden;
+      }
+
+      #loader {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 500px;
+        height: 97px;
+        margin-top: -47px;
+        margin-left: -250px;
+      }
+      #loader h3 {
+        text-align: center;
+        opacity: 1;
+        animation: pulse 1s infinite;
+        -webkit-animation: pulse 1s infinite;
+      }
+
+      @keyframes pulse {
+        0%   {opacity: 1;}
+        50%  {opacity: 0.5;}
+        100% {opacity: 1;}
+      }
+
+      @-webkit-keyframes pulse {
+        0%   {opacity: 1;}
+        50%  {opacity: 0.5;}
+        100% {opacity: 1;}
+      }
+
     </style>
   </head>
   <body>
     <div id="root"></div>
+    <div id="loader">
+      <img src="logo.png"/>
+      <h3>Loading it up!</h3>
+    </div>
     <script type="text/javascript" src="/build/bundle.js"></script>
   </body>
 </html>

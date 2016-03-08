@@ -1,6 +1,6 @@
 import when from 'cerebral-addons/when';
 import set from 'cerebral-addons/set';
-import runClicked from './runClicked';
+import runBin from '../factories/runBin';
 import hasValidLinting from '../actions/hasValidLinting';
 import canControlBin from '../../Live/actions/canControlBin';
 
@@ -10,20 +10,12 @@ export default [
     isFalse: [
       set('state:/bin.logs', []),
       set('state:/bin.selectedLogPath', []),
-      canControlBin, {
-        true: [
-          hasValidLinting, {
-            true: [
-              ...runClicked
-            ],
-            false: [
-              set('state:/bin.hasTriedToRun', true)
-            ]
-          }
-
-        ],
-        false: [
+      when('state:/live.hasJoined'), {
+        isTrue: [
           set('state:/bin.isRunning', true)
+        ],
+        isFalse: [
+          ...runBin
         ]
       }
     ]

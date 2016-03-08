@@ -1,5 +1,4 @@
 import preventIfLive from '../Live/factories/preventIfLive';
-import runClicked from './signals/runClicked';
 import fileClicked from './signals/fileClicked';
 import codeChanged from './signals/codeChanged';
 import rootRouted from './signals/rootRouted';
@@ -30,11 +29,14 @@ import loadingTimeoutReached from './signals/loadingTimeoutReached';
 import hideSnackbar from './actions/hideSnackbar.js';
 import logValueToggled from './signals/logValueToggled';
 import logPathSelected from './signals/logPathSelected';
+import welcomeBinClicked from './signals/welcomeBinClicked';
+import emptyBinClicked from './signals/emptyBinClicked';
 
 export default (options = {}) => {
   return (module, controller) => {
 
     module.addState({
+      showWelcome: true,
       snackbar: {
         text: '',
         show: false
@@ -51,7 +53,6 @@ export default (options = {}) => {
       selectedLogPath: [],
       shouldCheckLog: false,
 
-      hasTriedToRun: false,
       shouldLint: true,
       isLinting: false,
       lastLintedFileIndex: 0,
@@ -74,7 +75,7 @@ export default (options = {}) => {
     module.addSignals({
       snackbarTimedOut: preventIfLive([hideSnackbar]),
       codeChanged: preventIfLive(codeChanged),
-      runClicked: preventIfLive(runClicked),
+      runClicked: preventIfLive(saveShortcutPressed),
       fileClicked: preventIfLive(fileClicked),
       saveShortcutPressed: preventIfLive(saveShortcutPressed),
       addFileClicked: preventIfLive(addFileClicked),
@@ -103,6 +104,8 @@ export default (options = {}) => {
       addFileAborted,
       addFileNameUpdated,
       addFileSubmitted,
+      welcomeBinClicked,
+      emptyBinClicked
     });
 
   };

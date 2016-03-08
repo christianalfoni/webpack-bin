@@ -78,5 +78,23 @@ module.exports = function (currentLoaders) {
     loaders.push(loader);
   }
 
+  // HTML
+  if (currentLoaders.raw) {
+    var loader = {
+      test: /\.html?$/,
+      loader: 'raw'
+    }
+    loaders.push(loader);
+  }
+
+  // JSON
+  if (currentLoaders.json) {
+    var loader = {
+      test: /\.json?$/,
+      loader: 'json'
+    }
+    loaders.push(loader);
+  }
+
   return loaders;
 };
