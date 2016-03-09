@@ -1,6 +1,6 @@
 function showSnackbar(text, persist) {
   function action({state}) {
-    if (state.get('bin.snackbar.show') && state.get('bin.snackbar.persist')) {
+    if (state.get('bin.snackbar.show') && state.get('bin.snackbar.persist') && !persist) {
       return;
     }
     state.merge('bin.snackbar', {

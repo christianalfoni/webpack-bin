@@ -24,7 +24,8 @@ import Boilerplates from '../Boilerplates';
   shouldCheckLog: 'bin.shouldCheckLog',
   showBoilerplatesSelector: 'bin.showBoilerplatesSelector',
   vimModeEnabled: 'bin.vimMode',
-  currentBin: 'bin.currentBin'
+  currentBin: 'bin.currentBin',
+  highlightCreateIssue: 'bin.highlightCreateIssue'
 })
 class Toolbar extends React.Component {
   static propTypes = {
@@ -138,7 +139,7 @@ class Toolbar extends React.Component {
                   <div className={styles.link} onClick={() => {const win = window.open('http://www.youtube.com/watch?v=LGaJwjVPh9I');win.focus();}}>
                     <i className={icons.movie}/> Watch an introduction
                   </div>
-                  <div className={styles.link} onClick={() => {const win = window.open('https://github.com/christianalfoni/webpack-bin/issues');win.focus();}}>
+                  <div className={this.props.highlightCreateIssue ? styles.highlightLink : styles.link} onClick={() => {const win = window.open('https://github.com/christianalfoni/webpack-bin/issues');win.focus();}}>
                     <i className={icons.issue}/> Create an issue
                   </div>
                   <div className={styles.link} onClick={() => {const win = window.open('https://github.com/christianalfoni/webpack-bin');win.focus();}}>

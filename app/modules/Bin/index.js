@@ -69,7 +69,8 @@ export default (options = {}) => {
       showLog: false,
       currentLoader: 'babel',
       forceUpdateCode: false,
-      vimMode: false
+      vimMode: false,
+      highlightCreateIssue: false
     });
 
     module.addSignals({

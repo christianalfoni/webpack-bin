@@ -30,7 +30,11 @@ export default [
             ]
           }
         ],
-        error: []
+        error: [
+          set('state:/bin.showInfo', true),
+          set('state:/bin.highlightCreateIssue', true),
+          showSnackbar('An error occured, please report what you tried to do!', true)
+        ]
       },
       set('state:/bin.logs', []),
       set('state:/bin.selectedLogPath', []),

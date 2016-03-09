@@ -129,3 +129,29 @@
   bottom: 8px;
   opacity: 0.5;
 }
+
+.highlightLink {
+  composes: link;
+  background-color: #eb1e64;
+  color: #fff;
+  animation: highlight 0.5s infinite;
+  -webkit-animation: highlight 0.5s infinite;
+  opacity: 1;
+}
+
+.highlightLink:hover {
+  background-color: #eb1e64;
+  color: #fff;
+}
+
+@keyframes highlight {
+  0%   {opacity: 1;}
+  50%  {opacity: 0.8;}
+  100% {opacity: 1;}
+}
+
+@-webkit-keyframes highlight {
+  0%   {opacity: 1;}
+  50%  {opacity: 0.8;}
+  100% {opacity: 1;}
+}

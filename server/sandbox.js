@@ -137,7 +137,11 @@ module.exports = {
               .then(vendorsBundler.compile)
               .then(db.saveVendorsBundle)
               .then(npm.removePackages)
-              .then(db.uploadVendorsBundle);
+              .then(db.uploadVendorsBundle)
+              .catch(function (err) {
+                res.sendStatus(500);
+                throw err;
+              })
           }
         })
         .then(sessionBundler.create(req.session))
@@ -175,7 +179,11 @@ module.exports = {
               .then(vendorsBundler.compile)
               .then(db.saveVendorsBundle)
               .then(npm.removePackages)
-              .then(db.uploadVendorsBundle);
+              .then(db.uploadVendorsBundle)
+              .catch(function (err) {
+                res.sendStatus(500);
+                throw err;
+              });
           }
         })
         .then(sessionBundler.create(req.session))
