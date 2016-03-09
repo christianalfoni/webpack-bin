@@ -16,7 +16,8 @@ import Welcome from '../Welcome';
   showLog: 'bin.showLog',
   showLoadingBin: 'bin.showLoadingBin',
   live: 'live',
-  showWelcome: 'bin.showWelcome'
+  showWelcome: 'bin.showWelcome',
+  isInitialized: 'bin.isInitialized'
 })
 class Bin extends React.Component {
   constructor(props) {
@@ -24,9 +25,6 @@ class Bin extends React.Component {
     this.state = {
       showSnackbar: false
     };
-  }
-  componentWillMount() {
-    document.querySelector('#loader').style.display = 'none';
   }
   componentDidMount() {
     window.addEventListener('keydown', (event) => {
@@ -37,6 +35,9 @@ class Bin extends React.Component {
     });
   }
   componentDidUpdate(prevProps) {
+    if (!prevProps.isInitialized && this.props.isInitialized) {
+      document.querySelector('#loader').style.display = 'none';
+    }
     if (!prevProps.isLoadingBin && this.props.isLoadingBin) {
       this.setLoaderTimeout();
     } else if (prevProps.isLoadingBin && !this.props.isLoadingBin) {
@@ -70,6 +71,10 @@ class Bin extends React.Component {
     }, 4000);
   }
   render() {
+
+    if (!this.props.isInitialized) {
+      return null;
+    }
 
     if (this.props.showWelcome) {
       return <Welcome/>;

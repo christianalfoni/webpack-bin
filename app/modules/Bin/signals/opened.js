@@ -9,6 +9,8 @@ import runBin from '../factories/runBin';
 import connectToLiveBin from '../actions/connectToLiveBin';
 
 export default [
+  set('state:/bin.isInitialized', true),
+  set('state:/bin.showWelcome', false),
   isNewBin, {
     true: [
       set('state:/bin.isLoadingBin', true),
