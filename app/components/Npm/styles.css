@@ -1,13 +1,20 @@
 .wrapper {
   padding: 10px;
   display: flex;
+  max-height: 600px;
 }
 
 .column {
   flex-grow: 1;
   flex-basis: auto;
   margin: 0 5px;
+  width: 250px;
+}
+
+.columnLarge {
+  composes: column;
   min-width: 250px;
+  width: auto;
 }
 
 .column:not(:first-child) {
@@ -80,4 +87,17 @@
 .bundlePackage small {
   font-size: 12px;
   color: rgba(255,255,255,0.5);
+}
+
+.bundleInfo {
+  color: rgba(255,255,255,0.5);
+  padding: 0 5px;
+  font-size: 12px;
+  line-height: 16px;
+
+}
+
+.bundlesList {
+  overflow-y: auto;
+  height: 100%;
 }

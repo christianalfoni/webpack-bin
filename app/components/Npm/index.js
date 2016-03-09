@@ -58,7 +58,7 @@ class Npm extends React.Component {
             this.props.isSearchingBundles ?
               <div className={styles.searching}>Searching...</div>
             :
-              this.renderBundles()
+              <div className={styles.bundlesList}>{this.renderBundles()}</div>
           }
         </div>
         <div className={styles.column}>
@@ -73,6 +73,7 @@ class Npm extends React.Component {
               onChange={(e) => this.props.signals.npm.packageNameQueryChanged({query: e.target.value})}
               value={this.props.packageNameQuery}/>
           </form>
+          <div className={styles.bundleInfo}>You can assign specific version with "@", ex. "react@0.14.7"</div>
           {
             this.props.packageError ?
               <div className={styles.error}>ERROR: Could not find package</div>
@@ -81,7 +82,7 @@ class Npm extends React.Component {
           }
           {this.renderSelectedPackages()}
         </div>
-        <div className={styles.column}>
+        <div className={styles.columnLarge}>
           <h3 className={styles.title}>Loaders</h3>
           <Loaders/>
         </div>
