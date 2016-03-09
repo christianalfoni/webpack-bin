@@ -19,7 +19,7 @@
   position: absolute;
   top: 50px;
   margin-left: -25px;
-  z-index: 5;
+  z-index: 10;
 }
 
 .arrowBox:before, .arrowBox:after {
