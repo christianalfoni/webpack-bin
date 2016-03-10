@@ -4,9 +4,10 @@ import styles from './styles.css';
 
 const boilerplates = {
   'react': 'React',
-  'cerebral': 'Cerebral with React',
-  'redux': 'Redux Counter',
-  'cycle': 'Cycle JS'
+  'cerebral': 'Cerebral',
+  'redux': 'Redux',
+  'cycle': 'Cycle JS',
+  'vue': 'Vue JS'
 };
 
 @Cerebral()
