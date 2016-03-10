@@ -102,6 +102,8 @@ class CodeEditor extends React.Component {
         return 'application/json';
       case 'jade':
         return {name: 'jade', alignCDATA: true};
+      case 'handlebars':
+        return {name: 'handlebars', base: 'text/html'};
       default:
         return 'jsx';
     }
@@ -329,6 +331,27 @@ class CodeEditor extends React.Component {
         this.props.signals.bin.linterRequested({noLint: true});
         return require.ensure([], () => {
           setJadeMode();
+          this.props.signals.bin.linterLoaded({noLint: true});
+        });
+      }
+
+    }
+
+    if (mode.name === 'handlebars') {
+
+      const setHandlebarsMode = function () {
+        require('codemirror/mode/handlebars/handlebars.js');
+        this.codemirror.setOption('lint', false);
+        this.codemirror.setOption('mode', mode);
+        this.setEditorValue(this.codemirror.getValue());
+      }.bind(this);
+
+      if (loadedLinters.indexOf(mode) >= 0) {
+        setHandlebarsMode();
+      } else {
+        this.props.signals.bin.linterRequested({noLint: true});
+        return require.ensure([], () => {
+          setHandlebarsMode();
           this.props.signals.bin.linterLoaded({noLint: true});
         });
       }

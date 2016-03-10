@@ -13,7 +13,8 @@ const loaderTemplates = {
   sass: {},
   raw: {},
   json: {},
-  jade: {}
+  jade: {},
+  handlebars: {}
 };
 
 function toggleLoader({input, state}) {

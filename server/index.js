@@ -48,7 +48,9 @@ preLoadPackages([
   'raw-loader',
   'json-loader',
   'jade',
-  'jade-loader'
+  'jade-loader',
+  'handlebars',
+  'handlebars-loader'
 ]);
 
 // Init

@@ -47,6 +47,10 @@ function addFile({state}) {
   if (ext === 'jade' && !state.get('bin.currentBin.loaders.jade')) {
     state.set('bin.currentBin.loaders.jade', {});
   }
+
+  if (ext === 'handlebars' && !state.get('bin.currentBin.loaders.handlebars')) {
+    state.set('bin.currentBin.loaders.handlebars', {});
+  }
 }
 
 export default addFile;

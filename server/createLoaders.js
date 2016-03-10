@@ -105,5 +105,14 @@ module.exports = function (currentLoaders) {
     loaders.push(loader);
   }
 
+  // HANDLEBARS
+  if (currentLoaders.handlebars) {
+    var loader = {
+      test: /\.handlebars?$/,
+      loader: 'handlebars'
+    }
+    loaders.push(loader);
+  }
+
   return loaders;
 };
