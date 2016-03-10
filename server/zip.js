@@ -8,10 +8,11 @@ var createLoaders = require('./createLoaders');
 var defaultFiles = {
   'webpack.config.js': fs.readFileSync(path.resolve('server', 'zip', 'webpack.config.js')).toString(),
   'index.tpl.html': fs.readFileSync(path.resolve('server', 'zip', 'index.tpl.html')).toString(),
-  'README.md': fs.readFileSync(path.resolve('server', 'zip', 'index.tpl.html')).toString()
+  'README.md': fs.readFileSync(path.resolve('server', 'zip', 'README.md')).toString()
 }
 
 module.exports = function (req, res) {
+  console.log('Getting ZIP!');
   db.getBin(req.session.currentBin.id)
     .then(function (bin) {
 
@@ -43,7 +44,7 @@ module.exports = function (req, res) {
       var loadersString = JSON.stringify(loaders, null, 2);
       var findRegexps = /\$\$(.*?)\$\$/g;
       var matches = loadersString.match(findRegexps);
-      loadersString = matches.reduce(function (loadersString, match) {
+      loadersString = (matches || []).reduce(function (loadersString, match) {
         return loadersString.replace('"' + match + '"', match.replace(/\$\$/g, '').replace('\\\\', '\\'));
       }, loadersString);
       var webpackConfig = defaultFiles['webpack.config.js'].replace(
