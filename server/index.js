@@ -45,6 +45,7 @@ preLoadPackages([
   'node-sass',
   'sass-loader',
   'babel-plugin-transform-decorators-legacy',
+  'babel-plugin-transform-react-jsx',
   'raw-loader',
   'json-loader',
   'jade',

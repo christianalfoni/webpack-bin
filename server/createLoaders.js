@@ -9,7 +9,8 @@ module.exports = function (currentLoaders) {
       exclude: /node_modules/,
       loader: 'babel',
       query: {
-        presets: []
+        presets: [],
+        plugins: []
       }
     };
     if (currentLoaders.babel.stage0) {
@@ -20,6 +21,13 @@ module.exports = function (currentLoaders) {
     }
     if (currentLoaders.babel.react) {
       loader.query.presets.push('react');
+    }
+    if (currentLoaders.babel.jsx) {
+      loader.query.plugins.push([
+        'transform-react-jsx', {
+          pragma: currentLoaders.babel.jsx.pragma
+        }
+      ]);
     }
     loaders.push(loader);
   }

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Decorator as Cerebral} from 'cerebral-view-react';
 import styles from '../styles.css';
+import babelStyles from './styles.css';
 import currentLoader from '../../../computed/currentLoader';
 
 @Cerebral({
@@ -45,6 +46,29 @@ class BabelConfig extends React.Component {
             disabled={!loader}
             onChange={() => this.props.signals.bin.configToggled({name: 'react'})}/>
           React
+          <div className={styles.configDescription}>
+            React JSX Support
+          </div>
+        </div>
+        <div className={styles.config}>
+          <input
+            type="checkbox"
+            checked={loader && loader.jsx}
+            disabled={!loader}
+            onChange={() => this.props.signals.bin.configToggled({name: 'jsx'})}/>
+          JSX
+          <div className={babelStyles.pragma}>
+            Pragma: <input
+              type="text"
+              className={babelStyles.pragmaInput}
+              value={loader && loader.jsx.pragma}
+              disabled={!loader || !loader.jsx}
+              onChange={(event) => this.props.signals.bin.configChanged({
+                loader: 'jsx',
+                option: 'pragma',
+                value: event.target.value
+              })}/>
+          </div>
           <div className={styles.configDescription}>
             JSX Support
           </div>

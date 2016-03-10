@@ -2,7 +2,8 @@ const loaderTemplates = {
   babel: {
     stage0: true,
     es2015: true,
-    react: false
+    react: false,
+    jsx: false
   },
   css: {
     modules: false

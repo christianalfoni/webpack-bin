@@ -1,0 +1,13 @@
+.pragma {
+  font-size: 12px;
+  padding-left: 10px;
+}
+.pragmaInput {
+  margin-top: 5px !important;
+  border-radius: 3px;
+  border: 0;
+  height: 20px;
+  text-indent: 5px;
+  width: 50px;
+  outline: none;
+}
