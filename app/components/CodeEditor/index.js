@@ -100,6 +100,8 @@ class CodeEditor extends React.Component {
         return 'htmlmixed';
       case 'json':
         return 'application/json';
+      case 'jade':
+        return {name: 'jade', alignCDATA: true};
       default:
         return 'jsx';
     }
@@ -307,6 +309,27 @@ class CodeEditor extends React.Component {
         return require.ensure([], () => {
           setJsonModeAndLinter();
           this.props.signals.bin.linterLoaded();
+        });
+      }
+
+    }
+
+    if (mode.name === 'jade') {
+
+      const setJadeMode = function () {
+        require('codemirror/mode/jade/jade.js');
+        this.codemirror.setOption('lint', false);
+        this.codemirror.setOption('mode', mode);
+        this.setEditorValue(this.codemirror.getValue());
+      }.bind(this);
+
+      if (loadedLinters.indexOf(mode) >= 0) {
+        setJadeMode();
+      } else {
+        this.props.signals.bin.linterRequested({noLint: true});
+        return require.ensure([], () => {
+          setJadeMode();
+          this.props.signals.bin.linterLoaded({noLint: true});
         });
       }
 

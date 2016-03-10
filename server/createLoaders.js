@@ -96,5 +96,14 @@ module.exports = function (currentLoaders) {
     loaders.push(loader);
   }
 
+  // JADE
+  if (currentLoaders.jade) {
+    var loader = {
+      test: /\.jade?$/,
+      loader: 'jade'
+    }
+    loaders.push(loader);
+  }
+
   return loaders;
 };

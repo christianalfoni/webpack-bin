@@ -43,6 +43,10 @@ function addFile({state}) {
   if (ext === 'json' && !state.get('bin.currentBin.loaders.json')) {
     state.set('bin.currentBin.loaders.json', {});
   }
+
+  if (ext === 'jade' && !state.get('bin.currentBin.loaders.jade')) {
+    state.set('bin.currentBin.loaders.jade', {});
+  }
 }
 
 export default addFile;

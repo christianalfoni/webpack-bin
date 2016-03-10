@@ -12,7 +12,8 @@ const loaderTemplates = {
   less: {},
   sass: {},
   raw: {},
-  json: {}
+  json: {},
+  jade: {}
 };
 
 function toggleLoader({input, state}) {

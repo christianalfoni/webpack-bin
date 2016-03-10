@@ -8,6 +8,7 @@ import TypescriptConfig from './TypescriptConfig';
 import CoffeescriptConfig from './CoffeescriptConfig';
 import RawConfig from './RawConfig';
 import JsonConfig from './JsonConfig';
+import JadeConfig from './JadeConfig';
 
 const loaders = {
   babel: BabelConfig,
@@ -15,7 +16,8 @@ const loaders = {
   typescript: TypescriptConfig,
   coffeescript: CoffeescriptConfig,
   raw: RawConfig,
-  json: JsonConfig
+  json: JsonConfig,
+  jade: JadeConfig
 };
 
 @Cerebral({
