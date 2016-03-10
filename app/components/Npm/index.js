@@ -46,11 +46,11 @@ class Npm extends React.Component {
     return (
       <div className={styles.wrapper}>
         <div className={styles.column}>
-          <h3 className={styles.title}>Bundled packages</h3>
+          <h3 className={styles.title}>Existing bundles</h3>
           <input
             type="text"
             className={styles.search}
-            placeholder="Search existing bundles..."
+            placeholder="Search..."
             disabled={this.props.isGettingPackage}
             onChange={(e) => this.props.signals.npm.searchBundleQueryChanged({query: e.target.value})}
             value={this.props.searchBundleQuery}/>
@@ -62,13 +62,13 @@ class Npm extends React.Component {
           }
         </div>
         <div className={styles.column}>
-          <h3 className={styles.title}>Current package bundle</h3>
+          <h3 className={styles.title}>Add NPM package</h3>
           <form onSubmit={(e) => this.onFormSubmitted(e)}>
             <input
               type="text"
               ref="packageSearch"
               className={styles.search}
-              placeholder="Add NPM package..."
+              placeholder="Type name of package..."
               disabled={this.props.isGettingPackage}
               onChange={(e) => this.props.signals.npm.packageNameQueryChanged({query: e.target.value})}
               value={this.props.packageNameQuery}/>
