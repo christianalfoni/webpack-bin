@@ -18,7 +18,6 @@ function createOnCloseCallback(session, client) {
         channel.clients[name].close();
       });
       delete channels[session.currentBin.id];
-      console.log('Removed channel');
     } else {
 
       // If currently controlling user disconnects
@@ -108,7 +107,6 @@ module.exports = function connection(client) {
     client.send(JSON.stringify({
       type: 'created'
     }));
-    console.log('created channel', session.id);
   } else {
     client.send(JSON.stringify({
       type: 'connected',

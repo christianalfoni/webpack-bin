@@ -7,7 +7,6 @@ var db = require('./database');
 
 module.exports = {
   loadPackages: function (packages) {
-    console.log('Load packages', packages, Object.keys(packages));
     return Promise.all(Object.keys(packages).map(function (key) {
       return npmExtractor({
         package: key,
@@ -37,7 +36,6 @@ module.exports = {
         entries[packageData.name] = '.' + path.resolve('/', 'node_modules', packageData.name, packageEntry);
         return entries;
       }, {});
-      console.log('Got entries', Object.keys(entries));
       return {
         name: utils.getVendorsBundleName(packages),
         entries: entries,
@@ -49,7 +47,6 @@ module.exports = {
     });
   },
   removePackages: function (bundle) {
-    console.log('Removing vendor packages', Object.keys(bundle.entries));
     Object.keys(bundle.entries).forEach(function (entry) {
       memoryFs.fs.rmdirSync(path.join('/', 'node_modules', entry));
     });

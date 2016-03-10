@@ -12,7 +12,6 @@ var defaultFiles = {
 }
 
 module.exports = function (req, res) {
-  console.log('Getting ZIP!');
   db.getBin(req.session.currentBin.id)
     .then(function (bin) {
 

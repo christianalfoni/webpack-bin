@@ -11,7 +11,6 @@ module.exports = {
       vendorsBundles[vendorsBundlesName] = setTimeout(function () {
         memoryFs.removeVendorsBundle(vendorsBundlesName);
         delete vendorsBundles[vendorsBundlesName];
-        console.log('Removed Vendors bundle!', vendorsBundlesName);
       }, 1000 * 60 * 60 * 24);
     }
   }

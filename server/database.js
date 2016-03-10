@@ -7,7 +7,6 @@ var shortid = require('shortid');
 module.exports = {
   connect: db.connect,
   updateBin: function (req) {
-    console.log('Updating BIN', req.session.currentBin);
     if (req.session.currentBin.isOwner) {
       return db.update('bins', {
         id: req.session.currentBin.id

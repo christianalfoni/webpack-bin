@@ -57,7 +57,6 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 
 			if (stats.hasErrors()) {
 				error = stats.compilation.errors[0];
-				console.log('There was an error here!');
 			}
 
 			// execute callback that are delayed
@@ -148,9 +147,7 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 		if (filename === false) return next();
 
 		var passResponse = function (error) {
-			console.log('creating response, error?', Boolean(error));
 			if (error) {
-				console.log('Has error!');
 
 				var html = [
 					'<div>',
@@ -169,7 +166,6 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 			}
 
 			// server content
-			console.log('reading file', filename);
 			var content = fs.readFileSync(filename);
 			res.setHeader("Access-Control-Allow-Origin", "*"); // To support XHR, etc.
 			res.setHeader("Content-Type", mime.lookup(filename));
@@ -185,10 +181,8 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 
 		// in lazy mode, rebuild on bundle request
 		if(options.lazy && (!options.filename || options.filename.test(filename))) {
-			console.log('Rebundling');
 			rebuild(passResponse);
 		} else {
-			console.log('Passing through');
 			passResponse();
 		}
 	}

@@ -43,7 +43,6 @@ module.exports = {
 
   },
   getFile: function (req, res, next) {
-    console.log('requesting', req.url);
     if (/wbtools/.test(req.url)) {
       res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
       res.setHeader('Expires', '-1');
@@ -64,7 +63,6 @@ module.exports = {
       res.setHeader('Pragma', 'no-cache');
       req.url = req.url.replace('webpackbin_bundle.js', req.session.currentBin.author + '/webpackbin_bundle.js');
       var fileName = path.basename(req.url);
-      console.log('reading LIVE ', req.url);
       var content = memoryFs.fs.readFileSync(req.url);
       res.setHeader("Content-Type", mime.lookup(fileName));
       res.setHeader("Content-Length", content.length);
@@ -77,13 +75,11 @@ module.exports = {
       res.setHeader('Expires', '-1');
       res.setHeader('Pragma', 'no-cache');
       req.url = req.url.replace('webpackbin_bundle.js', req.session.id + '/webpackbin_bundle.js');
-      console.log('reading OWN ', req.url);
       req.session.middleware(req, res, next);
       return;
     }
 
     if (/\/api\/sandbox\/vendors/.test(req.url)) {
-      console.log('Getting vendors bundle', req.url);
       var fileName = path.basename(req.url);
       var content = memoryFs.fs.readFileSync(req.url);
       res.setHeader('Cache-Control', 'public, max-age=3600000');
@@ -98,7 +94,6 @@ module.exports = {
     memoryFs.updateSessionFiles(req.session, req.body.files);
 
     if (req.session.middleware && utils.getVendorsBundleName(req.session.packages) !== utils.getVendorsBundleName(req.body.packages)) {
-      console.log('Removing middleware from session');
       sessions.removeMiddleware(req);
     }
 
@@ -115,10 +110,6 @@ module.exports = {
       });
     }
 
-    console.log('Requested vendors: ', req.body.packages);
-    console.log('Middleware: ', Boolean(req.session.middleware));
-    console.log('Vendors: ', req.session.pacakges);
-
     if (
       !req.session.middleware &&
       utils.hasPackages(req) &&
@@ -126,7 +117,6 @@ module.exports = {
     ) {
 
       // Create new Bin
-      console.log('No vendors in memory');
       db.getVendorsBundle(utils.getVendorsBundleName(req.body.packages))
         .then(function (bundle) {
           if (bundle) {
@@ -168,10 +158,8 @@ module.exports = {
       utils.hasPackages(req) &&
       memoryFs.hasVendorsBundle(req.body.packages)
     ) {
-      console.log('Vendors in memory');
       db.getVendorsBundleEntries(utils.getVendorsBundleName(req.body.packages))
         .then(function (bundle) {
-          console.log('Got the bundle in DB?', Boolean(bundle));
           if (bundle) {
             return bundle;
           } else {

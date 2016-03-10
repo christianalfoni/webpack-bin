@@ -21,14 +21,12 @@ var sessionsModule = {
   },
   clean: function () {
     var now = Date.now();
-    console.log('Cleaning sessions: ' + Object.keys(sessions).length);
     sessions = Object.keys(sessions).filter(function (key) {
       return now - sessions[key].lastUpdate < 60 * 1000 * 30; // Clean up after 30 min of inactivity
     }).reduce(function (remainingSessions, key) {
       remainingSessions[key] = sessions[key];
       return remainingSessions;
     }, {});
-    console.log('Cleaned sessions: ' + Object.keys(sessions).length);
   },
   middleware: function (req, res, next) {
     if (req.cookies.webpackbin && sessionsModule.get(req.cookies.webpackbin)) {
@@ -36,7 +34,6 @@ var sessionsModule = {
     } else {
       var id = String(Date.now()) + (Math.random() * 10000).toFixed(0);
       req.session = sessionsModule.set(id);
-      console.log('Setting session', id);
       res.cookie('webpackbin', String(id), {
         maxAge: 3600000 * 24, // One day
         domain: utils.isProduction() ? 'www.webpackbin.com' : '.webpackbin.dev',
@@ -47,7 +44,6 @@ var sessionsModule = {
   },
   createBundleMiddleware: function (session) {
     return function (compiler) {
-      console.log('Creating bundle middleware', session);
       var sessionMiddleware = middleware(compiler, {
         lazy: true,
         filename: new RegExp(session.id),
