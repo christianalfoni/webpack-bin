@@ -17,6 +17,7 @@ function createOnCloseCallback(session, client) {
       Object.keys(channel.clients).forEach(function (name) {
         channel.clients[name].close();
       });
+      clearInterval(channels[session.currentBin.id].pinger);
       delete channels[session.currentBin.id];
     } else {
 
@@ -102,7 +103,12 @@ module.exports = function connection(client) {
       controller: client,
       clients: {
         admin: client
-      }
+      },
+      pinger: setInterval(function () {
+        Object.keys(channels[session.currentBin.id].clients).forEach(function (client) {
+          channels[session.currentBin.id].clients[client].ping()
+        })
+      }, 60000)
     }
     client.send(JSON.stringify({
       type: 'created'
