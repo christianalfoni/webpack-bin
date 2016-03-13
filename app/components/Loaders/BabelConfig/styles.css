@@ -11,3 +11,6 @@
   width: 50px;
   outline: none;
 }
+.pragmaInput[disabled] {
+  opacity: 0.5;
+}

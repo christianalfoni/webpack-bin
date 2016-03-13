@@ -8,7 +8,8 @@ const boilerplates = {
   'redux': 'Redux',
   'cycle': 'Cycle JS',
   'vue': 'Vue JS',
-  'angular': 'Angular'
+  'angular': 'Angular',
+  'angular2': 'Angular2'
 };
 
 @Cerebral()

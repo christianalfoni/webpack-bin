@@ -61,7 +61,7 @@ class BabelConfig extends React.Component {
             Pragma: <input
               type="text"
               className={babelStyles.pragmaInput}
-              value={loader && loader.jsx && loader.jsx.pragma}
+              value={loader && loader.jsx && loader.jsx.pragma ? loader.jsx.pragma : ''}
               disabled={!loader || !loader.jsx}
               onChange={(event) => this.props.signals.bin.configChanged({
                 loader: 'jsx',
