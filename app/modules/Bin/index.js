@@ -31,6 +31,7 @@ import logValueToggled from './signals/logValueToggled';
 import logPathSelected from './signals/logPathSelected';
 import welcomeBinClicked from './signals/welcomeBinClicked';
 import emptyBinClicked from './signals/emptyBinClicked';
+import toggleFullLog from './signals/toggleFullLog';
 
 export default (options = {}) => {
   return (module, controller) => {
@@ -68,6 +69,7 @@ export default (options = {}) => {
       showPackagesSelector: false,
       showBoilerplatesSelector: false,
       showLog: false,
+      showFullLog: true,
       currentLoader: 'babel',
       forceUpdateCode: false,
       vimMode: false,
@@ -107,7 +109,8 @@ export default (options = {}) => {
       addFileNameUpdated,
       addFileSubmitted,
       welcomeBinClicked,
-      emptyBinClicked
+      emptyBinClicked,
+      toggleFullLog
     });
 
   };

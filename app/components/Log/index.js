@@ -2,16 +2,18 @@ import React from 'react';
 import {Decorator as Cerebral} from 'cerebral-view-react';
 import styles from './styles.css';
 import Inspector from '../Inspector';
+import icons from 'common/icons.css';
 
 @Cerebral({
   logs: 'bin.logs',
   selectedPath: 'bin.selectedLogPath',
-  connected: 'live.connected'
+  connected: 'live.connected',
+  showFullLog: 'bin.showFullLog'
 })
 class Log extends React.Component {
   render() {
     return (
-      <div className={styles.wrapper}>
+      <div className={this.props.showFullLog ? styles.wrapper: styles.halfWrapper}>
         <div className={styles.info}>Use bin.log() in your code to log</div>
         {
           this.props.logs.map((value, index) => (
@@ -26,6 +28,11 @@ class Log extends React.Component {
             </div>
           ))
         }
+        <div
+          className={styles.size}
+          onClick={() => this.props.signals.bin.toggleFullLog()}>
+          <i className={this.props.showFullLog ? icons.halfLog : icons.fullLog}/>
+        </div>
       </div>
     );
   }

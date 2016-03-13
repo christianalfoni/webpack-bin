@@ -241,3 +241,13 @@
 .movie:before {
     content: "\e012";
 }
+
+.fullLog {composes: font;}
+.fullLog:before {
+	content: "\e152";
+}
+
+.halfLog {composes: font;}
+.halfLog:before {
+	content: "\e151";
+}

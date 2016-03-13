@@ -9,6 +9,13 @@
   box-sizing: border-box;
 }
 
+.halfWrapper {
+  composes: wrapper;
+  bottom: 0;
+  top: auto;
+  height: 50%;
+}
+
 .log {
   padding: 5px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -18,4 +25,16 @@
   color: rgba(255,255,255,0.2);
   font-size: 12px;
   margin-bottom: 5px;
+}
+
+.size {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: rgba(255,255,255,0.5);
+}
+
+.size:hover {
+  color: #FFF;
 }

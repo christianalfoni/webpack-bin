@@ -3,7 +3,9 @@ import { Decorator as Cerebral, Link } from 'cerebral-view-react';
 import styles from './styles.css';
 
 @Cerebral({
-  isRunning: 'bin.isRunning'
+  isRunning: 'bin.isRunning',
+  showFullLog: 'bin.showFullLog',
+  showLog: 'bin.showLog'
 })
 class Preview extends React.Component {
   constructor(props) {
@@ -36,7 +38,7 @@ class Preview extends React.Component {
   }
   render() {
     return (
-      <div className={styles.wrapper}>
+      <div className={this.props.showFullLog || !this.props.showLog ? styles.wrapper : styles.halfWrapper}>
         <iframe className={styles.iframe} ref="iframe"/>
       </div>
     );
