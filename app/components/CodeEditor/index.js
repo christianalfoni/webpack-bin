@@ -36,10 +36,13 @@ class CodeEditor extends React.Component {
     }
     if (
       this.props.selectedFileIndex !== prevProps.selectedFileIndex ||
-      (!prevProps.forceUpdateCode && this.props.forceUpdateCode) || (
+      (!prevProps.forceUpdateCode && this.props.forceUpdateCode) ||
+      (
         !this.props.canControl &&
         prevProps.files[prevProps.selectedFileIndex].content !== this.props.files[this.props.selectedFileIndex].content
-      )
+      ) ||
+      this.props.files.length !== prevProps.files.length
+
     ) {
       this.setModeAndLinter();
       this.setEditorValue(this.props.selectedFileIndex === -1 ? '' : this.props.files[this.props.selectedFileIndex].content);
