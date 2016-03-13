@@ -373,7 +373,7 @@ class CodeEditor extends React.Component {
   }
   onCodeChange(instance, event) {
     if (!this.isUpdatingCode) {
-      if (event.text.length === 2) {
+      if (event.text.length === 2 && !event.text[0] && !event.text[1]) {
         event.text = ['\n'];
       }
 
