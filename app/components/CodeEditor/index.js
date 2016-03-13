@@ -46,6 +46,7 @@ class CodeEditor extends React.Component {
     ) {
       this.setModeAndLinter();
       this.setEditorValue(this.props.selectedFileIndex === -1 ? '' : this.props.files[this.props.selectedFileIndex].content);
+      this.codemirror.getDoc().clearHistory();
     }
 
     if (this.props.vimMode) {
