@@ -7,10 +7,6 @@
   text-align: center;
 }
 
-.button[disabled] {
-  opacity: 0.2;
-}
-
 .button[disabled]:hover {
   color: #cadaed;
   background-color: transparent;
@@ -36,7 +32,6 @@
 
 .disabledIcon {
   composes: icon;
-  border: 2px solid #cadaed;
   cursor: default;
 }
 
