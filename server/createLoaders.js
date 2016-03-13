@@ -13,14 +13,14 @@ module.exports = function (currentLoaders) {
         plugins: []
       }
     };
-    if (currentLoaders.babel.stage0) {
-      loader.query.presets.push('stage-0');
-    }
     if (currentLoaders.babel.es2015) {
       loader.query.presets.push('es2015');
     }
     if (currentLoaders.babel.react) {
       loader.query.presets.push('react');
+    }
+    if (currentLoaders.babel.stage0) {
+      loader.query.presets.push('stage-0');
     }
     if (currentLoaders.babel.jsx) {
       loader.query.plugins.push([
