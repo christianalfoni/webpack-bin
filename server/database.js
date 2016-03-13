@@ -70,6 +70,7 @@ module.exports = {
           return null;
         }
         return Object.assign({}, bundle, {
+          entries: utils.reconvertDots(bundle.entries),
           packages: utils.reconvertDots(bundle.packages)
         });
       });
@@ -81,13 +82,12 @@ module.exports = {
           return null;
         }
         return Object.assign({}, bundle, {
+          entries: utils.reconvertDots(bundle.entries),
           packages: utils.reconvertDots(bundle.packages)
         });
       });
   },
   uploadVendorsBundle: function (bundle) {
-    var manifest = JSON.parse(memoryFs.fs.readFileSync(path.join('/', 'api', 'sandbox', 'vendors', bundle.name, 'manifest.json')).toString());
-
     return db.insert('bundles', {
       name: bundle.name,
       entries: utils.convertDots(bundle.entries),
