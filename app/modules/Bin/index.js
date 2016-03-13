@@ -97,6 +97,7 @@ export default (options = {}) => {
       logValueToggled: preventIfLive(logValueToggled),
       logPathSelected: preventIfLive(logPathSelected),
       logReceived: preventIfLive(logReceived),
+      toggleFullLog: preventIfLive(toggleFullLog),
       opened,
       vimModeClicked,
       linterRequested,
@@ -109,8 +110,7 @@ export default (options = {}) => {
       addFileNameUpdated,
       addFileSubmitted,
       welcomeBinClicked,
-      emptyBinClicked,
-      toggleFullLog
+      emptyBinClicked
     });
 
   };
