@@ -47,7 +47,13 @@ module.exports = {
            context: '/'
          }),
          new webpack.optimize.UglifyJsPlugin({minimize: true})
-        ]
+       ],
+       module: {
+         loaders: [{
+           test: /\.json$/,
+           loader: 'json'
+         }]
+       }
       });
       vendorsCompiler.outputFileSystem = memoryFs.fs;
       vendorsCompiler.inputFileSystem = memoryFs.fs;
