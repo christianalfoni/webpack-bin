@@ -14,7 +14,7 @@ module.exports = {
         $set: {
           updated: Date.now(),
           files: req.body.files,
-          packages: req.body.packages,
+          packages: utils.convertDots(req.body.packages),
           loaders: req.body.loaders,
           isLive: req.body.isLive
         }
@@ -43,7 +43,9 @@ module.exports = {
           files: req.body.files,
           isLive: req.body.isLive
         };
-        return db.insert('bins', bin)
+        return db.insert('bins', Object.assign({}, bin, {
+          packages: utils.convertDots(bin.packages)
+        }))
           .then(function () {
             bin.isOwner = true;
             return bin;
@@ -54,18 +56,33 @@ module.exports = {
   getBin: function (id) {
     return db.findOne('bins', {
       id: id
-    });
+    })
+    .then(function (bin) {
+      return Object.assign({}, bin, {
+        packages: utils.reconvertDots(bin.packages)
+      });
+    })
   },
   getVendorsBundle: function (vendorsBundleName) {
     return db.findOne('bundles', {name: vendorsBundleName})
       .then(function (bundle) {
-        return bundle;
+        if (!bundle) {
+          return null;
+        }
+        return Object.assign({}, bundle, {
+          packages: utils.reconvertDots(bundle.packages)
+        });
       });
   },
   getVendorsBundleEntries: function (vendorsBundleName) {
     return db.findOne('bundles', {name: vendorsBundleName}, {entries: 1, name: 1, packages: 1, loaders: 1})
       .then(function (bundle) {
-        return bundle;
+        if (!bundle) {
+          return null;
+        }
+        return Object.assign({}, bundle, {
+          packages: utils.reconvertDots(bundle.packages)
+        });
       });
   },
   uploadVendorsBundle: function (bundle) {
@@ -73,8 +90,8 @@ module.exports = {
 
     return db.insert('bundles', {
       name: bundle.name,
-      entries: bundle.entries,
-      packages: bundle.packages,
+      entries: utils.convertDots(bundle.entries),
+      packages: utils.convertDots(bundle.packages),
       manifest: memoryFs.fs.readFileSync(path.join('/', 'api', 'sandbox', 'vendors', bundle.name, 'manifest.json')).toString()
     })
     .then(function () {
@@ -120,7 +137,11 @@ module.exports = {
       _id: 0
     })
     .then(function (result) {
-      res.send(result);
+      res.send(result.map(function (bundle) {
+        return Object.assign({}, bundle, {
+          packages: utils.reconvertDots(bundle.packages)
+        });
+      }));
     })
     .catch(function () {
       res.sendStatus(404);

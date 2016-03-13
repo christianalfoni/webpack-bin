@@ -148,7 +148,8 @@ module.exports = {
                   isOwner: true
                 });
                 res.send(bin);
-              });
+              })
+              .catch(utils.logError)
           }
         })
         .catch(utils.logError);

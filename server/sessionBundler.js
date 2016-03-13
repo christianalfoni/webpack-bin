@@ -9,7 +9,6 @@ module.exports = {
     return function (bundle) {
       return new Promise(function (resolve, reject) {
 
-        console.log('Creating session bundle');
         var vendorsBundleName = bundle && bundle.name;
         var entries = bundle && bundle.entries;
         var externals = null;
@@ -25,20 +24,35 @@ module.exports = {
           );
 
           if (entries) {
-            externals = Object.keys(entries).reduce(function (externals, key) {
-              console.log('Package key', entries[key]);
-              externals[key] = 'webpackbin_vendors(' + manifest.content[entries[key]] + ')';
-              return externals;
+            externals = Object.keys(entries).reduce(function (externals, packageName) {
+
+              return Object.keys(manifest.content).reduce(function (externals, manifestKey) {
+                var absolutePath = manifestKey.substr(1);
+
+                if (absolutePath.indexOf(packageName) === -1) {
+                  return externals;
+                }
+
+                var basePath = path.dirname(entries[packageName].substr(1));
+                var fileName = path.basename(absolutePath);
+                var extension = path.extname(fileName);
+                var replacer = new RegExp('\/' + fileName + '$');
+
+                if (entries[packageName].substr(1) === absolutePath) {
+                  absolutePath = absolutePath.replace(replacer, '');
+                } else if (extension === '.js') {
+                  absolutePath = absolutePath.replace(replacer, '/' + fileName.replace(extension, ''));
+                }
+                externals[absolutePath.replace(basePath, packageName)] = 'webpackbin_vendors(' + manifest.content[manifestKey] + ')';
+                return externals;
+              }, externals);
+
             }, {});
           }
 
         }
 
         var loaders = createLoaders(session.loaders);
-
-        console.log('Creating session compiler', loaders);
-        console.log('Vendors bundle name', vendorsBundleName);
-        console.log('externals', externals);
 
         var compiler = webpack({
           devtool: 'cheap-module-eval-source-map',
@@ -66,8 +80,6 @@ module.exports = {
         compiler.outputFileSystem = memoryFs.fs;
         compiler.resolvers.normal.fileSystem = memoryFs.fs;
         compiler.resolvers.context.fileSystem = memoryFs.fs;
-
-        console.log('Session bundler created');
 
         resolve(compiler);
       });

@@ -1,4 +1,6 @@
 var hash = require('string-hash');
+var path = require('path');
+var semver = require('semver');
 
 module.exports = {
   isProduction: function () {
@@ -47,28 +49,27 @@ module.exports = {
   getLatestNpmVersion: function (versions) {
 
     function versionToNumber(version) {
-      return Number(version.match(/\d+/g).join(''))
+      return version.split('.').map(function (number, index) {
+        return Number(number) + (index * 1000);
+      });
     }
 
     function sorter(a, b) {
-      var aSplit = a.split('-');
-      var bSplit = b.split('-');
-      if (aSplit.length > bSplit.length) {
+      if (semver.lt(a, b)) {
         return 1;
       }
-      if (aSplit.length < bSplit.length) {
-        return -1;
-      }
-      if (versionToNumber(a) < versionToNumber(b)) {
-        return 1;
-      }
-      if (versionToNumber(a) > versionToNumber(b)) {
+      if (semver.lt(b, a)) {
         return -1;
       }
       return 0;
     }
 
-    return Object.keys(versions).sort(sorter)[0];
+    var versionsList = Object.keys(versions);
+    var latestVersion = versionsList.filter(function (version) {
+      return version.indexOf('-') === -1;
+    }).sort(sorter)[0];
+
+    return latestVersion || versionsList[versionsList.length - 1];
   },
   isSameLoaders: function (loadersA, loadersB) {
     if (!loadersA || !loadersB) {
@@ -98,5 +99,32 @@ module.exports = {
     }).sort(sortByName);
 
     return JSON.stringify(loadersAList) === JSON.stringify(loadersBList);
+  },
+  findEntryPoints: function (fs, entryKey, baseEntry, otherEntries) {
+    var basePath = path.dirname(baseEntry.substr(1));
+    var otherPaths = otherEntries.map(function (entry) {
+      return path.join(basePath, entry);
+    }).filter(function (entryPath) {
+      return fs.statSync(entryPath).isDirectory();
+    });
+    return [basePath].concat(otherPaths).reduce(function (allFiles, entryPath) {
+      return allFiles.concat(fs.readdirSync(entryPath).filter(function (file) {
+        return path.extname(file) === '.js' && file !== path.basename(baseEntry);
+      }).map(function (file) {
+        return path.join(entryPath.substr(14), file);
+      }));
+    }, []);
+  },
+  convertDots: function (obj) {
+    return Object.keys(obj || {}).reduce(function (newObj, key) {
+      newObj[key.replace(/\./g, '!DOT!')] = obj[key];
+      return newObj;
+    }, {});
+  },
+  reconvertDots: function (obj) {
+    return Object.keys(obj || {}).reduce(function (newObj, key) {
+      newObj[key.replace(/\!DOT\!/g, '.')] = obj[key];
+      return newObj;
+    }, {});
   }
 };
