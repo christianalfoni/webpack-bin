@@ -28,7 +28,11 @@ class ToolbarButton extends React.Component {
   }
   render() {
     return (
-      <a href={this.props.href} className={styles.button} download>
+      <a
+        href={this.props.href}
+        className={this.props.disabled ? styles.disabledButton : styles.button}
+        onClick={(event) => this.props.disabled && event.preventDefault()}
+        download>
         { this.props.title && this.props.icon ? this.renderIconTextButton() : null }
         { !this.props.title && this.props.icon ? this.renderIconButton() : null }
       </a>

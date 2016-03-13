@@ -104,6 +104,7 @@ class Toolbar extends React.Component {
               </div>
               <div className={styles.buttonWrapper}>
                 <ToolbarLink
+                  disabled={!this.props.currentBin.id}
                   title='Download'
                   icon={icons.zip}
                   href="/api/project.zip"/>

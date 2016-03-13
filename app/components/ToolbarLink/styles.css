@@ -7,11 +7,12 @@
   text-align: center;
 }
 
-.button[disabled] {
+.disabledButton {
+  composes: button;
   opacity: 0.2;
 }
 
-.button[disabled]:hover {
+.disabledButton:hover {
   color: #cadaed;
   background-color: transparent;
 }
