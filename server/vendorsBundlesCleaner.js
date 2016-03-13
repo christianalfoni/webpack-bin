@@ -13,5 +13,8 @@ module.exports = {
         delete vendorsBundles[vendorsBundlesName];
       }, 1000 * 60 * 60 * 24);
     }
+  },
+  getBundles: function () {
+    return Object.keys(vendorsBundles);
   }
 };
