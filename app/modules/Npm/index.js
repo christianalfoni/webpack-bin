@@ -21,11 +21,11 @@ export default () => {
       bundleClicked,
       searchBundleQueryChanged: {
         chain: searchBundleQueryChanged,
-        sync: true
+        immediate: true
       },
       packageNameQueryChanged: {
         chain: packageNameQueryChanged,
-        sync: true
+        immediate: true
       }
     });
 
