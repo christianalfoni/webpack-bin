@@ -107,10 +107,9 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 		state = true;
 	}
 
-	function rebuild(cb) {
+	function rebuild() {
 		if(state) {
 			state = false;
-			callbacks.push(cb);
 			compiler.run(function(err) {
 				if(err) throw err;
 			});
@@ -181,7 +180,8 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 
 		// in lazy mode, rebuild on bundle request
 		if(options.lazy && (!options.filename || options.filename.test(filename))) {
-			rebuild(passResponse);
+			callbacks.push(passResponse);
+			rebuild();
 		} else {
 			passResponse();
 		}
