@@ -8,6 +8,7 @@ import hideSnackbar from '../actions/hideSnackbar';
 import redirectToBin from '../actions/redirectToBin';
 import gotNewBin from '../actions/gotNewBin';
 import requestBinUpdate from '../../Live/actions/requestBinUpdate';
+import whenErrorIs from '../actions/whenErrorIs';
 
 export default [
   set('state:/bin.isRunning', true),
@@ -31,9 +32,21 @@ export default [
           }
         ],
         error: [
-          set('state:/bin.showInfo', true),
-          set('state:/bin.highlightCreateIssue', true),
-          showSnackbar('An error occured, please report what you tried to do!', true)
+          whenErrorIs, {
+            'PACKAGE_EXTRACTOR_DOWN': [
+              set('state:/bin.showInfo', true),
+              set('state:/bin.highlightCreateIssue', true),
+              showSnackbar('NPM package extractor is down, please report', true)
+            ],
+            'PACKAGE_EXTRACTOR_RUNNING': [
+              showSnackbar('Packages already being extracted from NPM, try again in a few seconds...', true)
+            ],
+            otherwise: [
+              set('state:/bin.showInfo', true),
+              set('state:/bin.highlightCreateIssue', true),
+              showSnackbar('An error occured, please report what you tried to do!', true)
+            ]
+          }
         ]
       },
       set('state:/bin.logs', []),

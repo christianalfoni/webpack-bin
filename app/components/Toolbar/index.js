@@ -51,6 +51,12 @@ class Toolbar extends React.Component {
               className={classNames(styles.file, {[styles.active]: active})}
               onClick={() => signals.bin.fileClicked({index})}>
               {file.name}
+              {
+                file.isEntry ?
+                  <span className={styles.entryIndication}>entry</span>
+                :
+                  null
+              }
               <i
                 className={styles.deleteFile}
                 onClick={(e) => {e.stopPropagation();signals.bin.fileDeleted({index})}}>&times;</i>

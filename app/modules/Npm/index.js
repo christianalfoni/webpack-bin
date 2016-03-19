@@ -1,28 +1,20 @@
-import searchBundleQueryChanged from './signals/searchBundleQueryChanged';
 import packageNameQuerySubmitted from './signals/packageNameQuerySubmitted';
 import packageNameQueryChanged from './signals/packageNameQueryChanged';
-import bundleClicked from './signals/bundleClicked';
+import quickstartClicked from './signals/quickstartClicked';
 
 export default () => {
   return (module) => {
 
     module.addState({
-      isSearchingBundles: false,
       isGettingPackage: false,
-      bundles: [],
       package: null,
-      searchBundleQuery: '',
       packageNameQuery: '',
       packageError: null
     });
 
     module.addSignals({
       packageNameQuerySubmitted,
-      bundleClicked,
-      searchBundleQueryChanged: {
-        chain: searchBundleQueryChanged,
-        immediate: true
-      },
+      quickstartClicked,
       packageNameQueryChanged: {
         chain: packageNameQueryChanged,
         immediate: true

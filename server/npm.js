@@ -1,4 +1,4 @@
-var npmExtractor = require('npm-extractor');
+var request = require('request');
 var memoryFs = require('./memoryFs.js');
 var utils = require('./utils');
 var path = require('path');
@@ -7,50 +7,27 @@ var db = require('./database');
 
 module.exports = {
   loadPackages: function (packages) {
-    return Promise.all(Object.keys(packages).map(function (key) {
-      return npmExtractor({
-        package: key,
-        targetFs: memoryFs.fs,
-        version: packages[key],
-        allPackages: Object.keys(packages),
-        options: {
-          registry: 'http://registry.npmjs.org/',
-          mindelay: 5000,
-          maxDelay: 10000,
-          retries: 5,
-          factor: 5
-        },
-        tempPath: path.resolve('temp'),
-        memoryPath: '/node_modules'
-      });
-    }))
-    .then(function (packagesData) {
-      var entries = packagesData.reduce(function (entries, packageData) {
-        var packageEntry = packageData.main || 'index.js';
-        if (packageData.browser && packageData.browser[packageData.main]) {
-          packageEntry = packageData.browser[packageData.main];
+    return new Promise(function (resolve, reject) {
+      request({
+        uri: utils.isProduction() ? 'http://npm-extractor.herokuapp.com/extract' : 'http://localhost:5000/extract',
+        method: 'POST',
+        json: true,
+        body: {
+          packages: packages
         }
-        if (!path.extname(packageEntry)) {
-          packageEntry += '.js';
+      }, function (err, response) {
+        if (err) {
+          if (err.message.indexOf('ECONNREFUSED') >= 0) {
+            return reject(new Error('PACKAGE_EXTRACTOR_DOWN'));
+          }
+          return reject(err);
         }
-        entries[packageData.name] = '.' + path.resolve('/', 'node_modules', packageData.name, packageEntry);
-        return entries;
-      }, {});
-      return {
-        name: utils.getVendorsBundleName(packages),
-        entries: entries,
-        packages: packages
-      };
+        if (response.body.isRunning) {
+          throw new Error('PACKAGE_EXTRACTOR_RUNNING');
+        }
+        resolve(response.body);
+      })
     })
-    .catch(function (err) {
-      console.log(err);
-    });
-  },
-  removePackages: function (bundle) {
-    Object.keys(bundle.entries).forEach(function (entry) {
-      memoryFs.fs.rmdirSync(path.join('/', 'node_modules', entry));
-    });
-    return bundle;
   },
   getPackageFromRegistry: function (req, res) {
     var nameSplit = req.params.packageName.split('@');

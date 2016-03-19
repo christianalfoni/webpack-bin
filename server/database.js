@@ -3,6 +3,7 @@ var memoryFs = require('./memoryFs.js');
 var utils = require('./utils');
 var path = require('path');
 var shortid = require('shortid');
+var request = require('request');
 
 module.exports = {
   connect: db.connect,
@@ -92,7 +93,7 @@ module.exports = {
       name: bundle.name,
       entries: utils.convertDots(bundle.entries),
       packages: utils.convertDots(bundle.packages),
-      manifest: memoryFs.fs.readFileSync(path.join('/', 'api', 'sandbox', 'vendors', bundle.name, 'manifest.json')).toString()
+      manifest: bundle.manifest
     })
     .then(function () {
       return bundle;
@@ -101,8 +102,9 @@ module.exports = {
   },
   saveVendorsBundle: function (bundle) {
     var vendorsBundleName = bundle.name;
-    var readStream = memoryFs.fs.createReadStream(path.join('/', 'api', 'sandbox', 'vendors', vendorsBundleName, 'bundle.js'))
-    return db.writeFile(vendorsBundleName + '.js', readStream)
+    var baseUrl = utils.isProduction() ? 'http://npm-extractor.herokuapp.com' : 'http://localhost:5000';
+    var url = baseUrl + '/bundles/' + vendorsBundleName + '/bundle.js';
+    return db.writeFile(vendorsBundleName + '.js',request(url))
       .then(function () {
         return bundle;
       });

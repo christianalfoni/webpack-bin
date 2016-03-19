@@ -37,7 +37,6 @@ export default [
       }
     ],
     false: [
-      set('state:/bin.selectedFileIndex', 0),
       ...runBin
     ]
   }

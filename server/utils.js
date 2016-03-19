@@ -100,21 +100,6 @@ module.exports = {
 
     return JSON.stringify(loadersAList) === JSON.stringify(loadersBList);
   },
-  findEntryPoints: function (fs, entryKey, baseEntry, otherEntries) {
-    var basePath = path.dirname(baseEntry.substr(1));
-    var otherPaths = otherEntries.map(function (entry) {
-      return path.join(basePath, entry);
-    }).filter(function (entryPath) {
-      return fs.statSync(entryPath).isDirectory();
-    });
-    return [basePath].concat(otherPaths).reduce(function (allFiles, entryPath) {
-      return allFiles.concat(fs.readdirSync(entryPath).filter(function (file) {
-        return path.extname(file) === '.js' && file !== path.basename(baseEntry);
-      }).map(function (file) {
-        return path.join(entryPath.substr(14), file);
-      }));
-    }, []);
-  },
   convertDots: function (obj) {
     return Object.keys(obj || {}).reduce(function (newObj, key) {
       newObj[key.replace(/\./g, '!DOT!')] = obj[key];
@@ -131,7 +116,7 @@ module.exports = {
     if (!files) {
       return null;
     }
-    
+
     return files.reduce(function (entryFile, file) {
       if (file.isEntry) {
         return file.name;

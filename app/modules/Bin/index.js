@@ -33,6 +33,7 @@ import welcomeBinClicked from './signals/welcomeBinClicked';
 import emptyBinClicked from './signals/emptyBinClicked';
 import toggleFullLog from './signals/toggleFullLog';
 import entryToggled from './signals/entryToggled';
+import iframeLoading from './signals/iframeLoading';
 
 export default (options = {}) => {
   return (module, controller) => {
@@ -56,6 +57,7 @@ export default (options = {}) => {
       logs: [],
       selectedLogPath: [],
       shouldCheckLog: false,
+      isLoadingIframe: false,
 
       shouldLint: true,
       isLinting: false,
@@ -112,6 +114,7 @@ export default (options = {}) => {
       rootRouted,
       linted,
       iframeLoaded,
+      iframeLoading,
       welcomeBinClicked,
       emptyBinClicked
     });

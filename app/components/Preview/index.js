@@ -5,7 +5,8 @@ import styles from './styles.css';
 @Cerebral({
   isRunning: 'bin.isRunning',
   showFullLog: 'bin.showFullLog',
-  showLog: 'bin.showLog'
+  showLog: 'bin.showLog',
+  isLoadingIframe: 'bin.isLoadingIframe'
 })
 class Preview extends React.Component {
   constructor(props) {
@@ -13,21 +14,19 @@ class Preview extends React.Component {
     this.onIframeMessage = this.onIframeMessage.bind(this);
   }
   componentDidUpdate(prevProps) {
-    if (prevProps.isRunning && !this.props.isRunning) {
+    if (!this.props.isLoadingIframe && prevProps.isRunning && !this.props.isRunning) {
       this.refs.iframe.src =  [
         location.protocol,
         '//',
         location.hostname.replace('www', 'sandbox'),
         (location.port ? ':' + location.port : ''),
         '/'
-      ].join('')
+      ].join('');
+      this.props.signals.bin.iframeLoading();
     }
   }
   componentDidMount() {
     window.addEventListener('message', this.onIframeMessage);
-    this.refs.iframe.addEventListener('load', () => {
-
-    });
   }
   onIframeMessage(event) {
     if (event.data.type === 'loaded') {

@@ -155,3 +155,13 @@
   50%  {opacity: 0.8;}
   100% {opacity: 1;}
 }
+
+.entryIndication {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  bottom: 3px;
+  font-size: 10px;
+  color: rgba(255,255,255,0.5);
+}

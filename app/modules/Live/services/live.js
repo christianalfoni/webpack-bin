@@ -4,6 +4,7 @@ export default (controller) => {
   const preventedSignals = [
     'bin.linted',
     'bin.iframeLoaded',
+    'bin.iframeLoading',
     'live.userJoined',
     'live.userLeft',
     'live.controlDesignated',

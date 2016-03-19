@@ -58,37 +58,6 @@
   color: #eb1e64;
 }
 
-.isSearchingBundles {
-  font-size: 14px;
-  padding: 5px 0;
-}
-
-.bundle {
-  padding: 5px;
-  cursor: pointer;
-  border-top: 1px solid rgba(0,0,0,0.3);
-}
-
-.bundle:last-child {
-  border-bottom: 1px solid rgba(0,0,0,0.3);
-}
-
-.bundle:hover {
-  background: rgba(255,255,255, 0.1);
-}
-
-.bundlePackage:after {
-  content: ", "
-}
-
-.bundlePackage:last-child:after {
-  content: ""
-}
-.bundlePackage small {
-  font-size: 12px;
-  color: rgba(255,255,255,0.5);
-}
-
 .bundleInfo {
   color: rgba(255,255,255,0.5);
   padding: 0 5px;
@@ -100,4 +69,23 @@
 .bundlesList {
   overflow-y: auto;
   max-height: 500px;
+}
+
+.quickstart {
+  padding: 10px;
+}
+
+.quickstart:hover {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.quickstartTitle {
+  margin-bottom: 4px;
+}
+
+.quickstartDescription {
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
 }

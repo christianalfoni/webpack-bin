@@ -27,6 +27,8 @@ module.exports = {
 
   },
   getFile: function (req, res, next) {
+    req.url = req.url.replace('/subdomain/sandbox', '');
+
     if (/wbtools/.test(req.url)) {
       res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
       res.setHeader('Expires', '-1');
@@ -36,8 +38,11 @@ module.exports = {
       return res.send(wbtools);
     }
 
-    if (/\/api\/sandbox\/vendors/.test(req.url)) {
+    if (/\/sandbox\/vendors/.test(req.url)) {
       var fileName = path.basename(req.url);
+      if (!memoryFs.fs.existsSync(req.url)) {
+        return res.sendStatus(404);
+      }
       var content = memoryFs.fs.readFileSync(req.url);
       res.setHeader('Cache-Control', 'public, max-age=3600000');
       res.setHeader("Content-Type", mime.lookup(fileName));
@@ -54,9 +59,12 @@ module.exports = {
       res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
       res.setHeader('Expires', '-1');
       res.setHeader('Pragma', 'no-cache');
-      req.url = '/api/sandbox/' + req.session.currentBin.author + req.url;
       var fileName = path.basename(req.url);
-      var content = memoryFs.fs.readFileSync(req.url);
+      var filePath = '/api/sandbox/' + req.session.currentBin.author + '/' + fileName;
+      if (!memoryFs.fs.existsSync(filePath)) {
+        return res.sendStatus(404);
+      }
+      var content = memoryFs.fs.readFileSync(filePath);
       res.setHeader("Content-Type", mime.lookup(fileName));
       res.setHeader("Content-Length", content.length);
       res.send(content);
@@ -66,8 +74,6 @@ module.exports = {
     res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
     res.setHeader('Expires', '-1');
     res.setHeader('Pragma', 'no-cache');
-
-    console.log('Grabbing file', path.basename(req.url), utils.getEntry(req.session.files));
 
     if (path.basename(req.url) === utils.getEntry(req.session.files)) {
       req.url = '/api/sandbox/' + req.session.id + '/webpackbin_bundle.js';
@@ -87,7 +93,6 @@ module.exports = {
   updateSandbox: function (req, res, next) {
 
     var currentEntryFile = utils.getEntry(req.session.files);
-    memoryFs.updateSessionFiles(req.session, req.body.files);
 
     if (
       req.session.middleware &&
@@ -103,6 +108,7 @@ module.exports = {
     sessions.updatePackages(req);
     sessions.updateLoaders(req);
     sessions.updateFiles(req);
+    memoryFs.updateSessionFiles(req.session, req.body.files);
     vendorsBundlesCleaner.update(req);
 
     if (!req.session.currentBin || req.session.currentBin.id !== req.body.id) {
@@ -126,12 +132,17 @@ module.exports = {
             return db.loadVendorsBundle(bundle);
           } else {
             return npm.loadPackages(req.body.packages)
-              .then(vendorsBundler.compile)
               .then(db.saveVendorsBundle)
-              .then(npm.removePackages)
               .then(db.uploadVendorsBundle)
+              .then(db.getVendorsBundle(utils.getVendorsBundleName(req.body.packages)))
+              .then(function (bundle) {
+                memoryFs.writeBundleManifest(bundle);
+                return db.loadVendorsBundle(bundle);
+              })
               .catch(function (err) {
-                res.sendStatus(500);
+                res.status(500).send({
+                  message: err.message
+                });
                 throw err;
               })
           }
@@ -167,10 +178,13 @@ module.exports = {
             return bundle;
           } else {
             return npm.loadPackages(req.body.packages)
-              .then(vendorsBundler.compile)
               .then(db.saveVendorsBundle)
-              .then(npm.removePackages)
               .then(db.uploadVendorsBundle)
+              .then(db.getVendorsBundle(utils.getVendorsBundleName(req.body.packages)))
+              .then(function (bundle) {
+                memoryFs.writeBundleManifest(bundle);
+                return db.loadVendorsBundle(bundle);
+              })
               .catch(function (err) {
                 res.sendStatus(500);
                 throw err;

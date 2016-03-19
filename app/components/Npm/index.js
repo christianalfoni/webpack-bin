@@ -4,16 +4,28 @@ import styles from './styles.css';
 import NpmPackage from '../NpmPackage';
 import Loaders from '../Loaders';
 
+const quickstarts = [{
+  title: 'Simple',
+  description: 'ES2015 entry point'
+}, {
+  title: 'Simple with CSS',
+  description: 'ES2015 entry point with CSS'
+}, {
+  title: 'Typescript',
+  description: 'Typescript entry point with CSS'
+}]
+
 @Cerebral({
   packages: 'bin.currentBin.packages',
-  searchQuery: 'npm.searchQuery',
   packageNameQuery: 'npm.packageNameQuery',
-  bundles: 'npm.bundles',
   isGettingPackage: 'npm.isGettingPackage',
-  isSearchingBundles: 'npm.isSearchingBundles',
   packageError: 'npm.packageError'
 })
 class Npm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.renderQuickstart = this.renderQuickstart.bind(this);
+  }
   componentDidUpdate(prevProps) {
     if (prevProps.isGettingPackage && !this.props.isGettingPackage) {
       this.refs.packageSearch.focus();
@@ -28,38 +40,25 @@ class Npm extends React.Component {
       return <NpmPackage key={index} name={key} version={this.props.packages[key]}/>
     });
   }
-  renderBundles() {
-    return this.props.bundles.map((bundle, index) => (
+  renderQuickstart(quickstart, index) {
+    return (
       <div
-        className={styles.bundle}
+        className={styles.quickstart}
         key={index}
-        onClick={() => this.props.signals.npm.bundleClicked({packages: bundle.packages})}>
-        {Object.keys(bundle.packages).map((key, index) => (
-          <span className={styles.bundlePackage} key={index}>
-            {key} <small>{bundle.packages[key]}</small>
-          </span>
-        ))}
+        onClick={() => this.props.signals.npm.quickstartClicked({index})}>
+        <div className={styles.quickstartTitle}>{quickstart.title}</div>
+        <div className={styles.quickstartDescription}>
+          {quickstart.description}
+        </div>
       </div>
-    ));
+    );
   }
   render() {
     return (
       <div className={styles.wrapper}>
         <div className={styles.column}>
-          <h3 className={styles.title}>Existing bundles</h3>
-          <input
-            type="text"
-            className={styles.search}
-            placeholder="Search..."
-            disabled={this.props.isGettingPackage}
-            onChange={(e) => this.props.signals.npm.searchBundleQueryChanged({query: e.target.value})}
-            value={this.props.searchBundleQuery}/>
-          {
-            this.props.isSearchingBundles ?
-              <div className={styles.searching}>Searching...</div>
-            :
-              <div className={styles.bundlesList}>{this.renderBundles()}</div>
-          }
+          <h3 className={styles.title}>Quick start</h3>
+          {quickstarts.map(this.renderQuickstart)}
         </div>
         <div className={styles.column}>
           <h3 className={styles.title}>Add NPM package</h3>
