@@ -43,17 +43,7 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 			// check if still in valid state
 			if(!state) return;
 			// print webpack output
-			var displayStats = (!options.quiet && options.stats !== false);
 			var error = null;
-			if(displayStats &&
-				!(stats.hasErrors() || stats.hasWarnings()) &&
-				options.noInfo)
-				displayStats = false;
-			if(displayStats) {
-				console.log(stats.toString(options.stats));
-			}
-			if (!options.noInfo && !options.quiet)
-				console.info("webpack: bundle is now VALID.");
 
 			if (stats.hasErrors()) {
 				error = stats.compilation.errors[0];
@@ -77,7 +67,6 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 	// on compiling
 	function invalidPlugin() {
 		if(state && (!options.noInfo && !options.quiet))
-			console.info("webpack: bundle is now INVALID.");
 		// We are now in invalid state
 		state = false;
 	}
@@ -165,7 +154,6 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 			}
 
 			// server content
-			console.log('Middleware reading', filename);
 			var content = fs.readFileSync(filename);
 			res.setHeader("Access-Control-Allow-Origin", "*"); // To support XHR, etc.
 			res.setHeader("Content-Type", mime.lookup(filename));

@@ -1,5 +1,4 @@
 var db = require('./database.js');
-var vendorsBundler = require('./vendorsBundler.js');
 var sessionBundler = require('./sessionBundler.js');
 var memoryFs = require('./memoryFs');
 var utils = require('./utils');
