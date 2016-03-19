@@ -45,6 +45,7 @@ class Preview extends React.Component {
     return (
       <div className={this.props.showFullLog || !this.props.showLog ? styles.wrapper : styles.halfWrapper}>
         <iframe className={styles.iframe} ref="iframe"/>
+        <div className={styles.iframeLoader + (this.props.isLoadingIframe ? ' ' + styles.iframeLoaderVisible : '')}>Loading...</div>
       </div>
     );
   }
