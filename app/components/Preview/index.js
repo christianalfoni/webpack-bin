@@ -14,26 +14,32 @@ class Preview extends React.Component {
   }
   componentDidUpdate(prevProps) {
     if (prevProps.isRunning && !this.props.isRunning) {
-      this.refs.iframe.src =  location.origin + '/api/sandbox';
+      this.refs.iframe.src =  [
+        location.protocol,
+        '//',
+        location.hostname.replace('www', 'sandbox'),
+        (location.port ? ':' + location.port : ''),
+        '/'
+      ].join('')
     }
   }
   componentDidMount() {
     window.addEventListener('message', this.onIframeMessage);
     this.refs.iframe.addEventListener('load', () => {
-      this.refs.iframe.contentWindow.document.addEventListener('click', () => {
-        this.props.signals.bin.appClicked();
-      });
+
     });
   }
   onIframeMessage(event) {
     if (event.data.type === 'loaded') {
-      console.log('Loaded!');
       this.props.signals.bin.iframeLoaded();
     }
     if (event.data.type === 'log') {
       this.props.signals.bin.logReceived({
         value: event.data.value
       });
+    }
+    if (event.data.type === 'click') {
+      this.props.signals.bin.appClicked();
     }
   }
   render() {

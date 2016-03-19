@@ -38,3 +38,18 @@
 .input:focus {
   outline: 0;
 }
+
+.entry {
+  display: inline-block;
+  margin: 0 5px;
+  height: 30px;
+}
+
+.entry input {
+  margin-right: 5px;
+}
+
+.entry span {
+  position: relative;
+  top: 1px;
+}

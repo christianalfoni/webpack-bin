@@ -21,12 +21,7 @@
   "homepage": "https://github.com/cerebral/cerebral-boilerplate",
   "scripts": {
     "start": "node start.js",
-    "dev": "concurrently \"npm run client\" \"npm run server\"",
-    "client": "kotatsu serve app/main.js --public public --index index.html --config webpack.config.js --devtool eval-source-map --proxy /api http://www.webpackbin.dev:4000/api",
-    "server": "kotatsu start start.js --source-maps",
-    "build": "npm run build:client",
-    "build:client": "kotatsu build client app/main.js --config webpack.production.config.js --source-maps --minify -o public/client_build.js",
-    "build:server": "kotatsu build server start.js --minify -o server_build.js",
+    "build": "webpack --config webpack.production.config.js",
     "postinstall": "node configure && npm run build"
   },
   "dependencies": {
@@ -89,12 +84,15 @@
     "source-map-support": "^0.4.0",
     "string-hash": "^1.1.0",
     "style-loader": "^0.13.0",
+    "subdomain": "^1.2.0",
     "tar-pack": "^3.1.3",
     "ts-loader": "^0.8.1",
     "typescript": "^1.8.2",
     "url-loader": "^0.5.7",
     "usage": "^0.7.1",
     "webpack-bin-babel-core": "https://github.com/christianalfoni/webpack-bin-babel-core.git",
+    "webpack-dev-middleware": "^1.5.1",
+    "webpack-hot-middleware": "^2.10.0",
     "ws": "^1.0.1"
   }
 }

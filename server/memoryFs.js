@@ -3,6 +3,14 @@ var path = require('path');
 var fs = new MemoryFileSystem();
 var utils = require('./utils');
 
+var injectIndexHelpers = function (packages, index) {
+  return index.replace('</head>', [
+    '   <script src="/api/sandbox/wbtools_v1.js"></script>',
+    packages ? '   <script src="/api/sandbox/vendors/' + utils.getVendorsBundleName(packages) + '/bundle.js"></script>' : '',
+    '</head>'
+  ].join('\n'))
+}
+
 module.exports = {
   fs: fs,
   updateSessionFiles: function (session, files) {
@@ -11,17 +19,21 @@ module.exports = {
     }
 
     files.forEach(function (file) {
-      fs.writeFileSync(path.join('/', 'api', 'sandbox', session.id, file.name), file.content || ' ');
+      if (file.name === 'index.html') {
+        fs.writeFileSync(path.join('/', 'api', 'sandbox', session.id, file.name), injectIndexHelpers(session.packages, file.content) || ' ');
+      } else {
+        fs.writeFileSync(path.join('/', 'api', 'sandbox', session.id, file.name), file.content || ' ');
+      }
     });
 
-    var deletedFiles = files.reduce(function (deletedFiles, file) {
-      if (deletedFiles.indexOf(file.name) >= 0) {
-        deletedFiles.splice(deletedFiles.indexOf(file.name), 1);
-      }
-      return deletedFiles;
-    }, session.files.slice());
-    deletedFiles.forEach(function (fileName) {
-      fs.unlinkSync(path.join('/', 'api', 'sandbox', session.id, fileName));
+    var filesToDelete = session.files.filter(function (sessionFile) {
+      return !files.filter(function (passedFile) {
+        return passedFile.name === sessionFile.name;
+      }).length;
+    });
+
+    filesToDelete.forEach(function (file) {
+      fs.unlinkSync(path.join('/', 'api', 'sandbox', session.id, file.name));
     });
   },
   hasVendorsBundle: function (packages) {
@@ -36,5 +48,12 @@ module.exports = {
     fs.mkdirpSync(path.join('/', 'api', 'sandbox', 'vendors', bundle.name));
     fs.writeFileSync(path.join('/', 'api', 'sandbox', 'vendors', bundle.name, 'manifest.json'), bundle.manifest);
     return bundle;
+  },
+  getSessionFile: function (sessionId, fileName) {
+    var pathToFile = path.join('/', 'api', 'sandbox', sessionId, fileName);
+    if (!fs.existsSync(pathToFile)) {
+      return null;
+    }
+    return fs.readFileSync(pathToFile).toString();
   }
 };

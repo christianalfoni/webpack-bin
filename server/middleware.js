@@ -165,6 +165,7 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 			}
 
 			// server content
+			console.log('Middleware reading', filename);
 			var content = fs.readFileSync(filename);
 			res.setHeader("Access-Control-Allow-Origin", "*"); // To support XHR, etc.
 			res.setHeader("Content-Type", mime.lookup(filename));

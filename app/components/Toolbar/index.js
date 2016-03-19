@@ -10,6 +10,8 @@ import ToolbarButtonPopover from '../ToolbarButtonPopover';
 import Npm from '../Npm';
 import Boilerplates from '../Boilerplates';
 
+import hasEntry from '../../computed/hasEntry';
+
 @Cerebral({
   files: 'bin.currentBin.files',
   selectedFileIndex: 'bin.selectedFileIndex',
@@ -25,7 +27,9 @@ import Boilerplates from '../Boilerplates';
   showBoilerplatesSelector: 'bin.showBoilerplatesSelector',
   vimModeEnabled: 'bin.vimMode',
   currentBin: 'bin.currentBin',
-  highlightCreateIssue: 'bin.highlightCreateIssue'
+  highlightCreateIssue: 'bin.highlightCreateIssue',
+  isEntry: 'bin.isEntry',
+  hasEntry: hasEntry
 })
 class Toolbar extends React.Component {
   static propTypes = {
@@ -157,11 +161,14 @@ class Toolbar extends React.Component {
         <div className={styles.row}>
           <AddFile
             onAddFileClick={signals.bin.addFileClicked}
+            onEntryChange={signals.bin.entryToggled}
             onFileNameChange={signals.bin.addFileNameUpdated}
             onFileSubmit={signals.bin.addFileSubmitted}
             onAddFileAborted={signals.bin.addFileAborted}
             showInput={this.props.showAddFileInput}
             placeholder="Filename..."
+            isEntry={this.props.isEntry}
+            disableEntry={this.props.hasEntry}
             value={this.props.newFileName}/>
           {this.renderFiles()}
         </div>

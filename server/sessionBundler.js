@@ -7,6 +7,9 @@ var createLoaders = require('./createLoaders');
 module.exports = {
   create: function (session) {
     return function (bundle) {
+      if (!utils.getEntry(session.files)) {
+        return null;
+      }
       return new Promise(function (resolve, reject) {
 
         var vendorsBundleName = bundle && bundle.name;
@@ -57,7 +60,7 @@ module.exports = {
         var compiler = webpack({
           devtool: 'cheap-module-eval-source-map',
           entry: {
-            App: path.join('/', 'api', 'sandbox', session.id, 'main.js')
+            App: path.join('/', 'api', 'sandbox', session.id, utils.getEntry(session.files))
           },
           output: {
             path: path.join('/', 'api', 'sandbox', session.id),

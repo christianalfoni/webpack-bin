@@ -12,22 +12,6 @@ var vendorsBundlesCleaner = require('./vendorsBundlesCleaner.js');
 
 var wbtools = fs.readFileSync(path.resolve('server', 'wbTools.js')).toString();
 
-var createIndex = function (packages) {
-  return [
-    '<!DOCTYPE html>',
-    '<html>',
-    ' <head>',
-    '   <script src="/api/sandbox/wbtools_v1.js"></script>',
-    ' </head>',
-    ' <body>',
-    '   <div id="app"></div>',
-    packages ? '   <script src="/api/sandbox/vendors/' + utils.getVendorsBundleName(packages) + '/bundle.js" defer></script>' : '',
-    '   <script src="/api/sandbox/webpackbin_bundle.js" defer></script>',
-    ' </body>',
-    '</html>'
-  ].join('\n')
-}
-
 module.exports = {
   getIndex: function (req, res) {
     res.type('html');
@@ -36,9 +20,9 @@ module.exports = {
       req.session.currentBin.isLive &&
       !req.session.currentBin.isOwner
     ) {
-      res.send(createIndex(sessions.get(req.session.currentBin.author).packages));
+      res.send(memoryFs.getSessionFile(req.session.currentBin.author, 'index.html'));
     } else {
-      res.send(createIndex(req.session.packages));
+      res.send(memoryFs.getSessionFile(req.session.id, 'index.html'));
     }
 
   },
@@ -52,33 +36,6 @@ module.exports = {
       return res.send(wbtools);
     }
 
-    if (
-      req.session.currentBin &&
-      req.session.currentBin.isLive &&
-      !req.session.currentBin.isOwner &&
-      /webpackbin_bundle\.js/.test(req.url)
-    ) {
-      res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-      res.setHeader('Expires', '-1');
-      res.setHeader('Pragma', 'no-cache');
-      req.url = req.url.replace('webpackbin_bundle.js', req.session.currentBin.author + '/webpackbin_bundle.js');
-      var fileName = path.basename(req.url);
-      var content = memoryFs.fs.readFileSync(req.url);
-      res.setHeader("Content-Type", mime.lookup(fileName));
-      res.setHeader("Content-Length", content.length);
-      res.send(content);
-      return;
-    }
-
-    if (/webpackbin_bundle\.js/.test(req.url)) {
-      res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-      res.setHeader('Expires', '-1');
-      res.setHeader('Pragma', 'no-cache');
-      req.url = req.url.replace('webpackbin_bundle.js', req.session.id + '/webpackbin_bundle.js');
-      req.session.middleware(req, res, next);
-      return;
-    }
-
     if (/\/api\/sandbox\/vendors/.test(req.url)) {
       var fileName = path.basename(req.url);
       var content = memoryFs.fs.readFileSync(req.url);
@@ -86,14 +43,59 @@ module.exports = {
       res.setHeader("Content-Type", mime.lookup(fileName));
       res.setHeader("Content-Length", content.length);
       res.send(content);
-      return
+      return;
     }
+
+    if (
+      req.session.currentBin &&
+      req.session.currentBin.isLive &&
+      !req.session.currentBin.isOwner
+    ) {
+      res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+      res.setHeader('Expires', '-1');
+      res.setHeader('Pragma', 'no-cache');
+      req.url = '/api/sandbox/' + req.session.currentBin.author + req.url;
+      var fileName = path.basename(req.url);
+      var content = memoryFs.fs.readFileSync(req.url);
+      res.setHeader("Content-Type", mime.lookup(fileName));
+      res.setHeader("Content-Length", content.length);
+      res.send(content);
+      return;
+    }
+
+    res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    res.setHeader('Expires', '-1');
+    res.setHeader('Pragma', 'no-cache');
+
+    console.log('Grabbing file', path.basename(req.url), utils.getEntry(req.session.files));
+
+    if (path.basename(req.url) === utils.getEntry(req.session.files)) {
+      req.url = '/api/sandbox/' + req.session.id + '/webpackbin_bundle.js';
+      req.session.middleware(req, res, next);
+    } else {
+      var fileName = path.basename(req.url);
+      var content = memoryFs.getSessionFile(req.session.id, fileName)
+      if (content === null) {
+        return res.sendStatus(404);
+      }
+      res.setHeader("Content-Type", mime.lookup(fileName));
+      res.setHeader("Content-Length", content.length);
+      res.send(content);
+    }
+
   },
   updateSandbox: function (req, res, next) {
 
+    var currentEntryFile = utils.getEntry(req.session.files);
     memoryFs.updateSessionFiles(req.session, req.body.files);
 
-    if (req.session.middleware && utils.getVendorsBundleName(req.session.packages) !== utils.getVendorsBundleName(req.body.packages)) {
+    if (
+      req.session.middleware &&
+      (
+        utils.getVendorsBundleName(req.session.packages) !== utils.getVendorsBundleName(req.body.packages) ||
+        currentEntryFile !== utils.getEntry(req.body.files)
+      )
+    ) {
       sessions.removeMiddleware(req);
     }
 

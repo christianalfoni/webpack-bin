@@ -3,7 +3,8 @@ function addFile({state}) {
   const ext = fileName.split('.')[fileName.split('.').length - 1];
   state.push('bin.currentBin.files', {
     name: fileName,
-    content: ''
+    content: '',
+    isEntry: state.get('bin.isEntry')
   });
 
   if (ext === 'ts' && !state.get('bin.currentBin.loaders.typescript')) {

@@ -36,7 +36,7 @@ var sessionsModule = {
       req.session = sessionsModule.set(id);
       res.cookie('webpackbin', String(id), {
         maxAge: 3600000 * 24, // One day
-        domain: utils.isProduction() ? 'www.webpackbin.com' : '.webpackbin.dev',
+        domain: utils.isProduction() ? '.webpackbin.com' : '.webpackbin.dev',
         httpOnly: true
       });
     }
@@ -44,6 +44,9 @@ var sessionsModule = {
   },
   createBundleMiddleware: function (session) {
     return function (compiler) {
+      if (!compiler) {
+        return null;
+      }
       var sessionMiddleware = middleware(compiler, {
         lazy: true,
         filename: new RegExp(session.id),
@@ -71,7 +74,10 @@ var sessionsModule = {
   },
   updateFiles: function (req) {
     sessions[req.session.id].files = req.body.files.map(function (file) {
-      return file.name;
+      return {
+        name: file.name,
+        isEntry: Boolean(file.isEntry)
+      };
     });
   }
 };

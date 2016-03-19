@@ -8,5 +8,6 @@ export default [
   selectLastFile,
   set('state:/bin.newFileName', ''),
   set('state:/bin.showAddFileInput', false),
+  set('state:/bin.isEntry', false),
   shouldLint
 ];

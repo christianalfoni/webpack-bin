@@ -126,5 +126,17 @@ module.exports = {
       newObj[key.replace(/\!DOT\!/g, '.')] = obj[key];
       return newObj;
     }, {});
+  },
+  getEntry: function (files) {
+    if (!files) {
+      return null;
+    }
+    
+    return files.reduce(function (entryFile, file) {
+      if (file.isEntry) {
+        return file.name;
+      }
+      return entryFile;
+    }, null);
   }
 };

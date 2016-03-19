@@ -3,8 +3,16 @@ function setEmptyBin({state}) {
     packages: {},
     loaders: {},
     files: [{
-      name: 'main.js',
-      content: ''
+      name: 'index.html',
+      content: `<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+  </head>
+  <body>
+
+  </body>
+</html>`
     }]
   });
   state.set('bin.selectedFileIndex', 0);

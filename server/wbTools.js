@@ -1,6 +1,10 @@
 (function (window) {
   window.addEventListener("load", function () {
-    window.parent.postMessage({type: "loaded"}, location.origin)
+    window.parent.postMessage({type: "loaded"}, location.origin.replace('sandbox', 'www'));
+  });
+
+  document.addEventListener('click', () => {
+    window.parent.postMessage({type: "click"}, location.origin.replace('sandbox', 'www'));
   });
 
   function getFunctionName(fun) {
@@ -44,12 +48,12 @@
     window.parent.postMessage({type: "log", value: {
       __webpackbin_type_error: true,
       message: message
-    }}, location.origin);
+    }}, location.origin.replace('sandbox', 'www'));
   };
 
   window.bin = {
     log: function (value) {
-      window.parent.postMessage({type: "log", value: createValue(value)}, location.origin);
+      window.parent.postMessage({type: "log", value: createValue(value)}, location.origin.replace('sandbox', 'www'));
     }
   };
 }(window));

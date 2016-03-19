@@ -32,6 +32,7 @@ import logPathSelected from './signals/logPathSelected';
 import welcomeBinClicked from './signals/welcomeBinClicked';
 import emptyBinClicked from './signals/emptyBinClicked';
 import toggleFullLog from './signals/toggleFullLog';
+import entryToggled from './signals/entryToggled';
 
 export default (options = {}) => {
   return (module, controller) => {
@@ -49,6 +50,7 @@ export default (options = {}) => {
         loaders: {},
         isLive: false
       },
+      isEntry: false,
       isLoadingBin: false,
       showBinLoader: false,
       logs: [],
@@ -98,6 +100,10 @@ export default (options = {}) => {
       logPathSelected: preventIfLive(logPathSelected),
       logReceived: preventIfLive(logReceived),
       toggleFullLog: preventIfLive(toggleFullLog),
+      entryToggled: preventIfLive(entryToggled),
+      addFileAborted: preventIfLive(addFileAborted),
+      addFileNameUpdated: preventIfLive(addFileNameUpdated),
+      addFileSubmitted: preventIfLive(addFileSubmitted),
       opened,
       vimModeClicked,
       linterRequested,
@@ -106,9 +112,6 @@ export default (options = {}) => {
       rootRouted,
       linted,
       iframeLoaded,
-      addFileAborted,
-      addFileNameUpdated,
-      addFileSubmitted,
       welcomeBinClicked,
       emptyBinClicked
     });

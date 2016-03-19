@@ -30,13 +30,20 @@ function AddFile(props) {
           <form onSubmit={onSubmit}>
             <input
               value={props.value}
+              onClick={(e) => e.stopPropagation()}
               onChange={onAddFileInputChange}
               onKeyDown={onAddFileInputKeyDown}
               className={styles.input}
               autoFocus
-              placeholder={props.placeholder}
-              onBlur={() => props.onAddFileAborted()}>
-            </input>
+              placeholder={props.placeholder}/>
+            <label className={styles.entry} onClick={(e) => e.stopPropagation()}>
+              <input
+                type="checkbox"
+                checked={props.isEntry}
+                disabled={props.disableEntry}
+                onChange={() => props.onEntryChange()}/>
+                <span>Is entry</span>
+            </label>
           </form>
         </div>
       </div>
