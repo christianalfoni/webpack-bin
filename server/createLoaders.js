@@ -49,11 +49,15 @@ module.exports = function (currentLoaders) {
   // TYPESCRIPT
   if (currentLoaders.typescript) {
     var loader = {
-      test: /\.ts?$/,
+      test: /\.ts?$|\.tsx?$/,
       loader: 'ts',
       query: {
         transpileOnly: true,
-        isolatedModules: true
+        isolatedModules: true,
+        silent: true,
+        compilerOptions: {
+          jsx: 'react'
+        }
       }
     }
     loaders.push(loader);

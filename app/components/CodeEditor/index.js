@@ -94,6 +94,8 @@ class CodeEditor extends React.Component {
         return 'css';
       case 'ts':
         return 'text/typescript';
+      case 'tsx':
+        return 'text/typescript';
       case 'coffee':
         return 'text/x-coffeescript';
       case 'less':

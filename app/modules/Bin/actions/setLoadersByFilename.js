@@ -1,8 +1,8 @@
 function setLoadersByFilename({state, input}) {
   const fileName = state.get('bin.newFileName');
   const ext = fileName.split('.')[fileName.split('.').length - 1];
-  
-  if (ext === 'ts' && !state.get('bin.currentBin.loaders.typescript')) {
+
+  if ((ext === 'ts' || ext === 'tsx') && !state.get('bin.currentBin.loaders.typescript')) {
     state.set('bin.currentBin.loaders.typescript', {});
   }
 
