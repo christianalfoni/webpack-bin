@@ -87,9 +87,10 @@ class Toolbar extends React.Component {
               */}
               <div className={styles.buttonWrapper}>
                 <ToolbarButton
-                  title='Run'
-                  icon={icons.play}
+                  title='Save'
+                  icon={icons.save}
                   disabled={this.props.isRunning}
+                  tooltip="CTRL + s / CMD + s"
                   onClick={() => signals.bin.runClicked()}/>
               </div>
               <div className={styles.buttonWrapper}>

@@ -1,10 +1,29 @@
 .button {
+  position: relative;
   background: transparent;
   border: 0;
   float: left;
   padding: 0;
   cursor: pointer;
   text-align: center;
+}
+
+.button i {
+  position: absolute;
+  display: none;
+  padding: 5px 10px;
+  white-space: nowrap;
+  background-color: #eb1e64;
+  font-style: normal;
+  border-radius: 3px;
+  color: #FFF;
+  bottom: -30px;
+  width: 100px;
+  margin-left: -50px;
+}
+
+.button:hover i {
+  display: block;
 }
 
 .button[disabled]:hover {

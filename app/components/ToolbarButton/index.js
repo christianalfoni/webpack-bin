@@ -41,6 +41,7 @@ class ToolbarButton extends React.Component {
       <button className={styles.button} onClick={(e) => this.onClick(e)} disabled={this.props.disabled}>
         { this.props.title && this.props.icon ? this.renderIconTextButton() : null }
         { !this.props.title && this.props.icon ? this.renderIconButton() : null }
+        { this.props.tooltip ? <i>{this.props.tooltip}</i> : null }
       </button>
     );
   }
