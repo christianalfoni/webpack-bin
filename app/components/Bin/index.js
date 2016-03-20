@@ -8,6 +8,7 @@ import Log from '../Log';
 import LiveUsers from '../LiveUsers';
 import LiveUser from '../LiveUser';
 import Welcome from '../Welcome';
+import DeleteFileModal from '../DeleteFileModal';
 
 @Cerebral({
   snackbar: 'bin.snackbar',
@@ -17,7 +18,8 @@ import Welcome from '../Welcome';
   showLoadingBin: 'bin.showLoadingBin',
   live: 'live',
   showWelcome: 'bin.showWelcome',
-  isInitialized: 'bin.isInitialized'
+  isInitialized: 'bin.isInitialized',
+  showDeleteFileModal: 'bin.showDeleteFileModal'
 })
 class Bin extends React.Component {
   constructor(props) {
@@ -119,6 +121,12 @@ class Bin extends React.Component {
         <div className={this.state.showSnackbar ? styles.snackbarVisible : styles.snackbar}>
           {this.props.snackbar.text}
         </div>
+        {
+          this.props.showDeleteFileModal ?
+            <DeleteFileModal/>
+          :
+            null
+        }
       </div>
     );
   }

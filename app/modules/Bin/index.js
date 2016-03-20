@@ -24,7 +24,9 @@ import linterRequested from './signals/linterRequested';
 import logToggled from './signals/logToggled';
 import logReceived from './signals/logReceived';
 import vimModeClicked from './signals/vimModeClicked';
+import fileDeleteClicked from './signals/fileDeleteClicked';
 import fileDeleted from './signals/fileDeleted';
+import fileDeleteAborted from './signals/fileDeleteAborted';
 import loadingTimeoutReached from './signals/loadingTimeoutReached';
 import hideSnackbar from './actions/hideSnackbar.js';
 import logValueToggled from './signals/logValueToggled';
@@ -78,7 +80,9 @@ export default (options = {}) => {
       forceUpdateCode: false,
       vimMode: false,
       highlightCreateIssue: false,
-      changedFiles: []
+      changedFiles: [],
+      fileToDeleteIndex: 0,
+      showDeleteFileModal: false
     });
 
     module.addSignals({
@@ -98,7 +102,7 @@ export default (options = {}) => {
       boilerplatesToggled: preventIfLive(boilerplatesToggled),
       boilerplateClicked: preventIfLive(boilerplateClicked),
       logToggled: preventIfLive(logToggled),
-      fileDeleted: preventIfLive(fileDeleted),
+      fileDeleteClicked: preventIfLive(fileDeleteClicked),
       logValueToggled: preventIfLive(logValueToggled),
       logPathSelected: preventIfLive(logPathSelected),
       logReceived: preventIfLive(logReceived),
@@ -107,6 +111,8 @@ export default (options = {}) => {
       addFileAborted: preventIfLive(addFileAborted),
       addFileNameUpdated: preventIfLive(addFileNameUpdated),
       addFileSubmitted: preventIfLive(addFileSubmitted),
+      fileDeleted: preventIfLive(fileDeleted),
+      fileDeleteAborted: preventIfLive(fileDeleteAborted),
       opened,
       vimModeClicked,
       linterRequested,

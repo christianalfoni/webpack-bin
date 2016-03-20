@@ -66,7 +66,7 @@ class Toolbar extends React.Component {
               }
               <i
                 className={styles.deleteFile}
-                onClick={(e) => {e.stopPropagation();signals.bin.fileDeleted({index})}}>&times;</i>
+                onClick={(e) => {e.stopPropagation();signals.bin.fileDeleteClicked({index})}}>&times;</i>
             </div>
           );
         })}
