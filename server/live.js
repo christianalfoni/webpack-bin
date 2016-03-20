@@ -89,37 +89,42 @@ function createOnMessageCallback(session, client) {
   }
 }
 
-module.exports = function connection(client) {
+module.exports = {
+  connect: function connect(client) {
 
-  var sessionId = cookie.parse(client.upgradeReq.headers.cookie).webpackbin;
-  var session = sessions.get(sessionId);
+    var sessionId = cookie.parse(client.upgradeReq.headers.cookie).webpackbin;
+    var session = sessions.get(sessionId);
 
-  if (!session || !session.currentBin) {
-    return client.close();
-  }
-
-  if (session.currentBin.isOwner) {
-    channels[session.currentBin.id] = {
-      controller: client,
-      clients: {
-        admin: client
-      },
-      pinger: setInterval(function () {
-        Object.keys(channels[session.currentBin.id].clients).forEach(function (client) {
-          channels[session.currentBin.id].clients[client].ping()
-        })
-      }, 60000)
+    if (!session || !session.currentBin) {
+      return client.close();
     }
-    client.send(JSON.stringify({
-      type: 'created'
-    }));
-  } else {
-    client.send(JSON.stringify({
-      type: 'connected',
-    }));
+
+    if (session.currentBin.isOwner) {
+      channels[session.currentBin.id] = {
+        controller: client,
+        clients: {
+          admin: client
+        },
+        pinger: setInterval(function () {
+          Object.keys(channels[session.currentBin.id].clients).forEach(function (client) {
+            channels[session.currentBin.id].clients[client].ping()
+          })
+        }, 60000)
+      }
+      client.send(JSON.stringify({
+        type: 'created'
+      }));
+    } else {
+      client.send(JSON.stringify({
+        type: 'connected',
+      }));
+    }
+
+    client.on('close', createOnCloseCallback(session, client))
+    client.on('message', createOnMessageCallback(session, client));
+
+  },
+  getChannels: function () {
+    return channels;
   }
-
-  client.on('close', createOnCloseCallback(session, client))
-  client.on('message', createOnMessageCallback(session, client));
-
-};
+}

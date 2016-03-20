@@ -130,7 +130,7 @@ app.get('*', function(req, res) {
   res.send(indexHtml);
 });
 
-wss.on('connection', liveConnection);
+wss.on('connection', liveConnection.connect);
 
 module.exports = {
   server: server,
