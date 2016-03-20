@@ -33,3 +33,7 @@ export function isCircular(value) {
 export function isError(value) {
   return value && value.__webpackbin_type_error;
 }
+
+export function isUndefined(value) {
+  return value === undefined;
+}

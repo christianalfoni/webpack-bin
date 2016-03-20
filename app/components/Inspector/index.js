@@ -10,13 +10,11 @@ import {
   isNull,
   isError,
   isFunction,
-  isCircular
+  isCircular,
+  isUndefined
 } from './utils';
 
 function renderType(props) {
-  if (props.value === undefined) {
-    return null;
-  }
 
   if (isError(props.value)) {
     return <ErrorValue {...props}/>
@@ -30,12 +28,12 @@ function renderType(props) {
     return <CircularValue {...props}/>
   }
 
-  if (isArray(props.value.value)) {
+  if (props.value && isArray(props.value.value)) {
     return (
       <ArrayValue {...props}/>
     );
   }
-  if (isObject(props.value.value)) {
+  if (props.value && isObject(props.value.value)) {
     return (
       <ObjectValue {...props}/>
     );
@@ -164,6 +162,7 @@ function Value(props) {
   if (isNumber(props.value)) className = styles.number;
   if (isBoolean(props.value)) className = styles.boolean;
   if (isNull(props.value)) className = styles.null;
+  if (isUndefined(props.value)) className = styles.undefined;
   return (
     <div className={className}>
       <div onClick={() => props.onSelectPath({path: props.path})} className={props.highlight && isSelected ? styles.highlightValue : null}>
