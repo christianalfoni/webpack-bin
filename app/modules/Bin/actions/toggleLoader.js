@@ -15,7 +15,8 @@ const loaderTemplates = {
   raw: {},
   json: {},
   jade: {},
-  handlebars: {}
+  handlebars: {},
+  vue: {}
 };
 
 function toggleLoader({input, state}) {

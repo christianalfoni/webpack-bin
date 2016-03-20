@@ -56,7 +56,8 @@ module.exports = function (currentLoaders) {
         isolatedModules: true,
         silent: true,
         compilerOptions: {
-          jsx: 'react'
+          jsx: 'react',
+          target: 'es5'
         }
       }
     }
@@ -122,6 +123,15 @@ module.exports = function (currentLoaders) {
     var loader = {
       test: /\.handlebars?$/,
       loader: 'handlebars'
+    }
+    loaders.push(loader);
+  }
+
+  // VUE
+  if (currentLoaders.vue) {
+    var loader = {
+      test: /\.vue?$/,
+      loader: 'vue'
     }
     loaders.push(loader);
   }

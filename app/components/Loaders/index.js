@@ -10,6 +10,7 @@ import RawConfig from './RawConfig';
 import JsonConfig from './JsonConfig';
 import JadeConfig from './JadeConfig';
 import HandlebarsConfig from './HandlebarsConfig';
+import VueConfig from './VueConfig';
 
 const loaders = {
   babel: BabelConfig,
@@ -19,7 +20,8 @@ const loaders = {
   raw: RawConfig,
   json: JsonConfig,
   jade: JadeConfig,
-  handlebars: HandlebarsConfig
+  handlebars: HandlebarsConfig,
+  vue: VueConfig
 };
 
 @Cerebral({

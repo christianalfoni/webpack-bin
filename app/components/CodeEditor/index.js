@@ -104,6 +104,8 @@ class CodeEditor extends React.Component {
         return 'text/x-sass';
       case 'html':
         return 'htmlmixed';
+      case 'vue':
+        return 'htmlmixed';
       case 'json':
         return 'application/json';
       case 'jade':

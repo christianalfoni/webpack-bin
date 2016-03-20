@@ -56,7 +56,10 @@ preLoadPackages([
   'jade',
   'jade-loader',
   'handlebars',
-  'handlebars-loader'
+  'handlebars-loader',
+  'vue-loader',
+  'vue-html-loader',
+  'babel-plugin-transform-runtime'
 ]);
 
 // Init

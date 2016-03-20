@@ -47,11 +47,17 @@ module.exports = function (loaders) {
     }
 
     if (loader === 'jade') {
+      depLoaders['jade'] = '1.11.0';
       depLoaders['jade-loader'] = '0.8.0';
     }
 
     if (loader === 'handlebars') {
+      depLoaders['handlebars'] = '4.0.5';
       depLoaders['handlebars-loader'] = '1.2.0';
+    }
+
+    if (loader === 'vue') {
+      depLoaders['vue-loader'] = '8.2.1';
     }
 
   }, {});

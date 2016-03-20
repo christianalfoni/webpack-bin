@@ -47,6 +47,10 @@ function setLoadersByFilename({state, input}) {
   if (ext === 'handlebars' && !state.get('bin.currentBin.loaders.handlebars')) {
     state.set('bin.currentBin.loaders.handlebars', {});
   }
+
+  if (ext === 'vue' && !state.get('bin.currentBin.loaders.vue')) {
+    state.set('bin.currentBin.loaders.vue', {});
+  }
 }
 
 export default setLoadersByFilename;
