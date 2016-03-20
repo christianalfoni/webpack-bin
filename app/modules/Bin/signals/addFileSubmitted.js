@@ -5,6 +5,7 @@ import selectLastFile from '../actions/selectLastFile';
 import shouldLint from '../actions/shouldLint';
 import set from 'cerebral-addons/set';
 import when from 'cerebral-addons/when';
+import runBin from '../factories/runBin';
 
 export default [
   addFile,
@@ -20,5 +21,6 @@ export default [
   set('state:/bin.newFileName', ''),
   set('state:/bin.showAddFileInput', false),
   set('state:/bin.isEntry', false),
-  shouldLint
+  shouldLint,
+  ...runBin
 ];
