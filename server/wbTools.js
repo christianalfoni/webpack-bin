@@ -3,7 +3,7 @@
     window.parent.postMessage({type: "loaded"}, location.origin.replace('sandbox', 'www'));
   });
 
-  document.addEventListener('click', () => {
+  document.addEventListener('click', function () {
     window.parent.postMessage({type: "click"}, location.origin.replace('sandbox', 'www'));
   });
 
