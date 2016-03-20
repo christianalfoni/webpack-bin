@@ -29,7 +29,8 @@ import hasEntry from '../../computed/hasEntry';
   currentBin: 'bin.currentBin',
   highlightCreateIssue: 'bin.highlightCreateIssue',
   isEntry: 'bin.isEntry',
-  hasEntry: hasEntry
+  hasEntry: hasEntry,
+  changedFiles: 'bin.changedFiles'
 })
 class Toolbar extends React.Component {
   static propTypes = {
@@ -54,6 +55,12 @@ class Toolbar extends React.Component {
               {
                 file.isEntry ?
                   <span className={styles.entryIndication}>entry</span>
+                :
+                  null
+              }
+              {
+                this.props.changedFiles.indexOf(index) >= 0 ?
+                  <i className={styles.isChanged}/>
                 :
                   null
               }

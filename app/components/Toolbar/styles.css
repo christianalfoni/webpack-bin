@@ -165,3 +165,14 @@
   font-size: 10px;
   color: rgba(255,255,255,0.5);
 }
+
+.isChanged {
+  background-color: #eb1e64;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  width: 5px;
+  height: 5px;
+  margin-top: -2.5px;
+}

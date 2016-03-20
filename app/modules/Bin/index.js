@@ -77,7 +77,8 @@ export default (options = {}) => {
       currentLoader: 'babel',
       forceUpdateCode: false,
       vimMode: false,
-      highlightCreateIssue: false
+      highlightCreateIssue: false,
+      changedFiles: []
     });
 
     module.addSignals({

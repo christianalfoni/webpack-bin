@@ -1,6 +1,7 @@
 import set from 'cerebral-addons/set';
 import changeCode from '../actions/changeCode';
 import isLintable from '../actions/isLintable';
+import setChangedFile from '../actions/setChangedFile';
 
 export default [
   set('state:/bin.hasSaved', false),
@@ -11,5 +12,6 @@ export default [
     ],
     false: []
   },
-  changeCode
+  changeCode,
+  setChangedFile
 ];
