@@ -4,6 +4,7 @@ var fs = require('fs');
 var path = require('path');
 var mime = require('mime');
 var createLoaders = require('./createLoaders');
+var loadersToDependencies = require('./loadersToDependencies');
 
 var defaultFiles = {
   'webpack.config.js': fs.readFileSync(path.resolve('server', 'zip', 'webpack.config.js')).toString(),
@@ -23,11 +24,11 @@ module.exports = function (req, res) {
           "start": "webpack-dev-server --content-base build/"
         },
         "dependencies": bin.packages,
-        "devDependencies": {
+        "devDependencies": Object.assign({
           "html-webpack-plugin": "1.6.1",
           "webpack-dev-server": "1.14.1",
           "webpack": "1.12.13"
-        },
+        }, loadersToDependencies(bin.loaders)),
         "author": "WebpackBin",
         "license": "ISC"
       };
