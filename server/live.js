@@ -109,7 +109,7 @@ module.exports = {
           Object.keys(channels[session.currentBin.id].clients).forEach(function (client) {
             channels[session.currentBin.id].clients[client].ping()
           })
-        }, 60000)
+        }, 20000)
       }
       client.send(JSON.stringify({
         type: 'created'
