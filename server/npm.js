@@ -12,6 +12,7 @@ module.exports = {
         uri: utils.isProduction() ? 'http://npm-extractor.herokuapp.com/extract' : 'http://localhost:5000/extract',
         method: 'POST',
         json: true,
+        timeout: 1000 * 60 * 5,
         body: {
           packages: packages
         }
