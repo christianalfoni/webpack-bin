@@ -62,7 +62,7 @@ module.exports = {
       res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
       res.setHeader('Expires', '-1');
       res.setHeader('Pragma', 'no-cache');
-      var fileName = path.basename(req.url);
+      var fileName = path.basename(req.url) === utils.getEntry(sessions.get(req.session.currentBin.author).files) ? 'webpackbin_bundle.js' : path.basename(req.url);
       var filePath = '/api/sandbox/' + req.session.currentBin.author + '/' + fileName;
       if (!memoryFs.fs.existsSync(filePath)) {
         return res.sendStatus(404);
