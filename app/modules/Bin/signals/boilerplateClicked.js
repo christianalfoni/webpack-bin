@@ -8,7 +8,6 @@ import showSnackbar from '../factories/showSnackbar';
 import canControlBin from '../../Live/actions/canControlBin';
 
 export default [
-  set('state:/bin.hasChangedPackages', true),
   ...hidePopups,
   getBoilerplate, {
     success: [

@@ -70,7 +70,8 @@ class Npm extends React.Component {
               placeholder="Type name of package..."
               disabled={this.props.isGettingPackage}
               onChange={(e) => this.props.signals.npm.packageNameQueryChanged({query: e.target.value})}
-              value={this.props.packageNameQuery}/>
+              value={this.props.packageNameQuery}
+              autoFocus/>
           </form>
           <div className={styles.bundleInfo}>You can assign specific version with "@", ex. "react@0.14.7"</div>
           {

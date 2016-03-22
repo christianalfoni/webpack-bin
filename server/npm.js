@@ -6,13 +6,54 @@ var request = require('request');
 var db = require('./database');
 
 module.exports = {
+  checkBundle: function (req, res) {
+    return new Promise(function (resolve, reject) {
+      request({
+        uri: utils.isProduction() ? 'http://npm-extractor.herokuapp.com/queue/' + req.params.id : 'http://localhost:5000/queue/' + req.params.id,
+        method: 'GET',
+        json: true
+      }, function (err, response) {
+        if (err) {
+          return reject(err);
+        }
+        resolve(response.body);
+      })
+    })
+    .then(function (bundle) {
+      if (bundle.isDone) {
+        return db.saveVendorsBundle(bundle)
+          .then(db.uploadVendorsBundle)
+          .then(db.getVendorsBundle(utils.getVendorsBundleName(req.body.packages)))
+          .then(function (bundle) {
+            memoryFs.writeBundleManifest(bundle);
+            return db.loadVendorsBundle(bundle);
+          })
+          .then(function () {
+            res.send({
+              id: bundle.id,
+              isDone: bundle.isDone
+            });
+          });
+      } else {
+        res.send({
+          id: bundle.id,
+          isDone: bundle.isDone
+        });
+      }
+    })
+    .catch(function (err) {
+      res.status(500).send({
+        message: err.message
+      });
+      throw err;
+    });
+  },
   loadPackages: function (packages) {
     return new Promise(function (resolve, reject) {
       request({
         uri: utils.isProduction() ? 'http://npm-extractor.herokuapp.com/extract' : 'http://localhost:5000/extract',
         method: 'POST',
         json: true,
-        timeout: 1000 * 60 * 5,
         body: {
           packages: packages
         }
@@ -23,8 +64,8 @@ module.exports = {
           }
           return reject(err);
         }
-        if (response.body.isRunning) {
-          throw new Error('PACKAGE_EXTRACTOR_RUNNING');
+        if (response.body.inProgress) { // Maybe start polling here instead
+          return reject(new Error('PACKAGE_EXTRACTOR_RUNNING'));
         }
         resolve(response.body);
       })

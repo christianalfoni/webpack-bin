@@ -116,6 +116,7 @@ app.get('/api/bundles', database.searchBundles);
 app.get('/api/boilerplates/:id', bins.getBoilerplate);
 app.get('/api/project.zip', zip);
 app.post('/api/sandbox', sandbox.updateSandbox);
+app.get('/api/npm/:id', npm.checkBundle);
 
 app.get('/subdomain/sandbox/', sandbox.getIndex);
 app.get('/subdomain/sandbox/*', sandbox.getFile)

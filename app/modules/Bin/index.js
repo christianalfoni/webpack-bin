@@ -27,7 +27,6 @@ import vimModeClicked from './signals/vimModeClicked';
 import fileDeleteClicked from './signals/fileDeleteClicked';
 import fileDeleted from './signals/fileDeleted';
 import fileDeleteAborted from './signals/fileDeleteAborted';
-import loadingTimeoutReached from './signals/loadingTimeoutReached';
 import hideSnackbar from './actions/hideSnackbar.js';
 import logValueToggled from './signals/logValueToggled';
 import logPathSelected from './signals/logPathSelected';
@@ -66,7 +65,6 @@ export default (options = {}) => {
       lastLintedFileIndex: 0,
       isValid: true,
       isRunning: false,
-      hasChangedPackages: false,
 
       showAddFileInput: false,
       newFileName: '',
@@ -91,7 +89,8 @@ export default (options = {}) => {
       highlightCreateIssue: false,
       changedFiles: [],
       fileToDeleteIndex: 0,
-      showDeleteFileModal: false
+      showDeleteFileModal: false,
+      isFetchingVendorsBundle: false
     });
 
     module.addSignals({
@@ -126,7 +125,6 @@ export default (options = {}) => {
       vimModeClicked,
       linterRequested,
       linterLoaded,
-      loadingTimeoutReached,
       rootRouted,
       linted,
       iframeLoaded,

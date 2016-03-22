@@ -132,15 +132,33 @@ module.exports = {
         .then(function (bundle) {
           if (bundle) {
             memoryFs.writeBundleManifest(bundle);
-            return db.loadVendorsBundle(bundle);
+            return db.loadVendorsBundle(bundle)
+              .then(sessionBundler.create(req.session))
+              .then(sessions.createBundleMiddleware(req.session))
+              .then(function () {
+                if (req.session.currentBin.id) {
+                  res.send({});
+                  db.updateBin(req);
+                } else {
+                  db.updateBin(req)
+                    .then(function (bin) {
+                      sessions.update(req.session.id, 'currentBin', {
+                        id: bin.id,
+                        isOwner: true
+                      });
+                      res.send(bin);
+                    })
+                    .catch(utils.logError)
+                }
+              })
+              .catch(utils.logError);
           } else {
             return npm.loadPackages(req.body.packages)
-              .then(db.saveVendorsBundle)
-              .then(db.uploadVendorsBundle)
-              .then(db.getVendorsBundle(utils.getVendorsBundleName(req.body.packages)))
               .then(function (bundle) {
-                memoryFs.writeBundleManifest(bundle);
-                return db.loadVendorsBundle(bundle);
+                res.send({
+                  isFetchingVendorsBundle: true,
+                  id: bundle.id
+                });
               })
               .catch(function (err) {
                 res.status(500).send({
@@ -149,26 +167,7 @@ module.exports = {
                 throw err;
               })
           }
-        })
-        .then(sessionBundler.create(req.session))
-        .then(sessions.createBundleMiddleware(req.session))
-        .then(function () {
-          if (req.session.currentBin.id) {
-            res.send({});
-            db.updateBin(req);
-          } else {
-            db.updateBin(req)
-              .then(function (bin) {
-                sessions.update(req.session.id, 'currentBin', {
-                  id: bin.id,
-                  isOwner: true
-                });
-                res.send(bin);
-              })
-              .catch(utils.logError)
-          }
-        })
-        .catch(utils.logError);
+        });
 
     } else if (
       !req.session.middleware &&
@@ -178,40 +177,40 @@ module.exports = {
       db.getVendorsBundleEntries(utils.getVendorsBundleName(req.body.packages))
         .then(function (bundle) {
           if (bundle) {
-            return bundle;
+            return sessionBundler.create(req.session)(bundle)
+              .then(sessions.createBundleMiddleware(req.session))
+              .then(function () {
+                if (req.session.currentBin.id) {
+                  res.send({});
+                  db.updateBin(req);
+                } else {
+                  db.updateBin(req)
+                    .then(function (bin) {
+                      sessions.update(req.session.id, 'currentBin', {
+                        id: bin.id,
+                        isOwner: true
+                      });
+                      res.send(bin);
+                    });
+                }
+              })
+              .catch(utils.logError);
           } else {
             return npm.loadPackages(req.body.packages)
-              .then(db.saveVendorsBundle)
-              .then(db.uploadVendorsBundle)
-              .then(db.getVendorsBundle(utils.getVendorsBundleName(req.body.packages)))
               .then(function (bundle) {
-                memoryFs.writeBundleManifest(bundle);
-                return db.loadVendorsBundle(bundle);
+                res.send({
+                  isFetchingVendorsBundle: true,
+                  id: bundle.id
+                });
               })
               .catch(function (err) {
-                res.sendStatus(500);
+                res.status(500).send({
+                  message: err.message
+                });
                 throw err;
               });
           }
-        })
-        .then(sessionBundler.create(req.session))
-        .then(sessions.createBundleMiddleware(req.session))
-        .then(function () {
-          if (req.session.currentBin.id) {
-            res.send({});
-            db.updateBin(req);
-          } else {
-            db.updateBin(req)
-              .then(function (bin) {
-                sessions.update(req.session.id, 'currentBin', {
-                  id: bin.id,
-                  isOwner: true
-                });
-                res.send(bin);
-              });
-          }
-        })
-        .catch(utils.logError);
+        });
 
     } else if (
       !req.session.middleware ||

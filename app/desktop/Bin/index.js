@@ -9,25 +9,19 @@ import LiveUsers from '../LiveUsers';
 import LiveUser from '../LiveUser';
 import Welcome from '../Welcome';
 import DeleteFileModal from '../DeleteFileModal';
+import Snackbar from '../Snackbar';
 
 @Cerebral({
-  snackbar: 'bin.snackbar',
   isRunning: 'bin.isRunning',
-  isLoadingBin: 'bin.isLoadingBin',
   showLog: 'bin.showLog',
   showLoadingBin: 'bin.showLoadingBin',
   live: 'live',
   showWelcome: 'bin.showWelcome',
   isInitialized: 'bin.isInitialized',
-  showDeleteFileModal: 'bin.showDeleteFileModal'
+  showDeleteFileModal: 'bin.showDeleteFileModal',
+  isFetchingVendorsBundle: 'bin.isFetchingVendorsBundle'
 })
 class Bin extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showSnackbar: false
-    };
-  }
   componentDidMount() {
     if (this.props.isInitialized) {
       document.querySelector('#loader').style.display = 'none';
@@ -43,37 +37,6 @@ class Bin extends React.Component {
     if (!prevProps.isInitialized && this.props.isInitialized) {
       document.querySelector('#loader').style.display = 'none';
     }
-    if (!prevProps.isLoadingBin && this.props.isLoadingBin) {
-      this.setLoaderTimeout();
-    } else if (prevProps.isLoadingBin && !this.props.isLoadingBin) {
-      clearTimeout(this.loaderTimeout);
-    }
-
-    if (!prevProps.snackbar.show && this.props.snackbar.show) {
-      this.setSnackbarTimeout();
-      this.setState({
-        showSnackbar: true
-      });
-      return;
-    }
-
-    if (this.props.snackbar.show && prevProps.snackbar.text !== this.props.snackbar.text) {
-      this.setSnackbarTimeout();
-    }
-  }
-  setLoaderTimeout() {
-    this.loaderTimeout = setTimeout(() => {
-      this.props.signals.bin.loadingTimeoutReached();
-    }, 500);
-  }
-  setSnackbarTimeout() {
-    clearTimeout(this.snackbarTimeout);
-    this.snackbarTimeout = setTimeout(() => {
-      this.props.signals.snackbarTimedOut();
-      this.setState({
-        showSnackbar: false
-      });
-    }, 4000);
   }
   render() {
 
@@ -88,7 +51,7 @@ class Bin extends React.Component {
     return (
       <div onClick={() => this.props.signals.bin.appClicked()}>
         <Toolbar/>
-        <div className={this.props.showLoadingBin ? styles.wrapperFaded : styles.wrapper}>
+        <div className={styles.wrapper}>
           <CodeEditor/>
           <div className={styles.previewAndLog}>
             <Preview/>
@@ -114,16 +77,22 @@ class Bin extends React.Component {
         </div>
         {
           this.props.showLoadingBin ?
-            <div className={styles.loaderWrapper}>
-              <div className={styles.logo}/>
-              Loading your WebpackBin...
+            <div className={styles.overlayWrapper}>
+              <div className={styles.overlay}/>
+              <div className={styles.loaderWrapper}>
+                <div className={styles.logo}/>
+                {
+                  this.props.isFetchingVendorsBundle ?
+                    'You are the first to grab these NPM packages, it will take a few seconds...'
+                  :
+                    'Loading your WebpackBin...'
+                }
+              </div>
             </div>
           :
             null
         }
-        <div className={this.state.showSnackbar ? styles.snackbarVisible : styles.snackbar}>
-          {this.props.snackbar.text}
-        </div>
+        <Snackbar/>
         {
           this.props.showDeleteFileModal ?
             <DeleteFileModal/>
