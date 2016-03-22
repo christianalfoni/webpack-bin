@@ -6,7 +6,11 @@ function setWelcomeBin({state}) {
       raw: {}
     },
     files: [{
+      name: 'index.html',
+      content: '<!DOCTYPE html>\n<html>\n  <head>\n    <meta charset=\"utf-8\"/>\n  </head>\n  <body>\n    <div id=\"app\"></div>\n    <script src=\"main.js\"></script>\n  </body>\n</html>'
+    }, {
       name: 'main.js',
+      isEntry: true,
       content: [
         '// Just require css files to load them',
         'require(\'./styles.css\');',
