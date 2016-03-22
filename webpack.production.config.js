@@ -4,7 +4,7 @@ module.exports = {
   entry: path.resolve('app', 'main.js'),
   output: {
     path: path.resolve('public'),
-    filename: 'client_build.js',
+    filename: 'client_bundle.js',
     publicPath: '/'
   },
   resolve: {
