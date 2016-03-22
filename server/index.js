@@ -59,6 +59,7 @@ preLoadPackages([
   'handlebars-loader',
   'vue-loader',
   'vue-html-loader',
+  'vue-style-loader',
   'babel-plugin-transform-runtime'
 ]);
 
