@@ -74,6 +74,15 @@ export default (options = {}) => {
       showInfo: false,
       showPackagesSelector: false,
       showBoilerplatesSelector: false,
+      boilerplates: {
+        'react': 'React',
+        'cerebral': 'Cerebral',
+        'redux': 'Redux',
+        'cycle': 'Cycle JS',
+        'vue': 'Vue JS',
+        'angular': 'Angular',
+        'angular2': 'Angular2'
+      },
       showLog: false,
       showFullLog: true,
       currentLoader: 'babel',

@@ -1,0 +1,91 @@
+.string span:nth-of-type(2) {
+  color: #dc6428;
+}
+
+.number span:nth-of-type(2) {
+  color: #1e78c3;
+}
+
+.boolean span:nth-of-type(2) {
+  color: #1e78c3;
+}
+
+.null span:nth-of-type(2) {
+  color: #1e78c3;
+}
+
+.undefined span:nth-of-type(2) {
+  color: #1e78c3;
+}
+
+.highlight {
+  background-color: rgba(255,255,255,0.1);
+  border: 1px solid #eb1e64;
+  padding: 3px;
+  margin: 3px;
+  border-radius: 3px;
+}
+
+.object {
+  cursor: pointer;
+  flex: 1;
+  color: #cadaed;
+}
+
+.highlightObject {
+  composes: object;
+  composes: highlight;
+}
+
+.objectProperty {
+  display: flex;
+  padding-left: 10px;
+}
+
+.objectPropertyKey {
+  flex: 0 0 auto;
+  padding-right: 5px;
+}
+
+.objectPropertyValue {
+  flex: 4;
+}
+
+.array {
+  cursor: pointer;
+  flex: 1;
+  color: #cadaed;
+}
+
+.highlightArray {
+  composes: array;
+  composes: highlight;
+}
+
+.arrayItem {
+  padding-left: 10px;
+}
+
+.highlightValue {
+  composes: highlight;
+}
+
+.highlightFunction {
+  composes: highlight;
+}
+
+.error {
+  color: #eb1e64;
+}
+
+.functionKeyword {
+  color: #1e78c3;
+}
+
+.functionName {
+  color: rgba(255,255,255,0.5);
+}
+
+.circular {
+  color: #872841;
+}

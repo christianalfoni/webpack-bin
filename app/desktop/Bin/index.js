@@ -29,6 +29,9 @@ class Bin extends React.Component {
     };
   }
   componentDidMount() {
+    if (this.props.isInitialized) {
+      document.querySelector('#loader').style.display = 'none';
+    }
     window.addEventListener('keydown', (event) => {
       if ((event.metaKey || event.ctrlKey) && event.keyCode === 83) {
         event.preventDefault();

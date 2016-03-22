@@ -1,0 +1,40 @@
+.wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  height: 150px;
+  margin-left: -250px;
+  margin-top: -75px;
+  text-align: center;
+  display: flex;
+}
+
+.column {
+  flex: 1;
+}
+
+.wrapper h1 {
+  font-size: 1.5em;
+  margin-bottom: 0;
+}
+
+.button {
+  display: inline-block;
+  width: 200px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  background-color: #eb1e64;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 20px 10px;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
+
+.wrapper iframe {
+  border: 2px solid #111;
+}

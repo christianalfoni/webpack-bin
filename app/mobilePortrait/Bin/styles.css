@@ -1,0 +1,36 @@
+.wrapper {
+  height: 100%;
+  text-align: center;
+  padding: 20px;
+}
+
+.wrapper h1 {
+  font-size: 2em;
+  margin-bottom: 0;
+}
+
+.wrapper h3 {
+  color: rgba(255,255,255,0.5);
+  font-size: 1em;
+}
+
+.button {
+  display: inline-block;
+  width: 200px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  background-color: #eb1e64;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 10px;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
+
+.wrapper iframe {
+  margin-top: 40px;
+  border: 2px solid #111;
+}

@@ -22,5 +22,6 @@ export default [
   set('state:/bin.showAddFileInput', false),
   set('state:/bin.isEntry', false),
   shouldLint,
+  set('state:/mobile.showPreview', false),
   ...runBin
 ];

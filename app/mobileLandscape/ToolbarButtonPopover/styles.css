@@ -1,0 +1,81 @@
+.wrapper {
+  height: 100%;
+  float: left;
+  position: relative;
+}
+
+.wrapperRight {
+  composes: wrapper;
+  float: right;
+}
+
+.popup {
+  position: relative;
+  left: 0;
+  width: 42px;
+}
+
+.arrowBox {
+  position: absolute;
+  top: 42px;
+  margin-left: -25px;
+  z-index: 10;
+}
+
+.arrowBox:before, .arrowBox:after {
+  content: " ";
+  bottom: 100%;
+  left: 65px;
+  border: 10px solid rgba(0, 0, 0, 0);
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  margin-left: -30px;
+}
+
+.arrowBox:before {
+  border-bottom-color: #333;
+}
+
+.arrowBox:after {
+  border-bottom-color: #28374c;
+}
+
+.arrowBoxMiddle {
+  composes: arrowBox;
+  right: -340px;
+}
+
+.arrowBoxMiddle:before, .arrowBoxMiddle:after {
+  right: 350px;
+  margin-left: 0;
+  left: auto;
+}
+
+.arrowBoxRight {
+  composes: arrowBox;
+  right: -15px;
+}
+
+.arrowBoxRight:before, .arrowBoxRight:after {
+  right: 26px;
+  margin-left: 0;
+  left: auto;
+}
+
+.contentBox {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  overflow-y: scroll;
+  height: calc(100% - 52px);
+  -webkit-overflow-scrolling: touch;
+  border-radius: 2px;
+  background-color: #28374c;
+  padding: 8px 0;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.24) 0px 1px 4px;
+  font-family: Ubuntu, sans-serif;
+  min-height: 10px;
+  min-width: 100px;
+}

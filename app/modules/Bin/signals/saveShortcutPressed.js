@@ -10,8 +10,10 @@ export default [
     isFalse: [
       set('state:/bin.logs', []),
       set('state:/bin.selectedLogPath', []),
+      set('state:/bin.changedFiles', []),
       when('state:/live.hasJoined'), {
         isTrue: [
+          set('state:/mobile.showPreview', true),
           set('state:/bin.isRunning', true)
         ],
         isFalse: [

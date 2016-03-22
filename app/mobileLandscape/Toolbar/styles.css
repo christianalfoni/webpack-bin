@@ -1,0 +1,168 @@
+.wrapper {
+  width: 100%;
+  background-color: #202634;
+}
+
+.row {
+  border-bottom: 2px solid #232e3c;
+  min-height: 50px;
+}
+
+.file {
+  position: relative;
+  display: inline-block;
+  padding: 15px 30px;
+  cursor: pointer;
+}
+
+.files {
+  display: inline-block;
+  white-space: nowrap;
+  overflow-x: scroll;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+.file:not(:first-child):hover i {
+  display: block;
+}
+
+.active {
+  border-bottom: 2px solid #eb1e64;
+}
+
+.status {
+  float: left;
+  text-indent: 10px;
+  line-height: 48px;
+  color: rgba(255,255,255,0.5);
+}
+
+.buttonWrapper {
+  float: left;
+  margin-top: 9px;
+}
+
+.packagesButton {
+  float: left;
+  margin-top: 9px;
+}
+
+.info {
+  width: 300px;
+  padding: 0 20px;
+}
+
+.info h3 {
+  color: rgba(255,255,255, 0.5);
+}
+
+.info p {
+  line-height: 20px;
+}
+
+.deleteFile {
+  position: absolute;
+  font-style: normal;
+  font-size: 14px;
+  right: 5px;
+  display: none;
+  top: 5px;
+  font-weight: bold;
+  color: rgba(255,255,255,0.5);
+}
+
+.deleteFile:hover {
+  color: rgba(255,255,255,1);
+}
+
+.link {
+  display: block;
+  background-color: rgba(0,0,0,0.15);
+  border-radius: 3px;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 5px;
+  text-decoration: none;
+}
+
+.link i {
+  margin-right: 5px;
+}
+
+.link:hover {
+  background-color: rgba(0,0,0,0.1);
+  color: rgba(255,255,255,1);
+}
+
+.logo {
+  float: left;
+  width: 40px;
+  height: 50px;
+  background-image: url('/logo.png');
+  background-size: auto 50px;
+  background-position: 0 -2px;
+}
+
+.version {
+  position: relative;
+  float: left;
+  width: 50px;
+  height: 50px;
+}
+
+.versionText {
+  position: absolute;
+  left: 0;
+  bottom: 8px;
+  opacity: 0.5;
+}
+
+.highlightLink {
+  composes: link;
+  background-color: #eb1e64;
+  color: #fff;
+  animation: highlight 0.5s infinite;
+  -webkit-animation: highlight 0.5s infinite;
+  opacity: 1;
+}
+
+.highlightLink:hover {
+  background-color: #eb1e64;
+  color: #fff;
+}
+
+@keyframes highlight {
+  0%   {opacity: 1;}
+  50%  {opacity: 0.8;}
+  100% {opacity: 1;}
+}
+
+@-webkit-keyframes highlight {
+  0%   {opacity: 1;}
+  50%  {opacity: 0.8;}
+  100% {opacity: 1;}
+}
+
+.entryIndication {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  bottom: 3px;
+  font-size: 10px;
+  color: rgba(255,255,255,0.5);
+}
+
+.isChanged {
+  background-color: #eb1e64;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  width: 5px;
+  height: 5px;
+  margin-top: -2.5px;
+}

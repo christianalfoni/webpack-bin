@@ -13,5 +13,6 @@ export default [
     false: []
   },
   changeCode,
-  setChangedFile
+  setChangedFile,
+  set('state:/mobile.showPreview', false)
 ];

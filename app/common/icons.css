@@ -142,8 +142,8 @@
 	content: "\e253";
 }
 
-.scene {composes: font;}
-.scene:before {
+.preview {composes: font;}
+.preview:before {
 	content: "\e12e";
 }
 

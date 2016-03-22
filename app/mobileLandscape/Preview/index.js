@@ -15,18 +15,22 @@ class Preview extends React.Component {
   }
   componentDidUpdate(prevProps) {
     if (!this.props.isLoadingIframe && prevProps.isRunning && !this.props.isRunning) {
-      this.refs.iframe.src =  [
-        location.protocol,
-        '//',
-        location.hostname.replace('www', 'sandbox'),
-        (location.port ? ':' + location.port : ''),
-        '/'
-      ].join('');
-      this.props.signals.bin.iframeLoading();
+      this.refreshIframe();
     }
   }
   componentDidMount() {
     window.addEventListener('message', this.onIframeMessage);
+    this.refreshIframe();
+  }
+  refreshIframe() {
+    this.refs.iframe.src =  [
+      location.protocol,
+      '//',
+      location.hostname.replace('www', 'sandbox'),
+      (location.port ? ':' + location.port : ''),
+      '/'
+    ].join('');
+    this.props.signals.bin.iframeLoading();
   }
   onIframeMessage(event) {
     if (event.data.type === 'loaded') {

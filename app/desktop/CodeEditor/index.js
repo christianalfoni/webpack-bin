@@ -10,7 +10,7 @@ import 'codemirror/keymap/vim.js';
 import styles from './styles.css';
 import canControl from '../../computed/canControl';
 
-const loadedLinters = ['js'];
+const loadedModes = ['js'];
 
 @Cerebral({
   selectedFileIndex: 'bin.selectedFileIndex',
@@ -123,7 +123,7 @@ class CodeEditor extends React.Component {
     if (mode === 'jsx') {
 
       const setJsxModeAndLinter = function () {
-        loadedLinters.push(mode);
+        loadedModes.push(mode);
         require('codemirror/mode/jsx/jsx.js');
         const eslint = require('./linters/jsx');
         const linter = require('./js-lint.js');
@@ -135,9 +135,8 @@ class CodeEditor extends React.Component {
         this.setEditorValue(this.codemirror.getValue());
       }.bind(this);
 
-      if (loadedLinters.indexOf(mode) >= 0) {
-        setJsxModeAndLinter();
-        return this.codemirror.setOption('mode', mode);
+      if (loadedModes.indexOf(mode) >= 0) {
+        return setJsxModeAndLinter();
       } else {
         this.props.signals.bin.linterRequested();
         return require.ensure([], () => {
@@ -151,7 +150,7 @@ class CodeEditor extends React.Component {
     if (mode === 'css') {
 
       const setCssModeAndLinter = function () {
-        loadedLinters.push(mode);
+        loadedModes.push(mode);
         require('codemirror/mode/css/css.js');
         const lintExport = require('./linters/css.js');
         window.CSSLint = lintExport.CSSLint;
@@ -163,9 +162,8 @@ class CodeEditor extends React.Component {
         this.setEditorValue(this.codemirror.getValue());
       }.bind(this);
 
-      if (loadedLinters.indexOf(mode) >= 0) {
-        setCssModeAndLinter();
-        return this.codemirror.setOption('mode', mode);
+      if (loadedModes.indexOf(mode) >= 0) {
+        return setCssModeAndLinter();
       } else {
         this.props.signals.bin.linterRequested();
         return require.ensure([], () => {
@@ -179,16 +177,15 @@ class CodeEditor extends React.Component {
     if (mode === 'text/typescript') {
 
       const setTypescriptModeAndLinter = function () {
-        loadedLinters.push(mode);
+        loadedModes.push(mode);
         require('codemirror/mode/javascript/javascript.js');
         this.codemirror.setOption('lint', false);
         this.codemirror.setOption('mode', mode);
         this.setEditorValue(this.codemirror.getValue());
       }.bind(this);
 
-      if (loadedLinters.indexOf(mode) >= 0) {
-        setTypescriptModeAndLinter();
-        return this.codemirror.setOption('mode', mode);
+      if (loadedModes.indexOf(mode) >= 0) {
+        return setTypescriptModeAndLinter();
       } else {
         this.props.signals.bin.linterRequested({noLint: true});
         return require.ensure([], () => {
@@ -199,10 +196,10 @@ class CodeEditor extends React.Component {
 
     }
 
-    if (mode === 'text/x-coffeescript' && loadedLinters.indexOf(mode) === -1) {
+    if (mode === 'text/x-coffeescript') {
 
       const setCoffeeModeAndLinter = function () {
-        loadedLinters.push(mode);
+        loadedModes.push(mode);
         require('codemirror/mode/coffeescript/coffeescript.js');
         window.CoffeeScript = require('./coffee-script');
         const coffeeLint = require('coffeelint');
@@ -213,12 +210,10 @@ class CodeEditor extends React.Component {
         });
         this.codemirror.setOption('mode', mode);
         this.setEditorValue(this.codemirror.getValue());
-        this.props.signals.bin.linterLoaded();
       }.bind(this);
 
-      if (loadedLinters.indexOf(mode) >= 0) {
-        setCoffeeModeAndLinter();
-        return this.codemirror.setOption('mode', mode);
+      if (loadedModes.indexOf(mode) >= 0) {
+        return setCoffeeModeAndLinter();
       } else {
         this.props.signals.bin.linterRequested();
         return require.ensure([], () => {
@@ -231,16 +226,15 @@ class CodeEditor extends React.Component {
 
     if (mode === 'text/x-less') {
       const setLessModeAndLinter = function () {
-        loadedLinters.push(mode);
+        loadedModes.push(mode);
         require('codemirror/mode/css/css.js');
         this.codemirror.setOption('lint', false);
         this.codemirror.setOption('mode', mode);
         this.setEditorValue(this.codemirror.getValue());
       }.bind(this);
 
-      if (loadedLinters.indexOf(mode) >= 0) {
-        setLessModeAndLinter();
-        return this.codemirror.setOption('mode', mode);
+      if (loadedModes.indexOf(mode) >= 0) {
+        return setLessModeAndLinter();
       } else {
         this.props.signals.bin.linterRequested({noLint: true});
         return require.ensure([], () => {
@@ -249,22 +243,20 @@ class CodeEditor extends React.Component {
         });
       }
 
-      return this.codemirror.setOption('mode', mode);
     }
 
     if (mode === 'text/x-sass') {
 
       const setSassModeAndLinter = function () {
-        loadedLinters.push(mode);
+        loadedModes.push(mode);
         require('codemirror/mode/sass/sass.js');
         this.codemirror.setOption('lint', false);
         this.codemirror.setOption('mode', mode);
         this.setEditorValue(this.codemirror.getValue());
       }.bind(this);
 
-      if (loadedLinters.indexOf(mode) >= 0) {
-        setSassModeAndLinter();
-        return this.codemirror.setOption('mode', mode);
+      if (loadedModes.indexOf(mode) >= 0) {
+        return setSassModeAndLinter();
       } else {
         this.props.signals.bin.linterRequested({noLint: true});
         return require.ensure([], () => {
@@ -278,7 +270,7 @@ class CodeEditor extends React.Component {
     if (mode === 'htmlmixed') {
 
       const setHtmlModeAndLinter = function () {
-        loadedLinters.push(mode);
+        loadedModes.push(mode);
         require('codemirror/mode/htmlmixed/htmlmixed.js');
         require('codemirror/addon/edit/matchtags.js');
         require('codemirror/addon/edit/closetag.js');
@@ -292,9 +284,8 @@ class CodeEditor extends React.Component {
         this.setEditorValue(this.codemirror.getValue());
       }.bind(this);
 
-      if (loadedLinters.indexOf(mode) >= 0) {
-        setHtmlModeAndLinter();
-        return this.codemirror.setOption('mode', mode);
+      if (loadedModes.indexOf(mode) >= 0) {
+        return setHtmlModeAndLinter();
       } else {
         this.props.signals.bin.linterRequested();
         return require.ensure([], () => {
@@ -308,7 +299,7 @@ class CodeEditor extends React.Component {
     if (mode === 'application/json') {
 
       const setJsonModeAndLinter = function () {
-        loadedLinters.push(mode);
+        loadedModes.push(mode);
         require('codemirror/mode/javascript/javascript.js');
         const jsonLint = require('./linters/json.js');
         const linter = require('./json-lint.js');
@@ -320,9 +311,8 @@ class CodeEditor extends React.Component {
         this.setEditorValue(this.codemirror.getValue());
       }.bind(this);
 
-      if (loadedLinters.indexOf(mode) >= 0) {
-        setJsonModeAndLinter();
-        return this.codemirror.setOption('mode', mode);
+      if (loadedModes.indexOf(mode) >= 0) {
+        return setJsonModeAndLinter();
       } else {
         this.props.signals.bin.linterRequested();
         return require.ensure([], () => {
@@ -336,15 +326,15 @@ class CodeEditor extends React.Component {
     if (mode.name === 'jade') {
 
       const setJadeMode = function () {
+        loadedModes.push(mode);
         require('codemirror/mode/jade/jade.js');
         this.codemirror.setOption('lint', false);
         this.codemirror.setOption('mode', mode);
         this.setEditorValue(this.codemirror.getValue());
       }.bind(this);
 
-      if (loadedLinters.indexOf(mode) >= 0) {
-        setJadeMode();
-        return this.codemirror.setOption('mode', mode);
+      if (loadedModes.indexOf(mode) >= 0) {
+        return setJadeMode();
       } else {
         this.props.signals.bin.linterRequested({noLint: true});
         return require.ensure([], () => {
@@ -358,15 +348,15 @@ class CodeEditor extends React.Component {
     if (mode.name === 'handlebars') {
 
       const setHandlebarsMode = function () {
+        loadedModes.push(mode);
         require('codemirror/mode/handlebars/handlebars.js');
         this.codemirror.setOption('lint', false);
         this.codemirror.setOption('mode', mode);
         this.setEditorValue(this.codemirror.getValue());
       }.bind(this);
 
-      if (loadedLinters.indexOf(mode) >= 0) {
-        setHandlebarsMode();
-        return this.codemirror.setOption('mode', mode);
+      if (loadedModes.indexOf(mode) >= 0) {
+        return setHandlebarsMode();
       } else {
         this.props.signals.bin.linterRequested({noLint: true});
         return require.ensure([], () => {
