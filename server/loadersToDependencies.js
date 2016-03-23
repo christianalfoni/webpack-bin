@@ -60,5 +60,7 @@ module.exports = function (loaders) {
       depLoaders['vue-loader'] = '8.2.1';
     }
 
+    return depLoaders;
+
   }, {});
 };
