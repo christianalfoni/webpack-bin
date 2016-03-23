@@ -51,6 +51,8 @@ const renderApp = function () {
     return;
   }
 
+  currentApp = newApp;
+
   document.querySelector('#loader').style.display = 'block';
   ReactDOM.unmountComponentAtNode(document.getElementById('root'));
 

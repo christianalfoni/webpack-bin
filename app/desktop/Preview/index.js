@@ -20,7 +20,7 @@ class Preview extends React.Component {
     }
   }
   componentDidMount() {
-    window.addEventListener('message', this.onIframeMessage);
+    window.onmessage = this.onIframeMessage;
     if (this.props.currentBin.id) {
       this.refreshIframe();
     }
