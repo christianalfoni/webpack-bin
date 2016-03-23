@@ -41,6 +41,8 @@ export default (options = {}) => {
 
     module.addState({
       isInitialized: false,
+      introductionVideoUrl: 'http://www.youtube.com/watch?v=yf3Jhjw5Btc',
+      introductionVideoEmbedUrl: 'https://www.youtube.com/embed/yf3Jhjw5Btc',
       showWelcome: !Boolean(localStorage && localStorage.getItem('hasVisited')),
       snackbar: {
         text: '',

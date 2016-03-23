@@ -2,7 +2,9 @@ import React from 'react';
 import {Decorator as Cerebral} from 'cerebral-view-react';
 import styles from './styles.css';
 
-@Cerebral()
+@Cerebral({
+  introductionVideoEmbedUrl: 'bin.introductionVideoEmbedUrl'
+})
 class Welcome extends React.Component {
   render() {
     return (
@@ -18,7 +20,7 @@ class Welcome extends React.Component {
           </div>
         </div>
         <div className={styles.column}>
-          <iframe width="560" height="315" src="https://www.youtube.com/embed/LGaJwjVPh9I" frameBorder="0" allowFullScreen></iframe>
+          <iframe width="560" height="315" src={this.props.introductionVideoEmbedUrl} frameBorder="0" allowFullScreen></iframe>
         </div>
       </div>
     );

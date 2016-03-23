@@ -30,7 +30,8 @@ import hasEntry from '../../computed/hasEntry';
   highlightCreateIssue: 'bin.highlightCreateIssue',
   isEntry: 'bin.isEntry',
   hasEntry: hasEntry,
-  changedFiles: 'bin.changedFiles'
+  changedFiles: 'bin.changedFiles',
+  introductionVideoUrl: 'bin.introductionVideoUrl'
 })
 class Toolbar extends React.Component {
   static propTypes = {
@@ -155,7 +156,7 @@ class Toolbar extends React.Component {
                 show={this.props.showInfo}
                 right>
                 <div className={styles.info}>
-                  <div className={styles.link} onClick={() => {const win = window.open('http://www.youtube.com/watch?v=LGaJwjVPh9I');win.focus();}}>
+                  <div className={styles.link} onClick={() => {const win = window.open(this.props.introductionVideoUrl);win.focus();}}>
                     <i className={icons.movie}/> Watch an introduction
                   </div>
                   <div className={this.props.highlightCreateIssue ? styles.highlightLink : styles.link} onClick={() => {const win = window.open('https://github.com/christianalfoni/webpack-bin/issues');win.focus();}}>

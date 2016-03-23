@@ -4,7 +4,8 @@ import styles from './styles.css';
 
 @Cerebral({
   isInitialized: 'bin.isInitialized',
-  currentBin: 'bin.currentBin'
+  currentBin: 'bin.currentBin',
+  introductionVideoEmbedUrl: 'bin.introductionVideoEmbedUrl'
 })
 class Bin extends React.Component {
   componentDidMount() {
@@ -29,7 +30,7 @@ class Bin extends React.Component {
       <div>
         <h3>To start using WebpackBin you need to flip your phone into landscape</h3>
         <div>
-          <iframe width="250" height="147" src="https://www.youtube.com/embed/LGaJwjVPh9I" frameBorder="0" allowFullScreen></iframe>
+          <iframe width="250" height="147" src={this.props.introductionVideoEmbedUrl} frameBorder="0" allowFullScreen></iframe>
         </div>
       </div>
     );
