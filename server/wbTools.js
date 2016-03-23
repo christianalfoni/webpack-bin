@@ -4,7 +4,6 @@
   });
 
   document.addEventListener('click', function () {
-    console.log('fired click');
     window.parent.postMessage({type: "click"}, location.origin.replace('sandbox', 'www'));
   });
 
