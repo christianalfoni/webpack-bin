@@ -36,12 +36,12 @@ module.exports = {
                   return externals;
                 }
 
-                var basePath = path.dirname(entries[packageName].substr(1));
+                var basePath = path.dirname(entries[packageName].path.substr(1));
                 var fileName = path.basename(absolutePath);
                 var extension = path.extname(fileName);
                 var replacer = new RegExp('\/' + fileName + '$');
 
-                if (entries[packageName].substr(1) === absolutePath) {
+                if (entries[packageName].path.substr(1) === absolutePath) {
                   absolutePath = absolutePath.replace(replacer, '');
                 } else if (extension === '.js') {
                   absolutePath = absolutePath.replace(replacer, '/' + fileName.replace(extension, ''));
