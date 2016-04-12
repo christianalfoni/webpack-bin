@@ -7,6 +7,9 @@ var request = require('request');
 
 module.exports = {
   connect: db.connect,
+  createBin: function(req) {
+    return db.insert('bins', req.body)
+  },
   updateBin: function (req) {
     if (req.session.currentBin.isOwner) {
       return db.update('bins', {

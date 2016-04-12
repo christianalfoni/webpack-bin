@@ -36,6 +36,17 @@ module.exports = {
       fs.unlinkSync(path.join('/', 'api', 'sandbox', session.id, file.name));
     });
   },
+
+  updateSessionTests: function(session, tests) {
+    if (!fs.existsSync(path.join('/', 'api', 'sandbox', session.id))) {
+      fs.mkdirpSync(path.join('/', 'api', 'sandbox', session.id));
+    }
+
+    tests.forEach(function(test) {
+      fs.writeFileSync(path.join('/', 'api', 'sandbox', session.id, test.name),
+        test.content || ' ');
+    });
+  },
   hasVendorsBundle: function (packages) {
     var vendorsBundleName = utils.getVendorsBundleName(packages);
     return fs.existsSync(path.join('/', 'api', 'sandbox', 'vendors', vendorsBundleName,  '/bundle.js'));

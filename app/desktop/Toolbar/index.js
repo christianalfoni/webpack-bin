@@ -140,7 +140,7 @@ class Toolbar extends React.Component {
                 <Npm/>
               </ToolbarButtonPopover>
               <ToolbarButtonPopover
-                title="Boilerplates"
+                title="Boilerplate"
                 className={styles.packagesButton}
                 icon={icons.boilerplates}
                 onClick={() => signals.bin.boilerplatesToggled()}

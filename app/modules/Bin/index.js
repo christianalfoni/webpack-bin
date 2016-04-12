@@ -81,7 +81,8 @@ export default (options = {}) => {
         'cycle': 'Cycle JS',
         'vue': 'Vue JS',
         'angular': 'Angular',
-        'angular2': 'Angular2'
+        'angular2': 'Angular2',
+        'test': 'test'
       },
       showLog: false,
       showFullLog: true,

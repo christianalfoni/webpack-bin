@@ -111,6 +111,9 @@ if (!utils.isProduction()) {
   app.use(webpackHotMiddleware(compiler));
 }
 
+
+app.post('/api/test/', bins.newBin);
+
 app.get('/api/bins/:id', bins.get);
 app.get('/api/packages/:packageName', npm.getPackageFromRegistry);
 app.get('/api/bundles', database.searchBundles);
@@ -120,7 +123,7 @@ app.post('/api/sandbox', sandbox.updateSandbox);
 app.get('/api/npm/:id', npm.checkBundle);
 
 app.get('/subdomain/sandbox/', sandbox.getIndex);
-app.get('/subdomain/sandbox/*', sandbox.getFile)
+app.get('/subdomain/sandbox/*', sandbox.getFile);
 
 app.get('/status', status.get);
 

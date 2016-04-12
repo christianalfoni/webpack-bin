@@ -112,6 +112,7 @@ module.exports = {
     sessions.updateLoaders(req);
     sessions.updateFiles(req);
     memoryFs.updateSessionFiles(req.session, req.body.files);
+    memoryFs.updateSessionTests(req.session, req.body.tests);
     vendorsBundlesCleaner.update(req);
 
     if (!req.session.currentBin || req.session.currentBin.id !== req.body.id) {
