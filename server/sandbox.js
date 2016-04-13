@@ -8,10 +8,19 @@ var path = require('path');
 var mime = require('mime');
 var fs = require('fs');
 var vendorsBundlesCleaner = require('./vendorsBundlesCleaner.js');
+var decoder = require('string_decoder');
 
 var wbtools = fs.readFileSync(path.resolve('server', 'wbTools.js')).toString();
 
 module.exports = {
+  indexFiles: function(req, res) {
+    res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    res.setHeader('Expires', '-1');
+    res.setHeader('Pragma', 'no-cache');
+    res.type('html');
+
+    res.send(memoryFs.index(req.session.id));
+  },
   getIndex: function (req, res) {
     res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
     res.setHeader('Expires', '-1');
@@ -29,10 +38,22 @@ module.exports = {
     }
 
   },
+  getTest: function(req, res) {
+    console.log('req session at this point is', req.session);
+    res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    res.setHeader('Expires', '-1');
+    res.setHeader('Pragma', 'no-cache');
+    res.type('html');
+
+
+    res.send(memoryFs.getSessionFile(req.session.id, 'test.html'));
+  },
   getFile: function (req, res, next) {
     req.url = req.url.replace('/subdomain/sandbox', '');
+    console.log('Req url is', req.url);
 
     if (/wbtools/.test(req.url)) {
+      console.log('One');
       res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
       res.setHeader('Expires', '-1');
       res.setHeader('Pragma', 'no-cache');
@@ -42,7 +63,9 @@ module.exports = {
     }
 
     if (/\/sandbox\/vendors/.test(req.url)) {
+      console.log('Vendors present');
       var fileName = path.basename(req.url);
+      console.log('fileName is', fileName);
       if (!memoryFs.fs.existsSync(req.url)) {
         return res.sendStatus(404);
       }
@@ -70,6 +93,7 @@ module.exports = {
       var content = memoryFs.fs.readFileSync(filePath);
       res.setHeader("Content-Type", mime.lookup(fileName));
       res.setHeader("Content-Length", content.length);
+
       res.send(content);
       return;
     }
@@ -79,21 +103,31 @@ module.exports = {
     res.setHeader('Pragma', 'no-cache');
 
     if (path.basename(req.url) === utils.getEntry(req.session.files)) {
+      console.log('request is an entry file for this session');
       req.url = '/api/sandbox/' + req.session.id + '/webpackbin_bundle.js';
       req.session.middleware(req, res, next);
     } else {
+
+
       var fileName = path.basename(req.url);
+      console.log('fileName is', fileName);
       var content = memoryFs.getSessionFile(req.session.id, fileName)
+      console.log('Content is', content);
+
       if (content === null) {
         return res.sendStatus(404);
       }
       res.setHeader("Content-Type", mime.lookup(fileName));
       res.setHeader("Content-Length", content.length);
+
       res.send(content);
     }
 
   },
   updateSandbox: function (req, res, next) {
+
+
+
 
     var currentEntryFile = utils.getEntry(req.session.files);
 
@@ -104,6 +138,7 @@ module.exports = {
         currentEntryFile !== utils.getEntry(req.body.files)
       )
     ) {
+      // Middleware has changed, remove sessions middleware.
       sessions.removeMiddleware(req);
     }
 
@@ -116,6 +151,7 @@ module.exports = {
     vendorsBundlesCleaner.update(req);
 
     if (!req.session.currentBin || req.session.currentBin.id !== req.body.id) {
+      // If there is no bin, or the current bin does not belong to user.
       sessions.update(req.session.id, 'currentBin', {
         id: req.body.id,
         isOwner: false
@@ -127,10 +163,12 @@ module.exports = {
       utils.hasPackages(req) &&
       !memoryFs.hasVendorsBundle(req.body.packages)
     ) {
+      // There is no session middleware, or vendor bundle in memory. But there are packages in this request.
 
       // Create new Bin
       db.getVendorsBundle(utils.getVendorsBundleName(req.body.packages))
         .then(function (bundle) {
+
           if (bundle) {
             memoryFs.writeBundleManifest(bundle);
             return db.loadVendorsBundle(bundle)
@@ -175,6 +213,9 @@ module.exports = {
       utils.hasPackages(req) &&
       memoryFs.hasVendorsBundle(req.body.packages)
     ) {
+
+      console.log('Has packages and vendors bundle in memory');
+
       db.getVendorsBundleEntries(utils.getVendorsBundleName(req.body.packages))
         .then(function (bundle) {
           if (bundle) {
@@ -187,7 +228,7 @@ module.exports = {
                 } else {
                   db.updateBin(req)
                     .then(function (bin) {
-                      sessions.update(req.session.id, 'currentBin', {
+                        sessions.update(req.session.id, 'currentBin', {
                         id: bin.id,
                         isOwner: true
                       });
@@ -217,6 +258,10 @@ module.exports = {
       !req.session.middleware ||
       hasChangedLoaders
     ) {
+      console.log('No req session middleware, has changed loaders though');
+
+      sessionBundler.create(req.session)
+
       db.getVendorsBundleEntries(utils.getVendorsBundleName(req.body.packages))
         .then(sessionBundler.create(req.session))
         .then(sessions.createBundleMiddleware(req.session))

@@ -31,6 +31,7 @@ var sessionsModule = {
   middleware: function (req, res, next) {
     if (req.cookies.webpackbin && sessionsModule.get(req.cookies.webpackbin)) {
       req.session = sessionsModule.get(req.cookies.webpackbin);
+      console.log('Req session has become', req.session);
     } else {
       var id = String(Date.now()) + (Math.random() * 10000).toFixed(0);
       req.session = sessionsModule.set(id);

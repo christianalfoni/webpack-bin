@@ -4,3 +4,5 @@ npm-debug.log
 public/client_build.*
 public/server_build.*
 server_build.js
+.vscode
+npm-extractor

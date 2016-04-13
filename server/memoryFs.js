@@ -2,6 +2,7 @@ var MemoryFileSystem = require('memory-fs');
 var path = require('path');
 var fs = new MemoryFileSystem();
 var utils = require('./utils');
+var jasmineTestFile = require('./tests/index');
 
 var injectIndexHelpers = function (packages, index) {
   return index.replace('</head>', [
@@ -38,9 +39,17 @@ module.exports = {
   },
 
   updateSessionTests: function(session, tests) {
-    if (!fs.existsSync(path.join('/', 'api', 'sandbox', session.id))) {
-      fs.mkdirpSync(path.join('/', 'api', 'sandbox', session.id));
+
+    if (!tests) return;
+
+    if (!fs.existsSync(path.join('/', 'api', 'sandbox', 'test', session.id))) {
+      fs.mkdirpSync(path.join('/', 'api', 'sandbox', 'test', session.id));
     }
+
+    fs.writeFileSync(path.join('/', 'api', 'sandbox', session.id, 'test.html'), jasmineTestFile, function(err) {
+        if (err) throw err;
+      }
+    )
 
     tests.forEach(function(test) {
       fs.writeFileSync(path.join('/', 'api', 'sandbox', session.id, test.name),
@@ -66,5 +75,20 @@ module.exports = {
       return null;
     }
     return fs.readFileSync(pathToFile).toString();
+  },
+  getTestFile: function(sessionId, fileName) {
+    var pathToFile = path.join('/', 'api', 'sandbox', 'test', fileName);
+    if (!fs.existsSync(pathToFile)) {
+      console.log('Test file does not exist');
+      return null;
+    }
+    var ans = fs.readFileSync(pathToFile).toString();
+    return ans;
+  },
+  index: function(sessionId) {
+    var pathToFile = path.join('/', 'api', 'sandbox', sessionId);
+
+
+    return fs.readdirSync(pathToFile).toString();
   }
 };

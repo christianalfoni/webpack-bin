@@ -63,6 +63,8 @@ preLoadPackages([
   'babel-plugin-transform-runtime'
 ]);
 
+
+
 // Init
 memoryFs.fs.mkdirpSync(path.join('/', 'api', 'sandbox'));
 memoryFs.fs.mkdirpSync(path.join('/', 'api', 'sandbox', 'vendors'));
@@ -80,6 +82,11 @@ if (utils.isProduction()) {
       next();
     }
   });
+}
+
+function logRequests(req, res, next) {
+  console.log(req.url);
+  next();
 }
 
 app.use(compression())
@@ -123,9 +130,13 @@ app.post('/api/sandbox', sandbox.updateSandbox);
 app.get('/api/npm/:id', npm.checkBundle);
 
 app.get('/subdomain/sandbox/', sandbox.getIndex);
+app.get('/subdomain/sandbox/test', sandbox.getTest);
+// app.get('/subdomain/sandbox/index', sandbox.indexFiles);
+
 app.get('/subdomain/sandbox/*', sandbox.getFile);
 
 app.get('/status', status.get);
+
 
 var indexHtml = fs.readFileSync(path.resolve('index.html'))
   .toString()

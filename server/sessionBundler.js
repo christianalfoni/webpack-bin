@@ -57,11 +57,16 @@ module.exports = {
 
         var loaders = createLoaders(session.loaders);
 
+        console.log('Loaders before compiler', loaders);
+
+        console.log('Heading to compiler');
         var compiler = webpack({
           devtool: 'cheap-module-eval-source-map',
           entry: {
-            App: path.join('/', 'api', 'sandbox', session.id, utils.getEntry(session.files))
+              App: path.join('/', 'api', 'sandbox', session.id, utils.getEntry(session.files)),
+              Test: path.join('/', 'api', 'sandbox', session.id, 'spec.js')
           },
+
           output: {
             path: path.join('/', 'api', 'sandbox', session.id),
             filename: 'webpackbin_bundle.js'
@@ -76,7 +81,12 @@ module.exports = {
           module: {
             loaders: loaders
           },
-          plugins: plugins
+          plugins: [
+            new webpack.optimize.CommonsChunkPlugin(
+              "Test", "test.bundle.js", Infinity
+            ),
+            ...plugins
+          ]
         });
 
         compiler.inputFileSystem = memoryFs.fs;

@@ -9,7 +9,9 @@ var HASH_REGEXP = /[0-9a-f]{10,}/;
 
 // constructor for the middleware
 module.exports = function(compiler, options, onFileSystemAdded) {
-	if(!options) options = {};
+
+	//Initialize options.
+	if(!options) options = {}
 	if(typeof options.watchOptions === "undefined") options.watchOptions = {};
 	if(typeof options.watchDelay !== "undefined") {
 		// TODO remove this in next major version
@@ -27,11 +29,13 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 			options.filename = new RegExp("^[\/]{0,1}" + str + "$");
 		}
 	}
+	// Finished initializing options.
 
 	// store our files in memory
 	var files = {};
 	var fs = compiler.outputFileSystem;
 
+	// Add file system if specified. Here it is memoryFs.
 	onFileSystemAdded && onFileSystemAdded(fs);
 
 	compiler.plugin("done", function(stats) {
@@ -86,6 +90,7 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 
 	// delayed callback
 	var callbacks = [];
+	console.log('Options are', options);
 
 	// start watching
 	if(!options.lazy) {
@@ -97,9 +102,13 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 	}
 
 	function rebuild() {
+		console.log('In rebuild');
+		console.log('Will test', state);
 		if(state) {
 			state = false;
+			console.log('Compiler will run');
 			compiler.run(function(err) {
+				console.log('Compiler has run');
 				if(err) throw err;
 			});
 		} else {
@@ -166,7 +175,7 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 			if (res.send) res.send(content);
 			else res.end(content);
 		}
-
+		console.log('Options in middleware', options);
 		// in lazy mode, rebuild on bundle request
 		if(options.lazy && (!options.filename || options.filename.test(filename))) {
 			callbacks.push(passResponse);
