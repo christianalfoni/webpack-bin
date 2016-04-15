@@ -27,7 +27,7 @@ class Preview extends React.Component {
       location.protocol,
       '//',
       location.hostname.replace('www', 'sandbox'),
-      (location.port ? ':' + location.port : ''),
+       (location.port ? ':' + location.port : ''),
       '/'
     ].join('');
     this.props.signals.bin.iframeLoading();
