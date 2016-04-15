@@ -1,5 +1,5 @@
 function returnToList({input}) {
-  console.log('jwt at exit:', input.jwt);
+  window.location.href="http://localhost:3000?jwt="+input.jwt;
 }
 
 export default returnToList;

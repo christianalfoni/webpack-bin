@@ -95,7 +95,8 @@ export default (options = {}) => {
       fileToDeleteIndex: 0,
       showDeleteFileModal: false,
       isFetchingVendorsBundle: false,
-      jwt: ''
+      jwt: '',
+      user: ''
     });
 
     module.addSignals({
