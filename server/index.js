@@ -131,8 +131,6 @@ app.get('/api/npm/:id', npm.checkBundle);
 
 app.get('/subdomain/sandbox/', sandbox.getIndex);
 app.get('/subdomain/sandbox/test', sandbox.getTest);
-// app.get('/subdomain/sandbox/index', sandbox.indexFiles);
-
 app.get('/subdomain/sandbox/*', sandbox.getFile);
 
 app.get('/status', status.get);
