@@ -287,14 +287,24 @@ module.exports = {
 
           // Send the data to the user server to update the record.
           console.log('Going to update the user on 3000');
+          var body = {
+            user : req.query.user,
+            course: req.session.currentBin.id,
+            bin: bin.id
+          }
           request.put({
             url: 'http://localhost:3000/api/users/' + req.session.id,
-            form: {
-              user : req.session.id,
+            body: body,
+            json: true
+          }, (err) => {
+            if (err) console.log('Error updating user record:', err)
+            console.log('Request sent');
+            console.log('Request was', {
+              user: req.query.user,
               course: req.session.currentBin.id,
               bin: bin.id
-            }
-          }, (err) => console.log('Error updating user record:', err))
+            })
+          })
 
           sessions.update(req.session.id, 'currentBin', {
             id: bin.id,
