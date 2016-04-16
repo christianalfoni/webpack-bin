@@ -72,23 +72,18 @@ module.exports = {
   getSessionFile: function (sessionId, fileName) {
     var pathToFile = path.join('/', 'api', 'sandbox', sessionId, fileName);
     if (!fs.existsSync(pathToFile)) {
+      console.log('No such file exists');
       return null;
     }
     return fs.readFileSync(pathToFile).toString();
   },
   getTestFile: function(sessionId, fileName) {
-    var pathToFile = path.join('/', 'api', 'sandbox', 'test', fileName);
+    var pathToFile = path.join('/', 'api', 'sandbox', fileName);
     if (!fs.existsSync(pathToFile)) {
       console.log('Test file does not exist');
       return null;
     }
     var ans = fs.readFileSync(pathToFile).toString();
     return ans;
-  },
-  index: function(sessionId) {
-    var pathToFile = path.join('/', 'api', 'sandbox', sessionId);
-
-
-    return fs.readdirSync(pathToFile).toString();
   }
 };

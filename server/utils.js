@@ -1,6 +1,7 @@
 var hash = require('string-hash');
 var path = require('path');
 var semver = require('semver');
+var fs = require('./memoryFs');
 
 module.exports = {
   isProduction: function () {

@@ -50,10 +50,11 @@ module.exports = {
         return db.insert('bins', Object.assign({}, bin, {
           packages: utils.convertDots(bin.packages)
         }))
-          .then(function () {
-            bin.isOwner = true;
-            return bin;
-          });
+        .then(function () {
+          bin.isOwner = true;
+          console.log(`Just created this bin: ${bin.id}`)
+          return bin;
+        });
       });
     }
   },

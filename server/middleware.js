@@ -11,7 +11,8 @@ var HASH_REGEXP = /[0-9a-f]{10,}/;
 module.exports = function(compiler, options, onFileSystemAdded) {
 
 	//Initialize options.
-	if(!options) options = {}
+	if(!options) options = {};
+	options.lazy = false;
 	if(typeof options.watchOptions === "undefined") options.watchOptions = {};
 	if(typeof options.watchDelay !== "undefined") {
 		// TODO remove this in next major version
@@ -33,7 +34,7 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 
 	// store our files in memory
 	var files = {};
-	var fs = compiler.outputFileSystem;
+	var fs = compiler.compilers[0].outputFileSystem;
 
 	// Add file system if specified. Here it is memoryFs.
 	onFileSystemAdded && onFileSystemAdded(fs);
@@ -49,8 +50,9 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 			// print webpack output
 			var error = null;
 
+
 			if (stats.hasErrors()) {
-				error = stats.compilation.errors[0];
+				error = stats.stats[0].compilation.errors[0];
 			}
 
 			// execute callback that are delayed
@@ -90,7 +92,6 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 
 	// delayed callback
 	var callbacks = [];
-	console.log('Options are', options);
 
 	// start watching
 	if(!options.lazy) {
@@ -102,13 +103,9 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 	}
 
 	function rebuild() {
-		console.log('In rebuild');
-		console.log('Will test', state);
 		if(state) {
 			state = false;
-			console.log('Compiler will run');
 			compiler.run(function(err) {
-				console.log('Compiler has run');
 				if(err) throw err;
 			});
 		} else {
@@ -175,7 +172,6 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 			if (res.send) res.send(content);
 			else res.end(content);
 		}
-		console.log('Options in middleware', options);
 		// in lazy mode, rebuild on bundle request
 		if(options.lazy && (!options.filename || options.filename.test(filename))) {
 			callbacks.push(passResponse);

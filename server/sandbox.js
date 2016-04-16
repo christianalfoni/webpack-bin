@@ -9,6 +9,7 @@ var mime = require('mime');
 var fs = require('fs');
 var vendorsBundlesCleaner = require('./vendorsBundlesCleaner.js');
 var decoder = require('string_decoder');
+var request = require('request');
 
 var wbtools = fs.readFileSync(path.resolve('server', 'wbTools.js')).toString();
 
@@ -39,7 +40,9 @@ module.exports = {
 
   },
   getTest: function(req, res) {
-    console.log('req session at this point is', req.session);
+
+    console.log(`Calling for ${req.body}`);
+
     res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
     res.setHeader('Expires', '-1');
     res.setHeader('Pragma', 'no-cache');
@@ -50,10 +53,8 @@ module.exports = {
   },
   getFile: function (req, res, next) {
     req.url = req.url.replace('/subdomain/sandbox', '');
-    console.log('Req url is', req.url);
 
     if (/wbtools/.test(req.url)) {
-      console.log('One');
       res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
       res.setHeader('Expires', '-1');
       res.setHeader('Pragma', 'no-cache');
@@ -63,9 +64,7 @@ module.exports = {
     }
 
     if (/\/sandbox\/vendors/.test(req.url)) {
-      console.log('Vendors present');
       var fileName = path.basename(req.url);
-      console.log('fileName is', fileName);
       if (!memoryFs.fs.existsSync(req.url)) {
         return res.sendStatus(404);
       }
@@ -103,16 +102,15 @@ module.exports = {
     res.setHeader('Pragma', 'no-cache');
 
     if (path.basename(req.url) === utils.getEntry(req.session.files)) {
-      console.log('request is an entry file for this session');
       req.url = '/api/sandbox/' + req.session.id + '/webpackbin_bundle.js';
       req.session.middleware(req, res, next);
     } else {
 
 
       var fileName = path.basename(req.url);
-      console.log('fileName is', fileName);
       var content = memoryFs.getSessionFile(req.session.id, fileName)
-      console.log('Content is', content);
+
+      console.log(`Content from ${fileName} is ${content}`)
 
       if (content === null) {
         return res.sendStatus(404);
@@ -125,9 +123,6 @@ module.exports = {
 
   },
   updateSandbox: function (req, res, next) {
-
-
-
 
     var currentEntryFile = utils.getEntry(req.session.files);
 
@@ -214,7 +209,6 @@ module.exports = {
       memoryFs.hasVendorsBundle(req.body.packages)
     ) {
 
-      console.log('Has packages and vendors bundle in memory');
 
       db.getVendorsBundleEntries(utils.getVendorsBundleName(req.body.packages))
         .then(function (bundle) {
@@ -258,7 +252,6 @@ module.exports = {
       !req.session.middleware ||
       hasChangedLoaders
     ) {
-      console.log('No req session middleware, has changed loaders though');
 
       sessionBundler.create(req.session)
 
@@ -289,11 +282,36 @@ module.exports = {
         // Update bin in database, but do not wait to finish
         db.updateBin(req);
       } else {
+
         db.updateBin(req).then(function (bin) {
+
+          // Send the data to the user server to update the record.
+          console.log('Going to update the user on 3000');
+          var body = {
+            user : req.query.user,
+            course: req.session.currentBin.id,
+            bin: bin.id
+          }
+          request.put({
+            url: 'http://localhost:3000/api/users/' + req.session.id,
+            body: body,
+            json: true
+          }, (err) => {
+            if (err) console.log('Error updating user record:', err)
+            console.log('Request sent');
+            console.log('Request was', {
+              user: req.query.user,
+              course: req.session.currentBin.id,
+              bin: bin.id
+            })
+          })
+
           sessions.update(req.session.id, 'currentBin', {
             id: bin.id,
             isOwner: true
           });
+          console.log(`Now req session is ${req.session.id}, and bin id is ${bin.id}`)
+
           res.send(bin);
         });
       }
