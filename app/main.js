@@ -31,6 +31,9 @@ controller.addModules({
   router: Router({
     '/': 'bin.rootRouted',
     '/:id': 'bin.opened'
+  }, {
+    //onlyHash: true,
+    mapper: {query: true}
   })
 });
 
