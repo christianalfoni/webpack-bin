@@ -45,7 +45,10 @@ module.exports = {
           packages: req.body.packages,
           loaders: req.body.loaders,
           files: req.body.files,
-          isLive: req.body.isLive
+          isLive: req.body.isLive,
+          name: req.body.name,
+          readme: req.body.readme,
+          subject: req.body.subject
         };
         return db.insert('bins', Object.assign({}, bin, {
           packages: utils.convertDots(bin.packages)
