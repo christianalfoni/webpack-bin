@@ -1,5 +1,6 @@
 function returnToList({input}) {
-  window.location.href="http://localhost:3000?jwt="+input.jwt;
+  console.log('User id in webpack', input.userId);
+  window.location.href="http://localhost:3000/#/courses?jwt="+input.jwt + "&user=" + input.userId;
 }
 
 export default returnToList;
