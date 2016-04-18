@@ -103,6 +103,7 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 	}
 
 	function rebuild() {
+		console.log('Rebuild triggered');
 		if(state) {
 			state = false;
 			compiler.run(function(err) {

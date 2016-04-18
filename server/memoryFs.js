@@ -42,17 +42,13 @@ module.exports = {
 
     if (!tests) return;
 
-    if (!fs.existsSync(path.join('/', 'api', 'sandbox', 'test', session.id))) {
-      fs.mkdirpSync(path.join('/', 'api', 'sandbox', 'test', session.id));
-    }
-
     fs.writeFileSync(path.join('/', 'api', 'sandbox', session.id, 'test.html'), jasmineTestFile, function(err) {
         if (err) throw err;
       }
     )
 
     tests.forEach(function(test) {
-      fs.writeFileSync(path.join('/', 'api', 'sandbox', session.id, test.name),
+      var result = fs.writeFileSync(path.join('/', 'api', 'sandbox', session.id, test.name),
         test.content || ' ');
     });
   },
@@ -71,8 +67,11 @@ module.exports = {
   },
   getSessionFile: function (sessionId, fileName) {
     var pathToFile = path.join('/', 'api', 'sandbox', sessionId, fileName);
+    console.log('Path to file is', pathToFile);
     if (!fs.existsSync(pathToFile)) {
       console.log('No such file exists');
+      console.log('Directory resembles');
+      console.log(fs.readdirSync(path.join('/', 'api', 'sandbox', sessionId)));
       return null;
     }
     return fs.readFileSync(pathToFile).toString();

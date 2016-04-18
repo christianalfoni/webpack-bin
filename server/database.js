@@ -55,7 +55,6 @@ module.exports = {
         }))
         .then(function () {
           bin.isOwner = true;
-          console.log(`Just created this bin: ${bin.id}`)
           return bin;
         });
       });
