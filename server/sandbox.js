@@ -41,7 +41,6 @@ module.exports = {
   },
   getTest: function(req, res) {
 
-    console.log(`Calling for ${req.body}`);
 
     res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
     res.setHeader('Expires', '-1');
@@ -104,13 +103,14 @@ module.exports = {
     if (path.basename(req.url) === utils.getEntry(req.session.files)) {
       req.url = '/api/sandbox/' + req.session.id + '/webpackbin_bundle.js';
       req.session.middleware(req, res, next);
+
     } else {
 
 
       var fileName = path.basename(req.url);
+      console.log('Going to get', fileName);
       var content = memoryFs.getSessionFile(req.session.id, fileName)
 
-      console.log(`Content from ${fileName} is ${content}`)
 
       if (content === null) {
         return res.sendStatus(404);
@@ -123,6 +123,7 @@ module.exports = {
 
   },
   updateSandbox: function (req, res, next) {
+
 
     var currentEntryFile = utils.getEntry(req.session.files);
 
@@ -138,6 +139,7 @@ module.exports = {
     }
 
     var hasChangedLoaders = !utils.isSameLoaders(req.session.loaders, req.body.loaders);
+
     sessions.updatePackages(req);
     sessions.updateLoaders(req);
     sessions.updateFiles(req);
@@ -209,7 +211,6 @@ module.exports = {
       memoryFs.hasVendorsBundle(req.body.packages)
     ) {
 
-
       db.getVendorsBundleEntries(utils.getVendorsBundleName(req.body.packages))
         .then(function (bundle) {
           if (bundle) {
@@ -252,7 +253,6 @@ module.exports = {
       !req.session.middleware ||
       hasChangedLoaders
     ) {
-
       sessionBundler.create(req.session)
 
       db.getVendorsBundleEntries(utils.getVendorsBundleName(req.body.packages))
@@ -310,7 +310,6 @@ module.exports = {
             id: bin.id,
             isOwner: true
           });
-          console.log(`Now req session is ${req.session.id}, and bin id is ${bin.id}`)
 
           res.send(bin);
         });

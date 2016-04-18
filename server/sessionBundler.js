@@ -8,6 +8,7 @@ module.exports = {
   create: function (session) {
     return function (bundle) {
       if (!utils.getEntry(session.files)) {
+        console.log('No entry files');
         return null;
       }
       return new Promise(function (resolve, reject) {
@@ -57,7 +58,14 @@ module.exports = {
 
         var loaders = createLoaders(session.loaders);
 
+        console.log('Going to compile with directory');
+        console.log(memoryFs.fs.readdirSync(path.join('/', 'api', 'sandbox', session.id)))
 
+
+        console.log(
+          'Compiling to',
+          path.join('/', 'api', 'sandbox', session.id)
+        )
         var compiler = webpack([{
           devtool: 'cheap-module-eval-source-map',
           entry: path.join('/', 'api', 'sandbox', session.id, utils.getEntry(session.files)),
@@ -83,7 +91,6 @@ module.exports = {
           output: {
             path: path.join('/', 'api', 'sandbox', session.id),
             filename: 'test.bundle.js',
-            publicPath: '/'
           },
           resolveLoader: {
             root: path.join('node_modules')
@@ -96,7 +103,21 @@ module.exports = {
             loaders: loaders
           },
           plugins: plugins
-        }]);
+        }], function(err, stats) {
+              if(err) {
+                err.forEach(function(err) {
+                  console.error(err);
+                })
+                return;
+              }
+              var jsonStats = stats.toJson();
+              if(jsonStats.errors.length > 0)
+
+              if(jsonStats.warnings.length > 0)
+                  jsonStats.warnings.forEach(function(warning) {
+                    console.warn(warning);
+                  })
+          });
 
 
         compiler.compilers.forEach(compiler => {
@@ -104,6 +125,7 @@ module.exports = {
           compiler.outputFileSystem = memoryFs.fs;
           compiler.resolvers.normal.fileSystem = memoryFs.fs;
           compiler.resolvers.context.fileSystem = memoryFs.fs;
+          compiler.resolvers.loader.fileSystem = memoryFs.fs;
         })
 
         resolve(compiler);
