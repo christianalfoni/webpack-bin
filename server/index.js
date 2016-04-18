@@ -69,7 +69,7 @@ preLoadPackages([
 memoryFs.fs.mkdirpSync(path.join('/', 'api', 'sandbox'));
 memoryFs.fs.mkdirpSync(path.join('/', 'api', 'sandbox', 'vendors'));
 setInterval(sessions.clean, 60 * 1000 * 60 * 5);
-database.connect(utils.isProduction() ? process.env.MONGOHQ_URL : 'mongodb://localhost:27017/webpackbin')
+database.connect(utils.isProduction() ? process.env.MONGOHQ_URL : 'mongodb://localhost:27017/testpackbin')
   .then(utils.log('Database connected'))
   .catch(utils.log('Could not connect to database'));
 
