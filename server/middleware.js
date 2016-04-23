@@ -12,7 +12,6 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 
 	//Initialize options.
 	if(!options) options = {};
-	options.lazy = false;
 	if(typeof options.watchOptions === "undefined") options.watchOptions = {};
 	if(typeof options.watchDelay !== "undefined") {
 		// TODO remove this in next major version
@@ -103,7 +102,6 @@ module.exports = function(compiler, options, onFileSystemAdded) {
 	}
 
 	function rebuild() {
-		console.log('Rebuild triggered');
 		if(state) {
 			state = false;
 			compiler.run(function(err) {
