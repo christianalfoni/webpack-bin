@@ -36,6 +36,7 @@ import toggleFullLog from './signals/toggleFullLog';
 import entryToggled from './signals/entryToggled';
 import iframeLoading from './signals/iframeLoading';
 import returnButtonClicked from './signals/returnButtonClicked';
+import testResultsToggled from './signals/testResultsToggled';
 
 export default (options = {}) => {
   return (module, controller) => {
@@ -75,6 +76,7 @@ export default (options = {}) => {
       showInfo: false,
       showPackagesSelector: false,
       showBoilerplatesSelector: false,
+      showTestResults: false,
       boilerplates: {
         'react': 'React',
         'cerebral': 'Cerebral',
@@ -115,6 +117,7 @@ export default (options = {}) => {
       configToggled: preventIfLive(configToggled),
       boilerplatesToggled: preventIfLive(boilerplatesToggled),
       boilerplateClicked: preventIfLive(boilerplateClicked),
+      testResultsToggled: preventIfLive(testResultsToggled),
       logToggled: preventIfLive(logToggled),
       fileDeleteClicked: preventIfLive(fileDeleteClicked),
       logValueToggled: preventIfLive(logValueToggled),
@@ -137,7 +140,8 @@ export default (options = {}) => {
       iframeLoading,
       welcomeBinClicked,
       emptyBinClicked,
-      returnButtonClicked
+      returnButtonClicked,
+
     });
 
   };
