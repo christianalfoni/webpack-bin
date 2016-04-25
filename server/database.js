@@ -1,3 +1,5 @@
+'use strict'
+
 var db = require('./mongodb.js');
 var memoryFs = require('./memoryFs.js');
 var utils = require('./utils');
@@ -11,6 +13,8 @@ module.exports = {
     return db.insert('bins', req.body)
   },
   updateBin: function (req) {
+    console.log('Updating bin');
+    console.log('Is owner', req.session.currentBin.isOwner);
     if (req.session.currentBin.isOwner) {
       return db.update('bins', {
         id: req.session.currentBin.id
@@ -45,6 +49,7 @@ module.exports = {
           packages: req.body.packages,
           loaders: req.body.loaders,
           files: req.body.files,
+          tests: req.body.tests,
           isLive: req.body.isLive,
           name: req.body.name,
           readme: req.body.readme,
@@ -70,7 +75,8 @@ module.exports = {
       });
     })
   },
-  getVendorsBundle: function (vendorsBundleName) {
+  getVendorsBundle: function (req) {
+    let vendorsBundleName = utils.getVendorsBundleName(req.body.packages);
     return db.findOne('bundles', {name: vendorsBundleName})
       .then(function (bundle) {
         if (!bundle) {

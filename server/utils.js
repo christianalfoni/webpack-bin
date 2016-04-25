@@ -1,25 +1,69 @@
+'use strict'
+
 var hash = require('string-hash');
 var path = require('path');
 var semver = require('semver');
 var fs = require('./memoryFs');
+var sessions = require('./sessions');
 
 module.exports = {
-  isProduction: function () {
+  checkCurrentBin(req) {
+    if (!req.session.currentBin || req.session.currentBin.id !== req.body.id) {
+      // If there is no bin, or the current bin does not belong to user.
+      sessions.update(req.session.id, 'currentBin', {
+        id: req.body.id,
+        isOwner: false
+      });
+    }
+  },
+  checkMiddlewareForChanges(req) {
+    var currentEntryFile = this.getEntry(req.session.files);
+
+    if (
+      req.session.middleware &&
+      (
+        this.getVendorsBundleName(req.session.packages) !== this.getVendorsBundleName(req.body.packages) ||
+        currentEntryFile !== this.getEntry(req.body.files)
+      )
+    ) {
+      // Middleware has changed, remove sessions middleware.
+      sessions.removeMiddleware(req);
+    }
+  },
+  getFileName(req) {
+    let author = req.session.currentBin.author;
+    if (path.basename(req.url) === this.getEntry(sessions.get(author).files)) {
+      return 'webpackbin_bundle.js'
+    } else {
+      return req.session.currentBin.author + '/' + fileName;
+    }
+  },
+  isLive(req) {
+    return (req.session.currentBin &&
+    req.session.currentBin.isLive &&
+    !req.session.currentBin.isOwner)
+  },
+  setHeaders(res) {
+    res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    res.setHeader('Expires', '-1');
+    res.setHeader('Pragma', 'no-cache');
+  },
+  isProduction() {
     return process.env.NODE_ENV === 'production';
   },
-  hasPackages: function (req) {
+  hasPackages(req) {
     return Boolean(req.body.packages && Object.keys(req.body.packages).length);
   },
-  log: function (message) {
+  log(message) {
     return function () {
       console.log(message);
     };
   },
-  logError: function (err) {
+  logError(err) {
     console.log(err.message);
     console.log(err.stack);
   },
-  getVendorsBundleName: function (packages) {
+  getVendorsBundleName(packages) {
     if (!packages || Object.keys(packages).length === 0) {
       return null;
     }
@@ -32,7 +76,7 @@ module.exports = {
     });
     return String(hash(JSON.stringify(packagesList)));
   },
-  readMemDir: function (fs, dir) {
+  readMemDir(fs, dir) {
     var logOutDir = function (dir) {
       var dirs = [];
       try {
@@ -47,7 +91,7 @@ module.exports = {
     }
     logOutDir(dir);
   },
-  getLatestNpmVersion: function (versions) {
+  getLatestNpmVersion(versions) {
 
     function versionToNumber(version) {
       return version.split('.').map(function (number, index) {
@@ -72,7 +116,7 @@ module.exports = {
 
     return latestVersion || versionsList[versionsList.length - 1];
   },
-  isSameLoaders: function (loadersA, loadersB) {
+  isSameLoaders(loadersA, loadersB) {
     if (!loadersA || !loadersB) {
       return false;
     }
@@ -101,20 +145,21 @@ module.exports = {
 
     return JSON.stringify(loadersAList) === JSON.stringify(loadersBList);
   },
-  convertDots: function (obj) {
+  convertDots(obj) {
     return Object.keys(obj || {}).reduce(function (newObj, key) {
       newObj[key.replace(/\./g, '!DOT!')] = obj[key];
       return newObj;
     }, {});
   },
-  reconvertDots: function (obj) {
+  reconvertDots(obj) {
     return Object.keys(obj || {}).reduce(function (newObj, key) {
       newObj[key.replace(/\!DOT\!/g, '.')] = obj[key];
       return newObj;
     }, {});
   },
-  getEntry: function (files) {
+  getEntry(files) {
     if (!files) {
+      console.log('No files for get entry!')
       return null;
     }
 

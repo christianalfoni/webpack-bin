@@ -10,6 +10,7 @@ import LiveUser from '../LiveUser';
 import Welcome from '../Welcome';
 import DeleteFileModal from '../DeleteFileModal';
 import Snackbar from '../Snackbar';
+import TestResults from '../TestResults';
 
 @Cerebral({
   isRunning: 'bin.isRunning',
@@ -19,7 +20,8 @@ import Snackbar from '../Snackbar';
   showWelcome: 'bin.showWelcome',
   isInitialized: 'bin.isInitialized',
   showDeleteFileModal: 'bin.showDeleteFileModal',
-  isFetchingVendorsBundle: 'bin.isFetchingVendorsBundle'
+  isFetchingVendorsBundle: 'bin.isFetchingVendorsBundle',
+  showTestResults: 'bin.showTestResults'
 })
 class Bin extends React.Component {
   componentDidMount() {
@@ -50,11 +52,13 @@ class Bin extends React.Component {
 
     return (
       <div onClick={() => this.props.signals.bin.appClicked()}>
+        {(this.props.showTestResults) ? <TestResults/> : null}
         <Toolbar/>
         <div className={styles.wrapper}>
           <CodeEditor/>
           <div className={styles.previewAndLog}>
             <Preview/>
+
             {
               this.props.showLog ?
                 <Log/>

@@ -1,0 +1,39 @@
+.wrapper {
+  position: absolute;
+  height: 90%;
+  width: 50%;
+  top: 54px;
+  right: 15px;
+  z-index: 5;
+}
+
+.iframe {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  border: 1px solid #6A6E77;
+  box-shadow: 0 0 30px black;
+  border-radius: 3px;
+}
+
+.arrow {
+  position: absolute;
+  top: -18px;
+  right: 211px;
+  border-top: 10px solid transparent;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #EEEEEE;
+  z-index: 1;
+}
+
+.arrowBorder {
+  position: absolute;
+  position: absolute;
+  top: -19px;
+  right: 211px;
+  border-top: 10px solid transparent;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #6A6E77;
+}

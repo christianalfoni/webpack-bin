@@ -8,7 +8,7 @@ module.exports = {
   create: function (session) {
     return function (bundle) {
       if (!utils.getEntry(session.files)) {
-        console.log('No entry files');
+        console.log('No entry files!');
         return null;
       }
       return new Promise(function (resolve, reject) {
@@ -29,7 +29,6 @@ module.exports = {
 
           if (entries) {
             externals = Object.keys(entries).reduce(function (externals, packageName) {
-
               return Object.keys(manifest.content).reduce(function (externals, manifestKey) {
                 var absolutePath = manifestKey.substr(1);
 
@@ -52,20 +51,16 @@ module.exports = {
               }, externals);
 
             }, {});
+
+
           }
 
         }
 
         var loaders = createLoaders(session.loaders);
 
-        console.log('Going to compile with directory');
-        console.log(memoryFs.fs.readdirSync(path.join('/', 'api', 'sandbox', session.id)))
 
 
-        console.log(
-          'Compiling to',
-          path.join('/', 'api', 'sandbox', session.id)
-        )
         var compiler = webpack([{
           devtool: 'cheap-module-eval-source-map',
           entry: path.join('/', 'api', 'sandbox', session.id, utils.getEntry(session.files)),
