@@ -13,8 +13,12 @@ class TestResults extends React.Component {
     super(props);
   }
 
+  componentDidMount() {
+    this.refreshIframe();
+  }
+
   componentDidUpdate(prevProps) {
-    if (!this.props.isLoadingIframe && prevProps.isRunning && !this.props.isRunning) {
+    if (prevProps.isRunning && !this.props.isRunning) {
       this.refreshIframe();
     }
   }
@@ -28,15 +32,6 @@ class TestResults extends React.Component {
       '/test'
     ].join('');
     this.props.signals.bin.iframeLoading();
-  }
-
-  onIframeMessage(event) {
-    if (event.data.type === 'loaded') {
-      this.props.signals.bin.iframeLoaded();
-    }
-    if (event.data.type === 'click') {
-      this.props.signals.bin.appClicked();
-    }
   }
 
   render() {
