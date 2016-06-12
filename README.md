@@ -6,7 +6,7 @@ Node v5, NPM v3 and MongoDB
 
 ### Start
 1. `npm install`
-2. Change your hosts file and add `www.webpackbin.dev`
+2. Change your hosts file and add `www.webpackbin.dev` and `sandbox.webpackbin.dev`
 3. Make sure a mongodb instance is running
 4. Make sure npm-extractor is running (look below)
 5. `npm start`
