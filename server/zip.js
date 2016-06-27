@@ -54,6 +54,7 @@ module.exports = function (req, res) {
 
       if (bin.loaders.babel) {
         packageJson.devDependencies['babel-loader'] = '6.2.4';
+        packageJson.devDependencies['babel-core'] = '6.9.1';
         if (bin.loaders.babel.stage0) {
           packageJson.devDependencies['babel-preset-stage-0'] = '6.5.0';
         }
