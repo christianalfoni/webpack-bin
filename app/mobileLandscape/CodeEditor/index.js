@@ -81,6 +81,8 @@ class CodeEditor extends React.Component {
         return 'text/x-less';
       case 'scss':
         return 'text/x-sass';
+      case 'styl':
+        return 'text/x-styl';
       case 'html':
         return 'htmlmixed';
       case 'vue':
@@ -207,6 +209,25 @@ class CodeEditor extends React.Component {
       } else {
         return require.ensure([], () => {
           setSassMode();
+        });
+      }
+
+    }
+
+    if (mode === 'text/x-styl') {
+
+      const setStylusMode = function () {
+        loadedModes.push(mode);
+        require('codemirror/mode/stylus/stylus.js');
+        this.codemirror.setOption('mode', mode);
+        this.setEditorValue(this.codemirror.getValue());
+      }.bind(this);
+
+      if (loadedModes.indexOf(mode) >= 0) {
+        return setStylusMode();
+      } else {
+        return require.ensure([], () => {
+          setStylusMode();
         });
       }
 

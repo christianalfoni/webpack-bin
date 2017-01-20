@@ -12,6 +12,7 @@ const loaderTemplates = {
   coffeescript: {},
   less: {},
   sass: {},
+  stylus: {},
   raw: {},
   json: {},
   jade: {},

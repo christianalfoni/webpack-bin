@@ -32,6 +32,15 @@ function setLoadersByFilename({state, input}) {
     });
   }
 
+  if (ext === 'styl' && !state.get('bin.currentBin.loaders.css.stylus')) {
+    if (!state.get('bin.currentBin.loaders.css')) {
+      state.set('bin.currentBin.loaders.css', {});
+    }
+    state.merge('bin.currentBin.loaders.css', {
+      stylus: true
+    });
+  }
+
   if ((ext === 'html' || ext === 'txt') && !state.get('bin.currentBin.loaders.raw')) {
     state.set('bin.currentBin.loaders.raw', {});
   }

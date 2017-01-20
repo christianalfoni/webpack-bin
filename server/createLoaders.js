@@ -91,6 +91,15 @@ module.exports = function (currentLoaders) {
     loaders.push(loader);
   }
 
+  // Stylus
+  if (currentLoaders.css && currentLoaders.css.stylus) {
+    var loader = {
+      test: /\.styl?$/,
+      loader: 'style!css!stylus'
+    }
+    loaders.push(loader);
+  }
+
   // HTML
   if (currentLoaders.raw) {
     var loader = {
