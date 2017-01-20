@@ -29,6 +29,10 @@ module.exports = function (loaders) {
       depLoaders['sass-loader'] = '3.2.0';
     }
 
+    if (loader === 'stylus' && loaders[loader].stylus) {
+      depLoaders['stylus-loader'] = '2.4.0';
+    }
+
     if (loader === 'typescript') {
       depLoaders['ts-loader'] = '0.8.1';
       depLoaders['typescript'] = '1.8.9';

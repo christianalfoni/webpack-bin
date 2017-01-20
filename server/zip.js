@@ -75,6 +75,9 @@ module.exports = function (req, res) {
         if (bin.loaders.css.sass) {
           packageJson.devDependencies['sass-loader'] = '3.1.2';
         }
+        if (bin.loaders.css.stylus) {
+          packageJson.devDependencies['stylus-loader'] = '2.4.0';
+        }
       }
 
       if (bin.loaders.typescript) {

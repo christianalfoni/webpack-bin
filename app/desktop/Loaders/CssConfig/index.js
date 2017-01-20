@@ -49,6 +49,17 @@ class CssConfig extends React.Component {
             Import .scss files to styles tags
           </div>
         </div>
+        <div className={styles.config}>
+          <input
+            type="checkbox"
+            checked={loader && loader.stylus}
+            disabled={!loader}
+            onChange={() => this.props.signals.bin.configToggled({name: 'stylus'})}/>
+          Stylus
+          <div className={styles.configDescription}>
+            Import .styl files to styles tags
+          </div>
+        </div>
       </div>
     );
   }
