@@ -6,8 +6,10 @@ Webpackbin was an experiment to see if it would be possible to create a bin serv
 
 Webpackbin2 is now closing in and scalability issues has been solved, new features are added and you should generally get a better experience using the tool.
 
+#### Watch a video on its new architecture
 [![Webpackbin2](https://img.youtube.com/vi/LWZHFcA9W6M/0.jpg)](https://www.youtube.com/watch?v=LWZHFcA9W6M)
 
+#### Test it
 The test environment of Webpackbin is located here: https://webpackbin-test.firebaseapp.com/#/. Note that the background services are running Heroku instances that needs to sleep, meaning that it might takes a few extra seconds loading up your bin initially and do NPM package searches.
 
 ### Requirements
