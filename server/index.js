@@ -63,11 +63,13 @@ preLoadPackages([
   'babel-plugin-transform-runtime'
 ]);
 
+
+
 // Init
 memoryFs.fs.mkdirpSync(path.join('/', 'api', 'sandbox'));
 memoryFs.fs.mkdirpSync(path.join('/', 'api', 'sandbox', 'vendors'));
 setInterval(sessions.clean, 60 * 1000 * 60 * 5);
-database.connect(utils.isProduction() ? process.env.MONGOHQ_URL : 'mongodb://localhost:27017/webpackbin')
+database.connect(utils.isProduction() ? process.env.MONGOHQ_URL : 'mongodb://localhost:27017/testpackbin')
   .then(utils.log('Database connected'))
   .catch(utils.log('Could not connect to database'));
 
@@ -80,6 +82,11 @@ if (utils.isProduction()) {
       next();
     }
   });
+}
+
+function logRequests(req, res, next) {
+  console.log(req.url);
+  next();
 }
 
 app.use(compression())
@@ -111,6 +118,9 @@ if (!utils.isProduction()) {
   app.use(webpackHotMiddleware(compiler));
 }
 
+
+app.post('/api/test/', bins.newBin);
+
 app.get('/api/bins/:id', bins.get);
 app.get('/api/packages/:packageName', npm.getPackageFromRegistry);
 app.get('/api/bundles', database.searchBundles);
@@ -120,9 +130,11 @@ app.post('/api/sandbox', sandbox.updateSandbox);
 app.get('/api/npm/:id', npm.checkBundle);
 
 app.get('/subdomain/sandbox/', sandbox.getIndex);
-app.get('/subdomain/sandbox/*', sandbox.getFile)
+app.get('/subdomain/sandbox/test', sandbox.getTest);
+app.get('/subdomain/sandbox/*', sandbox.getFile);
 
 app.get('/status', status.get);
+
 
 var indexHtml = fs.readFileSync(path.resolve('index.html'))
   .toString()

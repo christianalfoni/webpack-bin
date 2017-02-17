@@ -35,6 +35,8 @@ import emptyBinClicked from './signals/emptyBinClicked';
 import toggleFullLog from './signals/toggleFullLog';
 import entryToggled from './signals/entryToggled';
 import iframeLoading from './signals/iframeLoading';
+import returnButtonClicked from './signals/returnButtonClicked';
+import testResultsToggled from './signals/testResultsToggled';
 
 export default (options = {}) => {
   return (module, controller) => {
@@ -74,6 +76,7 @@ export default (options = {}) => {
       showInfo: false,
       showPackagesSelector: false,
       showBoilerplatesSelector: false,
+      showTestResults: false,
       boilerplates: {
         'react': 'React',
         'cerebral': 'Cerebral',
@@ -81,7 +84,8 @@ export default (options = {}) => {
         'cycle': 'Cycle JS',
         'vue': 'Vue JS',
         'angular': 'Angular',
-        'angular2': 'Angular2'
+        'angular2': 'Angular2',
+        'test': 'test'
       },
       showLog: false,
       showFullLog: true,
@@ -92,7 +96,9 @@ export default (options = {}) => {
       changedFiles: [],
       fileToDeleteIndex: 0,
       showDeleteFileModal: false,
-      isFetchingVendorsBundle: false
+      isFetchingVendorsBundle: false,
+      jwt: '',
+      user: ''
     });
 
     module.addSignals({
@@ -111,6 +117,7 @@ export default (options = {}) => {
       configToggled: preventIfLive(configToggled),
       boilerplatesToggled: preventIfLive(boilerplatesToggled),
       boilerplateClicked: preventIfLive(boilerplateClicked),
+      testResultsToggled: preventIfLive(testResultsToggled),
       logToggled: preventIfLive(logToggled),
       fileDeleteClicked: preventIfLive(fileDeleteClicked),
       logValueToggled: preventIfLive(logValueToggled),
@@ -132,7 +139,9 @@ export default (options = {}) => {
       iframeLoaded,
       iframeLoading,
       welcomeBinClicked,
-      emptyBinClicked
+      emptyBinClicked,
+      returnButtonClicked,
+
     });
 
   };

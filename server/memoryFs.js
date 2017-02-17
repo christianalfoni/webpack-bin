@@ -1,7 +1,10 @@
+'use strict'
+
 var MemoryFileSystem = require('memory-fs');
 var path = require('path');
 var fs = new MemoryFileSystem();
 var utils = require('./utils');
+var testHelper = require('./tests/index');
 
 var injectIndexHelpers = function (packages, index) {
   return index.replace('</head>', [
@@ -33,7 +36,37 @@ module.exports = {
     });
 
     filesToDelete.forEach(function (file) {
+      console.log('Deleting file', file);
       fs.unlinkSync(path.join('/', 'api', 'sandbox', session.id, file.name));
+    });
+  },
+
+  updateSessionTests: function(req, tests) {
+    console.log('Updating session tests');
+    if (!tests) return;
+
+    let entry = utils.getEntry(req.session.files)
+    console.log('Writing test html file!');
+    fs.writeFileSync(
+      path.join('/', 'api', 'sandbox', req.session.id, 'test.html'),
+      injectIndexHelpers(req.session.packages, testHelper.getIndex(entry)),
+      function(err) {
+        if (err) throw err;
+      }
+    )
+
+    var htmlFileFound = false;
+    tests.forEach(function(test) {
+      console.log(`Testing ${test.name}, html file found is ${htmlFileFound}`);
+      if (/(\.html$)/.test(test.name) && !htmlFileFound) {
+        console.log('Writing test html file!');
+
+        fs.writeFileSync(path.join('/', 'api', 'sandbox', session.id, 'test.html'), injectIndexHelpers(req.session.packages, test.content))
+        htmlFileFound = true;
+        return;
+      }
+      fs.writeFileSync(path.join('/', 'api', 'sandbox', req.session.id, test.name),
+        test.content || ' ');
     });
   },
   hasVendorsBundle: function (packages) {
@@ -52,8 +85,20 @@ module.exports = {
   getSessionFile: function (sessionId, fileName) {
     var pathToFile = path.join('/', 'api', 'sandbox', sessionId, fileName);
     if (!fs.existsSync(pathToFile)) {
-      return null;
+      console.log('bad path');
+      console.log('Request was', pathToFile);
+      console.log('Directory:');
+      console.log(fs.readdirSync(path.join('/', 'api', 'sandbox', sessionId)))
+      return null
     }
     return fs.readFileSync(pathToFile).toString();
+  },
+  getTestFile: function(sessionId, fileName) {
+    var pathToFile = path.join('/', 'api', 'sandbox', fileName);
+    if (!fs.existsSync(pathToFile)) {
+      return null;
+    }
+    var ans = fs.readFileSync(pathToFile).toString();
+    return ans;
   }
 };

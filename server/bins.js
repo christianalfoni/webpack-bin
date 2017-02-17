@@ -2,6 +2,13 @@ var db = require('./database');
 var sessions = require('./sessions');
 
 module.exports = {
+
+  newBin: function(req, res) {
+    db.createBin(req)
+    .then(function(bin) {
+     res.send(bin);
+    })
+  },
   create: function (req, res) {
     db.createBin(req)
       .then(function (bin) {
@@ -17,12 +24,22 @@ module.exports = {
       })
   },
   get: function (req, res) {
+
+
+    var bin;
     db.getBin(req.params.id)
-      .then(function (bin) {
+      .then(function (_bin) {
+        bin = _bin;
         if (!bin) {
           return res.sendStatus(404);
         }
-        bin.isOwner = req.session.id === bin.author;
+        return sessions.isAdmin(req)
+      })
+      .then(boolean => {
+        //If admin, then allow bin ownership.
+        //Otherwise, check the session id against the author.
+        console.log('Boolean:', boolean);
+        bin.isOwner = boolean ? true : req.session.id === bin.author;
         sessions.update(req.session.id, 'currentBin', {
           id: bin.id,
           author: bin.author,

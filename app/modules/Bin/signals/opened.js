@@ -5,12 +5,15 @@ import httpGet from 'cerebral-module-http/get';
 import showSnackbar from '../factories/showSnackbar';
 import hideSnackbar from '../actions/hideSnackbar';
 import isNewBin from '../actions/isNewBin';
+import isAdmin from '../actions/isAdmin';
 import runBin from '../factories/runBin';
 import connectToLiveBin from '../actions/connectToLiveBin';
+import setSessionToken from '../actions/setSessionToken';
 
 export default [
   set('state:/bin.isInitialized', true),
   set('state:/bin.showWelcome', false),
+  setSessionToken,
   isNewBin, {
     true: [
       set('state:/bin.isLoadingBin', true),

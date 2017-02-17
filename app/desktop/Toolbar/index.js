@@ -31,7 +31,8 @@ import hasEntry from '../../computed/hasEntry';
   isEntry: 'bin.isEntry',
   hasEntry: hasEntry,
   changedFiles: 'bin.changedFiles',
-  introductionVideoUrl: 'bin.introductionVideoUrl'
+  introductionVideoUrl: 'bin.introductionVideoUrl',
+  showTestResults: 'bin.showTestResults'
 })
 class Toolbar extends React.Component {
   static propTypes = {
@@ -84,15 +85,14 @@ class Toolbar extends React.Component {
             <div className={styles.column1}>
               <div className={styles.logo}/>
               <div className={styles.version}><div className={styles.versionText}>beta</div></div>
-              {/*
               <div className={styles.buttonWrapper}>
-                Vim Mode
-                <input
-                  type="checkbox"
-                  checked={this.props.vimModeEnabled}
-                  onClick={() => signals.bin.vimModeClicked()}/>
+                <ToolbarButton
+                  title='Return'
+                  icon={icons.save}
+                  disabled={this.props.isRunning}
+                  tooltip="Return to bin list"
+                  onClick={() => signals.bin.returnButtonClicked()}/>
               </div>
-              */}
               <div className={styles.buttonWrapper}>
                 <ToolbarButton
                   title='Save'
@@ -110,17 +110,7 @@ class Toolbar extends React.Component {
                   disabled={this.props.isRunning}
                   onClick={() => signals.bin.logToggled()}/>
               </div>
-              <div className={styles.buttonWrapper}>
-                <ToolbarButton
-                  title='Live'
-                  active={this.props.currentBin.isLive}
-                  icon={icons.live}
-                  disabled={
-                    (!this.props.currentBin.isOwner && this.props.currentBin.author) ||
-                    this.props.isRunning
-                  }
-                  onClick={() => signals.live.liveToggled()}/>
-              </div>
+
               <div className={styles.buttonWrapper}>
                 <ToolbarLink
                   disabled={!this.props.currentBin.id}
@@ -138,15 +128,6 @@ class Toolbar extends React.Component {
                 show={this.props.showPackagesSelector}
                 middle>
                 <Npm/>
-              </ToolbarButtonPopover>
-              <ToolbarButtonPopover
-                title="Boilerplates"
-                className={styles.packagesButton}
-                icon={icons.boilerplates}
-                onClick={() => signals.bin.boilerplatesToggled()}
-                show={this.props.showBoilerplatesSelector}
-                right>
-                <Boilerplates/>
               </ToolbarButtonPopover>
               <ToolbarButtonPopover
                 title="Info"
@@ -170,6 +151,16 @@ class Toolbar extends React.Component {
                   </div>
                 </div>
               </ToolbarButtonPopover>
+              <div className={styles.testButtonWrapper}>
+                <ToolbarButton
+                  title='Tests'
+                  icon={icons.assignment}
+                  notify={this.props.shouldCheckLog}
+                  disabled={this.props.isRunning}
+                  show={this.props.showTestResults}
+                  onClick={() => signals.bin.testResultsToggled()}
+                  />
+              </div>
             </div>
           </div>
         </div>

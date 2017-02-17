@@ -1,7 +1,13 @@
-var utils = require('./utils.js');
 var path = require('path');
 var sessions = {};
 var middleware = require('./middleware');
+var request = require('request');
+
+
+function isProduction() {
+  // This is to avoid circular dependency.
+  return process.env.NODE_ENV === 'production'
+}
 
 var sessionsModule = {
   get: function (id) {
@@ -36,7 +42,7 @@ var sessionsModule = {
       req.session = sessionsModule.set(id);
       res.cookie('webpackbin', String(id), {
         maxAge: 3600000 * 24, // One day
-        domain: utils.isProduction() ? '.webpackbin.com' : '.webpackbin.dev',
+        domain: isProduction() ? '.webpackbin.com' : '.webpackbin.dev',
         httpOnly: true
       });
     }
@@ -44,7 +50,9 @@ var sessionsModule = {
   },
   createBundleMiddleware: function (session) {
     return function (compiler) {
+      console.log('In middelware bundler');
       if (!compiler) {
+        console.log('No compiler!')
         return null;
       }
       var sessionMiddleware = middleware(compiler, {
@@ -60,6 +68,7 @@ var sessionsModule = {
           modules: false
         }
       });
+      console.log('Updating session module');
       sessionsModule.update(session.id, 'middleware', sessionMiddleware);
     };
   },
@@ -79,6 +88,20 @@ var sessionsModule = {
         isEntry: Boolean(file.isEntry)
       };
     });
+  },
+  isAdmin: function(req) {
+    return new Promise((resolve, reject) => {
+      request('http://localhost:3000/api/users/' + req.query.user,
+      (err, res, body) => {
+        if (res && res.status === 200) {
+          console.log('Resolving isAdmin');
+          resolve(body.isAdmin ? true : false)
+        } else {
+          console.log('Resolving isAdmin');
+          resolve(false);
+        }
+      })
+    })
   }
 };
 

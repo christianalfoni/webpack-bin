@@ -23,7 +23,7 @@ module.exports = {
       if (bundle.isDone) {
         return db.saveVendorsBundle(bundle)
           .then(db.uploadVendorsBundle)
-          .then(db.getVendorsBundle(utils.getVendorsBundleName(req.body.packages)))
+          .then(db.getVendorsBundle(req))
           .then(function (bundle) {
             memoryFs.writeBundleManifest(bundle);
             return db.loadVendorsBundle(bundle);

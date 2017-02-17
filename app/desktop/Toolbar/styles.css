@@ -53,6 +53,11 @@
   margin-left: 10px;
 }
 
+.testButtonWrapper {
+  float: left;
+  margin-top: 9px;
+}
+
 .packagesButton {
   float: left;
   margin-top: 9px;

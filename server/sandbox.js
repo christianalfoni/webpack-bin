@@ -1,3 +1,5 @@
+'use strict'
+
 var db = require('./database.js');
 var sessionBundler = require('./sessionBundler.js');
 var memoryFs = require('./memoryFs');
@@ -8,34 +10,50 @@ var path = require('path');
 var mime = require('mime');
 var fs = require('fs');
 var vendorsBundlesCleaner = require('./vendorsBundlesCleaner.js');
+var decoder = require('string_decoder');
+var request = require('request');
 
 var wbtools = fs.readFileSync(path.resolve('server', 'wbTools.js')).toString();
 
 module.exports = {
-  getIndex: function (req, res) {
-    res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-    res.setHeader('Expires', '-1');
-    res.setHeader('Pragma', 'no-cache');
+  indexFiles: function(req, res) {
+    utils.setHeaders(res);
     res.type('html');
 
-    if (
-      req.session.currentBin &&
-      req.session.currentBin.isLive &&
-      !req.session.currentBin.isOwner
-    ) {
-      res.send(memoryFs.getSessionFile(req.session.currentBin.author, 'index.html'));
+    res.send(memoryFs.index(req.session.id));
+  },
+
+  getIndex: function (req, res) {
+    utils.setHeaders(res);
+    res.type('html');
+
+    if (utils.isLive(req)) {
+      res.send(
+        memoryFs.getSessionFile(req.session.currentBin.author, 'index.html')
+      );
     } else {
       res.send(memoryFs.getSessionFile(req.session.id, 'index.html'));
     }
 
   },
+
+
+  getTest: function(req, res) {
+
+
+    utils.setHeaders(res)
+    res.type('html');
+
+
+    res.send(memoryFs.getSessionFile(req.session.id, 'test.html'));
+  },
+
+
   getFile: function (req, res, next) {
     req.url = req.url.replace('/subdomain/sandbox', '');
 
     if (/wbtools/.test(req.url)) {
-      res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-      res.setHeader('Expires', '-1');
-      res.setHeader('Pragma', 'no-cache');
+      utils.setHeaders(res);
       res.setHeader("Content-Type", mime.lookup('wbtools.js'));
       res.setHeader("Content-Length", wbtools.length);
       return res.send(wbtools);
@@ -54,15 +72,9 @@ module.exports = {
       return;
     }
 
-    if (
-      req.session.currentBin &&
-      req.session.currentBin.isLive &&
-      !req.session.currentBin.isOwner
-    ) {
-      res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-      res.setHeader('Expires', '-1');
-      res.setHeader('Pragma', 'no-cache');
-      var fileName = path.basename(req.url) === utils.getEntry(sessions.get(req.session.currentBin.author).files) ? 'webpackbin_bundle.js' : path.basename(req.url);
+    if (utils.isLive(req)) {
+      utils.setHeaders(res)
+      var fileName = utils.getFileName(req);
       var filePath = '/api/sandbox/' + req.session.currentBin.author + '/' + fileName;
       if (!memoryFs.fs.existsSync(filePath)) {
         return res.sendStatus(404);
@@ -70,65 +82,67 @@ module.exports = {
       var content = memoryFs.fs.readFileSync(filePath);
       res.setHeader("Content-Type", mime.lookup(fileName));
       res.setHeader("Content-Length", content.length);
+
       res.send(content);
       return;
     }
 
-    res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-    res.setHeader('Expires', '-1');
-    res.setHeader('Pragma', 'no-cache');
+    utils.setHeaders(res);
 
     if (path.basename(req.url) === utils.getEntry(req.session.files)) {
       req.url = '/api/sandbox/' + req.session.id + '/webpackbin_bundle.js';
       req.session.middleware(req, res, next);
+
     } else {
+
+
       var fileName = path.basename(req.url);
       var content = memoryFs.getSessionFile(req.session.id, fileName)
+
+      // if (fileName === 'tests' && content === null) {
+      //   memoryFs.updateSessionTests()
+      //   content = memoryFs.getSessionFile(req.session.id, fileName);
+      // }
+
       if (content === null) {
+        console.log('Content is null!');
+        console.log('Filename was', fileName);
         return res.sendStatus(404);
       }
       res.setHeader("Content-Type", mime.lookup(fileName));
       res.setHeader("Content-Length", content.length);
+
       res.send(content);
     }
 
   },
   updateSandbox: function (req, res, next) {
 
-    var currentEntryFile = utils.getEntry(req.session.files);
-
-    if (
-      req.session.middleware &&
-      (
-        utils.getVendorsBundleName(req.session.packages) !== utils.getVendorsBundleName(req.body.packages) ||
-        currentEntryFile !== utils.getEntry(req.body.files)
-      )
-    ) {
-      sessions.removeMiddleware(req);
-    }
+    utils.checkMiddlewareForChanges(req);
 
     var hasChangedLoaders = !utils.isSameLoaders(req.session.loaders, req.body.loaders);
+
     sessions.updatePackages(req);
     sessions.updateLoaders(req);
     sessions.updateFiles(req);
     memoryFs.updateSessionFiles(req.session, req.body.files);
+    memoryFs.updateSessionTests(req, req.body.tests);
     vendorsBundlesCleaner.update(req);
+    utils.checkCurrentBin(req);
 
-    if (!req.session.currentBin || req.session.currentBin.id !== req.body.id) {
-      sessions.update(req.session.id, 'currentBin', {
-        id: req.body.id,
-        isOwner: false
-      });
-    }
 
     if (
       !req.session.middleware &&
-      utils.hasPackages(req) &&
-      !memoryFs.hasVendorsBundle(req.body.packages)
+      utils.hasPackages(req)
     ) {
 
-      // Create new Bin
-      db.getVendorsBundle(utils.getVendorsBundleName(req.body.packages))
+      let vendors = !memoryFs.hasVendorsBundle(req.body.packages)
+
+      let bundle = vendors ?
+      db.getVendorsBundle(req) :
+      db.getVendorsBundleEntries(req)
+
+      bundle
         .then(function (bundle) {
           if (bundle) {
             memoryFs.writeBundleManifest(bundle);
@@ -170,52 +184,11 @@ module.exports = {
         });
 
     } else if (
-      !req.session.middleware &&
-      utils.hasPackages(req) &&
-      memoryFs.hasVendorsBundle(req.body.packages)
-    ) {
-      db.getVendorsBundleEntries(utils.getVendorsBundleName(req.body.packages))
-        .then(function (bundle) {
-          if (bundle) {
-            return sessionBundler.create(req.session)(bundle)
-              .then(sessions.createBundleMiddleware(req.session))
-              .then(function () {
-                if (req.session.currentBin.id) {
-                  res.send({});
-                  db.updateBin(req);
-                } else {
-                  db.updateBin(req)
-                    .then(function (bin) {
-                      sessions.update(req.session.id, 'currentBin', {
-                        id: bin.id,
-                        isOwner: true
-                      });
-                      res.send(bin);
-                    });
-                }
-              })
-              .catch(utils.logError);
-          } else {
-            return npm.loadPackages(req.body.packages)
-              .then(function (bundle) {
-                res.send({
-                  isFetchingVendorsBundle: true,
-                  id: bundle.id
-                });
-              })
-              .catch(function (err) {
-                res.status(500).send({
-                  message: err.message
-                });
-                throw err;
-              });
-          }
-        });
-
-    } else if (
       !req.session.middleware ||
       hasChangedLoaders
     ) {
+      sessionBundler.create(req.session)
+
       db.getVendorsBundleEntries(utils.getVendorsBundleName(req.body.packages))
         .then(sessionBundler.create(req.session))
         .then(sessions.createBundleMiddleware(req.session))
@@ -238,16 +211,32 @@ module.exports = {
     } else {
 
       if (req.session.currentBin.isOwner) {
+        console.log('Do nothing');
         res.send({});
-
-        // Update bin in database, but do not wait to finish
         db.updateBin(req);
       } else {
+
         db.updateBin(req).then(function (bin) {
+
+          // Send the data to the user server to update the record.
+          var body = {
+            user : req.query.user,
+            course: req.session.currentBin.id,
+            bin: bin.id
+          }
+          request.put({
+            url: 'http://localhost:3000/api/users/' + req.session.id,
+            body: body,
+            json: true
+          }, (err) => {
+            if (err) console.log('Error updating user record:', err)
+          })
+
           sessions.update(req.session.id, 'currentBin', {
             id: bin.id,
             isOwner: true
           });
+
           res.send(bin);
         });
       }
