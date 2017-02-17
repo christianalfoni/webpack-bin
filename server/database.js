@@ -7,6 +7,9 @@ var request = require('request');
 
 module.exports = {
   connect: db.connect,
+  createBin: function(req) {
+    return db.insert('bins', req.body)
+  },
   updateBin: function (req) {
     if (req.session.currentBin.isOwner) {
       return db.update('bins', {
@@ -42,15 +45,18 @@ module.exports = {
           packages: req.body.packages,
           loaders: req.body.loaders,
           files: req.body.files,
-          isLive: req.body.isLive
+          isLive: req.body.isLive,
+          name: req.body.name,
+          readme: req.body.readme,
+          subject: req.body.subject
         };
         return db.insert('bins', Object.assign({}, bin, {
           packages: utils.convertDots(bin.packages)
         }))
-          .then(function () {
-            bin.isOwner = true;
-            return bin;
-          });
+        .then(function () {
+          bin.isOwner = true;
+          return bin;
+        });
       });
     }
   },

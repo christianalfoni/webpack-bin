@@ -84,21 +84,20 @@ class Toolbar extends React.Component {
             <div className={styles.column1}>
               <div className={styles.logo}/>
               <div className={styles.version}><div className={styles.versionText}>beta</div></div>
-              {/*
               <div className={styles.buttonWrapper}>
-                Vim Mode
-                <input
-                  type="checkbox"
-                  checked={this.props.vimModeEnabled}
-                  onClick={() => signals.bin.vimModeClicked()}/>
+                <ToolbarButton
+                  title='Return to bin list'
+                  icon={icons.save}
+                  disabled={this.props.isRunning}
+                  tooltip="Eject! Eject!"
+                  onClick={() => signals.bin.returnButtonClicked()}/>
               </div>
-              */}
               <div className={styles.buttonWrapper}>
                 <ToolbarButton
                   title='Save'
                   icon={icons.save}
                   disabled={this.props.isRunning}
-                  tooltip="CTRL + s / CMD + s"
+                  tooltip="CTRL + s / CMD + sfff"
                   onClick={() => signals.bin.runClicked()}/>
               </div>
               <div className={styles.buttonWrapper}>
@@ -140,7 +139,7 @@ class Toolbar extends React.Component {
                 <Npm/>
               </ToolbarButtonPopover>
               <ToolbarButtonPopover
-                title="Boilerplates"
+                title="Boilerplate"
                 className={styles.packagesButton}
                 icon={icons.boilerplates}
                 onClick={() => signals.bin.boilerplatesToggled()}

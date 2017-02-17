@@ -2,6 +2,13 @@ var db = require('./database');
 var sessions = require('./sessions');
 
 module.exports = {
+
+  newBin: function(req, res) {
+    db.createBin(req)
+    .then(function(bin) {
+     res.send(bin);
+    })
+  },
   create: function (req, res) {
     db.createBin(req)
       .then(function (bin) {
