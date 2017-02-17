@@ -35,6 +35,7 @@ import emptyBinClicked from './signals/emptyBinClicked';
 import toggleFullLog from './signals/toggleFullLog';
 import entryToggled from './signals/entryToggled';
 import iframeLoading from './signals/iframeLoading';
+import returnButtonClicked from './signals/returnButtonClicked';
 
 export default (options = {}) => {
   return (module, controller) => {
@@ -92,7 +93,8 @@ export default (options = {}) => {
       changedFiles: [],
       fileToDeleteIndex: 0,
       showDeleteFileModal: false,
-      isFetchingVendorsBundle: false
+      isFetchingVendorsBundle: false,
+      jwt: ''
     });
 
     module.addSignals({
@@ -132,7 +134,8 @@ export default (options = {}) => {
       iframeLoaded,
       iframeLoading,
       welcomeBinClicked,
-      emptyBinClicked
+      emptyBinClicked,
+      returnButtonClicked
     });
 
   };
