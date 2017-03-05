@@ -76,10 +76,6 @@ database.connect(utils.isProduction() ? process.env.MONGOHQ_URL : 'mongodb://loc
 
 app.use(compression())
 app.use(cookieParser());
-app.use(subdomain({
-  base: utils.isProduction() ? 'webpackbin.herokuapp.com' : 'webpackbin.dev',
-  ignoreWWW: true
-}));
 app.use(bodyParser.json());
 app.use(express.static(path.resolve('public')));
 app.use(sessions.middleware);
@@ -111,8 +107,8 @@ app.get('/api/project.zip', zip);
 app.post('/api/sandbox', sandbox.updateSandbox);
 app.get('/api/npm/:id', npm.checkBundle);
 
-app.get('/subdomain/sandbox/', sandbox.getIndex);
-app.get('/subdomain/sandbox/*', sandbox.getFile)
+app.get('/sandbox/', sandbox.getIndex);
+app.get('/sandbox/*', sandbox.getFile)
 
 app.get('/status', status.get);
 
