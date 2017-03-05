@@ -71,21 +71,10 @@ database.connect(utils.isProduction() ? process.env.MONGOHQ_URL : 'mongodb://loc
   .then(utils.log('Database connected'))
   .catch(utils.log('Could not connect to database'));
 
-// Init middleware
-if (utils.isProduction()) {
-  app.use(function (req, res, next) {
-    if (/herokuapp/.test(req.host)) {
-      return res.redirect('http://www.webpackbin.com' + req.url);
-    } else {
-      next();
-    }
-  });
-}
-
 app.use(compression())
 app.use(cookieParser());
 app.use(subdomain({
-  base: utils.isProduction() ? 'webpackbin.com' : 'webpackbin.dev',
+  base: utils.isProduction() ? 'webpackbin.herokuapp.com' : 'webpackbin.dev',
   ignoreWWW: true
 }));
 app.use(bodyParser.json());

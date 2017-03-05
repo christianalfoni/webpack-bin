@@ -36,7 +36,7 @@ var sessionsModule = {
       req.session = sessionsModule.set(id);
       res.cookie('webpackbin', String(id), {
         maxAge: 3600000 * 24, // One day
-        domain: utils.isProduction() ? '.webpackbin.com' : '.webpackbin.dev',
+        domain: utils.isProduction() ? '.herokuapp.com' : '.webpackbin.dev',
         httpOnly: true
       });
     }
