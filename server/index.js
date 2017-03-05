@@ -69,7 +69,10 @@ memoryFs.fs.mkdirpSync(path.join('/', 'api', 'sandbox', 'vendors'));
 setInterval(sessions.clean, 60 * 1000 * 60 * 5);
 database.connect(utils.isProduction() ? process.env.MONGOHQ_URL : 'mongodb://localhost:27017/webpackbin')
   .then(utils.log('Database connected'))
-  .catch(utils.log('Could not connect to database'));
+  .catch(function (error) {
+    console.log(error);
+    console.log('Could not connect to database');
+  });
 
 app.use(compression())
 app.use(cookieParser());
