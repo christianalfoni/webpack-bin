@@ -86,6 +86,8 @@
     "source-map-support": "^0.4.0",
     "string-hash": "^1.1.0",
     "style-loader": "^0.13.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^2.4.0",
     "subdomain": "^1.2.0",
     "tar-pack": "^3.1.3",
     "ts-loader": "^0.8.1",

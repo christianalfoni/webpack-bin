@@ -49,6 +49,8 @@ preLoadPackages([
   'less-loader',
   'node-sass',
   'sass-loader',
+  'stylus',
+  'stylus-loader',
   'babel-plugin-transform-decorators-legacy',
   'babel-plugin-transform-react-jsx',
   'raw-loader',
