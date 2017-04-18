@@ -74,5 +74,12 @@ const renderApp = function () {
   });
 };
 
+const preventClose = function (event) {
+  // This makes the browser show an alert asking if
+  // the user wants to leave the page
+  event.returnValue = '';
+}
+
 window.addEventListener('resize', renderApp);
+window.addEventListener('beforeunload', preventClose);
 renderApp();
